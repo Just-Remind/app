@@ -112,8 +112,8 @@ const Home: NextPage<Props> = (props: Props) => {
           <h2>Your books</h2>
           <ul>
             {books.map((book: Book) => (
-              <Link href={`/books/${book.id}`}>
-                <li key={book.id}>{book.title}</li>
+              <Link href={`/books/${book.id}`} key={book.id}>
+                <li>{book.title}</li>
               </Link>
             ))}
           </ul>
