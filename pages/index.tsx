@@ -8,6 +8,7 @@ import Head from 'next/head';
 
 import axios from 'axios';
 import prisma from '../lib/prisma';
+import { Button } from 'components/ui';
 
 type Book = {
   id: number;
@@ -77,16 +78,14 @@ const Home: NextPage<Props> = (props: Props) => {
       </Head>
 
       <main>
-        <h1>
-          Remind
-        </h1>
-
         <form onSubmit={handleImportNotes}>
           <label htmlFor="import-notes">
             Notes
-            <input id="import-notes" name="import-notes" type="file" />
           </label>
-          <button type="submit">Import</button>
+          <input id="import-notes" name="import-notes" type="file" />
+          <Button submit>
+            Import
+          </Button>
         </form>
 
         <section>

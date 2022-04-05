@@ -1,9 +1,9 @@
 /* eslint-disable react/jsx-props-no-spreading */
+import '../styles/globals.css';
 import { useState, useEffect } from 'react';
 import type { AppProps } from 'next/app';
 import { useRouter } from 'next/router';
-import { Header } from 'components/Navigation';
-import '../styles/globals.css';
+import { Header } from 'components/ui';
 
 function MyApp({ Component, pageProps }: AppProps) {
   // NEXT ROUTER
@@ -28,7 +28,9 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
       <Header />
-      <Component {...pageProps} />
+      <div className='p-6'>
+        <Component {...pageProps} />
+      </div>
     </>
   );
 }
