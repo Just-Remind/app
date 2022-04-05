@@ -27,6 +27,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     text: notes.join('\n '),
   };
 
-  sgMail.send(msg);
-  res.status(200).json('success');
+  sgMail
+    .send(msg)
+    .then(() => {
+      res.status(200).json('success');
+    }, (error) => {
+      console.error(error);
+      res.status(500).json('error');
+
+      if (error.response) {
+        console.error(error.response.body);
+      }
+    });
 }
