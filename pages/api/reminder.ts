@@ -7,6 +7,13 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import sgMail from '@sendgrid/mail';
 import prisma from '../../lib/prisma';
 
+type Note = {
+  content: string;
+  book: {
+    title: string;
+  }
+}
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const result = await prisma.note.findMany({
     select: {
@@ -25,7 +32,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     indices.push(random);
   }
 
-  const notes: string[] = [];
+  const notes: Note[] = [];
   indices.forEach((index) => notes.push(result[index]));
 
   sgMail.setApiKey(process.env.SENDGRID_API_KEY || '');

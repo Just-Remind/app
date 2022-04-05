@@ -11,6 +11,8 @@
     "prisma:generate": "prisma generate"
   },
   "dependencies": {
+    "@headlessui/react": "^1.5.0",
+    "@heroicons/react": "^1.0.6",
     "@prisma/client": "^3.11.1",
     "@sendgrid/mail": "^7.6.2",
     "@typescript-eslint/eslint-plugin": "^5.17.0",
