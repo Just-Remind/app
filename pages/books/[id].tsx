@@ -26,7 +26,7 @@ const Book: NextPage<Props> = (props: Props) => {
       </Head>
 
       <main>
-        <h2 className='mb-4 text-xl'>{book.title}</h2>
+        <h2 className='pb-6 mb-6 text-xl border-b border-gray-300'>{book.title}</h2>
 
         <ul className="space-y-2">
           {book.notes.map((note) => (

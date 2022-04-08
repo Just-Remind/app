@@ -8,7 +8,7 @@ import Head from 'next/head';
 
 import axios from 'axios';
 import prisma from '../lib/prisma';
-import { Button } from 'components/ui';
+import { Button, TwoColCard } from 'components/ui';
 
 type Book = {
   id: number;
@@ -19,12 +19,21 @@ type Props = {
   booksFromDB: Book[];
 }
 
+type AnalysedBook = {
+  title: string;
+  author: string;
+  notes: string[];
+}
+
 const Home: NextPage<Props> = (props: Props) => {
   // PROPS
-  const { booksFromDB } = props;
+  const { booksFromDB: books = [] } = props;
 
-  // // STATE
-  const [books] = useState<Book[]>(booksFromDB || []);
+  // STATE
+  const [anaylisedBook, setAnalysedBook] = useState<AnalysedBook | null>(null);
+
+  // 1. import book -> analyse
+  // 2. save to db
 
   // METHODS
   const handleImportNotes = (event: any): void => {
@@ -33,7 +42,8 @@ const Home: NextPage<Props> = (props: Props) => {
     if (!file) return;
 
     const notes: string[] = [];
-    let bookTitle = '';
+    let title = '';
+    let author = '';
 
     const fileReader = new FileReader();
     fileReader.onload = (e) => {
@@ -43,9 +53,15 @@ const Home: NextPage<Props> = (props: Props) => {
       if (typeof text !== 'string') return;
       const htmlObject = document.createElement('div');
       htmlObject.innerHTML = text;
-      const bookTitleElement = htmlObject.querySelector('.bookTitle');
-      if (bookTitleElement && bookTitleElement.textContent) {
-        bookTitle = bookTitleElement.textContent.trim() || '';
+
+      const titleElement = htmlObject.querySelector('.bookTitle');
+      if (titleElement && titleElement.textContent) {
+        title = titleElement.textContent.trim() || '';
+      }
+
+      const authorElement = htmlObject.querySelector('.authors');
+      if (authorElement && authorElement.textContent) {
+        author = authorElement?.textContent;
       }
 
       const noteTextnodes = htmlObject.querySelectorAll('.noteText');
@@ -54,21 +70,28 @@ const Home: NextPage<Props> = (props: Props) => {
           notes.push(note.firstChild.nodeValue.trim());
         }
       });
-
-      axios.post('/api/add_notes', {
-        userId: localStorage.getItem('userId'),
-        title: bookTitle,
-        notes,
-      })
-        .then((res) => {
-          console.log('res', res);
-        })
-        .catch((error) => alert(error));
+      setAnalysedBook({ title, notes, author })
     };
 
     fileReader.readAsText(file);
   };
 
+  const handleSaveNotesToDB = (event: any): void => {
+    event.preventDefault();
+    if (!anaylisedBook) return alert('No book analysed');
+
+    axios.post('/api/add_notes', {
+      userId: localStorage.getItem('userId'),
+      title: anaylisedBook.title,
+      author: anaylisedBook.author,
+      notes: anaylisedBook.notes,
+    })
+      .then((res) => {
+        console.log('res', res);
+        alert('Book & notes successfully saved! 👌')
+      })
+      .catch((error) => alert(error));
+  };
   return (
     <div>
       <Head>
@@ -78,27 +101,33 @@ const Home: NextPage<Props> = (props: Props) => {
       </Head>
 
       <main>
-        <form onSubmit={handleImportNotes}>
+        <form onSubmit={anaylisedBook ? handleSaveNotesToDB : handleImportNotes} className='pb-6 mb-6 border-b border-gray-300'>
           <label htmlFor="import-notes">
             Notes
           </label>
           <input id="import-notes" name="import-notes" type="file" />
           <Button submit>
-            Import
+            {anaylisedBook ? 'Save' : 'Analyse'}
           </Button>
         </form>
 
         <section>
-          <h2>Your books</h2>
-          <ul>
-            {books.map((book: Book) => (
-              <Link href={`/books/${book.id}`} key={book.id}>
-                <li>{book.title}</li>
-              </Link>
-            ))}
-          </ul>
+          <h2 className='text-xl'>Your books</h2>
+          <div className="overflow-hidden bg-white shadow sm:rounded-md">
+            <ul role="list" className="divide-y divide-gray-200">
+              {books.length > 0 && books.map((book: Book) => (
+                <TwoColCard
+                  href={`/books/${book.id}`}
+                  key={book.id}
+                  leftTitle={book.title}
+                  leftSubtitle={`By ...`}
+                  rightTitle={`Notes: xx`}
+                  rightSubtitle={`Added on ...`}
+                />
+              ))}
+            </ul>
+          </div>
         </section>
-
       </main>
     </div>
   );
