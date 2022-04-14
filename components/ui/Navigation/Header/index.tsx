@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 
+import { Auth } from "aws-amplify";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
@@ -20,8 +21,9 @@ const Header = (): JSX.Element => {
 
   // METHODS
   const handleLogout = (): void => {
-    localStorage.removeItem("userId");
-    router.push("/");
+    Auth.signOut()
+      .then(() => router.push("/login"))
+      .catch((error) => alert(error));
   };
 
   return (
