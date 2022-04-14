@@ -5,7 +5,7 @@ import Amplify from "aws-amplify";
 import type { AppProps } from "next/app";
 import { QueryClient, QueryClientProvider } from "react-query";
 
-import { Header } from "components/ui";
+import { AppWrapper } from "components/layouts";
 import awsconfig from "src/aws-exports";
 
 Amplify.configure({
@@ -29,10 +29,9 @@ const MyApp = ({ Component, pageProps }: AppProps): JSX.Element | null => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Header />
-      <div className="p-6">
+      <AppWrapper>
         <Component {...pageProps} />
-      </div>
+      </AppWrapper>
     </QueryClientProvider>
   );
 };

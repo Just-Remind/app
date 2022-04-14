@@ -4,7 +4,6 @@ import { withSSRContext } from "aws-amplify";
 import axios from "axios";
 import { NextPage } from "next";
 import type { GetServerSideProps } from "next";
-import Head from "next/head";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 
@@ -118,52 +117,44 @@ const Home: NextPage<Props> = (props: Props) => {
   }
 
   return (
-    <div>
-      <Head>
-        <title>Remind</title>
-        <meta name="description" content="Daily re-inspiration" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+    <>
+      <form
+        onSubmit={
+          anaylisedBook
+            ? handleSubmit(handleSaveNotesToDB)
+            : handleSubmit(handleImportNotes)
+        }
+        className="flex items-center pb-6 mb-6 space-x-4 border-b border-gray-300"
+      >
+        <Input
+          {...register("highlights")}
+          type="file"
+          accept=".html"
+          className="flex-1"
+          error={errors.highlights?.message}
+        />
+        <Button submit>{anaylisedBook ? "Save" : "Analyse"}</Button>
+      </form>
 
-      <main>
-        <form
-          onSubmit={
-            anaylisedBook
-              ? handleSubmit(handleSaveNotesToDB)
-              : handleSubmit(handleImportNotes)
-          }
-          className="flex items-center pb-6 mb-6 space-x-4 border-b border-gray-300"
-        >
-          <Input
-            {...register("highlights")}
-            type="file"
-            accept=".html"
-            className="flex-1"
-            error={errors.highlights?.message}
-          />
-          <Button submit>{anaylisedBook ? "Save" : "Analyse"}</Button>
-        </form>
-
-        <section>
-          <h2 className="text-xl">Your books</h2>
-          <div className="overflow-hidden bg-white shadow sm:rounded-md">
-            <ul role="list" className="divide-y divide-gray-200">
-              {books.length > 0 &&
-                books.map((book: Book) => (
-                  <TwoColCard
-                    href={`/books/${book.id}`}
-                    key={book.id}
-                    leftTitle={book.title}
-                    leftSubtitle={`By ...`}
-                    rightTitle={`Notes: xx`}
-                    rightSubtitle={`Added on ...`}
-                  />
-                ))}
-            </ul>
-          </div>
-        </section>
-      </main>
-    </div>
+      <section>
+        <h2 className="text-xl">Your books</h2>
+        <div className="overflow-hidden bg-white shadow sm:rounded-md">
+          <ul role="list" className="divide-y divide-gray-200">
+            {books.length > 0 &&
+              books.map((book: Book) => (
+                <TwoColCard
+                  href={`/books/${book.id}`}
+                  key={book.id}
+                  leftTitle={book.title}
+                  leftSubtitle={`By ...`}
+                  rightTitle={`Notes: xx`}
+                  rightSubtitle={`Added on ...`}
+                />
+              ))}
+          </ul>
+        </div>
+      </section>
+    </>
   );
 };
 

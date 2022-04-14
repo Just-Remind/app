@@ -1,5 +1,4 @@
 import { GetServerSideProps, NextPage } from "next";
-import Head from "next/head";
 
 import prisma from "../../lib/prisma";
 
@@ -17,23 +16,15 @@ const Book: NextPage<Props> = (props: Props) => {
 
   return (
     <div>
-      <Head>
-        <title>Remind</title>
-        <meta name="description" content="Daily reminder of your reads" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+      <h2 className="pb-6 mb-6 text-xl border-b border-gray-300">
+        {book.title}
+      </h2>
 
-      <main>
-        <h2 className="pb-6 mb-6 text-xl border-b border-gray-300">
-          {book.title}
-        </h2>
-
-        <ul className="space-y-2">
-          {book.notes.map((note, index) => (
-            <li key={index}>{note.content}</li>
-          ))}
-        </ul>
-      </main>
+      <ul className="space-y-2">
+        {book.notes.map((note, index) => (
+          <li key={index}>{note.content}</li>
+        ))}
+      </ul>
     </div>
   );
 };
