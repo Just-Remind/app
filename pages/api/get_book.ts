@@ -7,8 +7,9 @@ const handler = async (
   req: NextApiRequest,
   res: NextApiResponse
 ): Promise<void> => {
-  const result = await prisma.book.findMany({
+  const result = await prisma.book.findFirst({
     where: {
+      id: Number(req.body.bookId),
       user: {
         email: req.body.user.email,
       },
