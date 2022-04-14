@@ -140,17 +140,16 @@ const Home: NextPage<Props> = (props: Props) => {
         <h2 className="text-xl">Your books</h2>
         <div className="overflow-hidden bg-white shadow sm:rounded-md">
           <ul role="list" className="divide-y divide-gray-200">
-            {books.length > 0 &&
-              books.map((book: Book) => (
-                <TwoColCard
-                  href={`/books/${book.id}`}
-                  key={book.id}
-                  leftTitle={book.title}
-                  leftSubtitle={`By ...`}
-                  rightTitle={`Notes: xx`}
-                  rightSubtitle={`Added on ...`}
-                />
-              ))}
+            {books.map((book: Book) => (
+              <TwoColCard
+                href={`/books/${book.id}`}
+                key={book.id}
+                leftTitle={book.title}
+                leftSubtitle={`By ...`}
+                rightTitle={`Notes: xx`}
+                rightSubtitle={`Added on ...`}
+              />
+            ))}
           </ul>
         </div>
       </section>
