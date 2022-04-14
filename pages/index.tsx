@@ -10,6 +10,8 @@ import { useForm } from "react-hook-form";
 
 import { Input, Button, TwoColCard } from "components/ui";
 
+import prisma from "../lib/prisma";
+
 type ImportBookForm = {
   highlights: FileList;
 };
@@ -170,23 +172,29 @@ export default Home;
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { Auth: AuthSSR } = withSSRContext(ctx);
 
-  let user = null;
+  const user = { email: "" };
   await AuthSSR.currentUserInfo()
     .then((res: { attributes: CognitoAttributes }) => {
       if (!res) return;
       const { attributes } = res;
-      user = {
-        email: attributes.email,
-      };
+      user.email = attributes.email;
     })
     .catch(() => null);
 
-  // TODO: fetch user's books
+  const books = await prisma.book.findMany({
+    where: {
+      user: { email: user.email },
+    },
+    select: {
+      id: true,
+      title: true,
+    },
+  });
 
   return {
     props: {
       user,
-      books: [],
+      books,
     },
   };
 };
