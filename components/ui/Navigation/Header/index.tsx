@@ -1,6 +1,7 @@
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
+
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 const Header = (): JSX.Element => {
   // STATE
@@ -11,16 +12,16 @@ const Header = (): JSX.Element => {
 
   // HOOKS
   useEffect(() => {
-    if (localStorage.getItem('userId')) {
-      const id = Number(localStorage.getItem('userId'))
+    if (localStorage.getItem("userId")) {
+      const id = Number(localStorage.getItem("userId"));
       setUserId(id);
     }
   }, []);
 
   // METHODS
   const handleLogout = (): void => {
-    localStorage.removeItem('userId');
-    router.push('/');
+    localStorage.removeItem("userId");
+    router.push("/");
   };
 
   return (
@@ -43,12 +44,13 @@ const Header = (): JSX.Element => {
             </button>
           ) : (
             <>
-              <Link href='/login'>
+              <Link href="/login">
                 <a className="text-base font-medium text-gray-500 whitespace-nowrap hover:text-gray-900">
                   Sign in
                 </a>
               </Link>
-              <Link href='/signup'>
+              <Link href="/signup">
+                {/* eslint-disable-next-line max-len */}
                 <a className="inline-flex items-center justify-center px-4 py-2 ml-8 text-base font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm whitespace-nowrap hover:bg-indigo-700">
                   Sign up
                 </a>
@@ -59,6 +61,6 @@ const Header = (): JSX.Element => {
       </div>
     </div>
   );
-}
+};
 
 export default Header;

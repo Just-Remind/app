@@ -1,13 +1,12 @@
-import React, { memo } from 'react';
+import React, { memo } from "react";
 
-import classNames from 'utils/classNames';
+import { Spinner } from "components/ui";
+import classNames from "utils/classNames";
 
-import { Spinner } from 'components/ui';
+import styles from "./Button.module.css";
 
-import styles from './Button.module.css';
-
-type Color = 'red' | 'purple' | 'yellow' | 'white' | 'green';
-type Size = 'xs' | 'sm' | 'lg' | 'xl' | 'xxl' | 'wide';
+type Color = "red" | "purple" | "yellow" | "white" | "green";
+type Size = "xs" | "sm" | "lg" | "xl" | "xxl" | "wide";
 
 type Props = {
   children?: React.ReactNode;
@@ -30,7 +29,7 @@ const Button = (props: Props): JSX.Element => {
   const {
     children,
     submit,
-    size = 'sm',
+    size = "sm",
     disabled,
     loading,
     title,
@@ -38,23 +37,27 @@ const Button = (props: Props): JSX.Element => {
     onFocus,
     onBlur,
     className: additionalClassName,
-    color = 'green',
+    color = "green",
   } = props;
 
   const isDisabled = disabled || loading;
-  const spinnerTheme = color !== 'white' ? 'light' : 'dark';
+  const spinnerTheme = color !== "white" ? "light" : "dark";
 
   const className = classNames(
     styles.button,
     color && styles[`button--${color}`],
     size && styles[`button--${size}`],
-    disabled && styles['button--disabled'],
-    loading && styles['button--loading'],
-    additionalClassName,
+    disabled && styles["button--disabled"],
+    loading && styles["button--loading"],
+    additionalClassName
   );
 
   const loadingMarkup = loading ? (
-    <Spinner size="small" theme={spinnerTheme} className={styles.button__spinner} />
+    <Spinner
+      size="small"
+      theme={spinnerTheme}
+      className={styles.button__spinner}
+    />
   ) : null;
 
   const childMarkup = children ? (
@@ -66,7 +69,7 @@ const Button = (props: Props): JSX.Element => {
 
   return (
     <button
-      type={submit ? 'submit' : 'button'}
+      type={submit ? "submit" : "button"}
       disabled={isDisabled}
       onClick={onClick}
       onFocus={onFocus}

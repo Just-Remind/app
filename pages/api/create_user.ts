@@ -1,18 +1,19 @@
-/* eslint-disable import/no-unresolved */
-/* eslint-disable import/extensions */
-/* eslint-disable max-len */
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import type { NextApiRequest, NextApiResponse } from 'next';
-import prisma from '../../lib/prisma';
+import type { NextApiRequest, NextApiResponse } from "next";
 
-interface ExtendedNextApiRequest extends NextApiRequest {
+import prisma from "../../lib/prisma";
+
+type ExtendedNextApiRequest = {
   query: {
     email: string;
     password: string;
   };
-}
+} & NextApiRequest;
 
-export default async (req: ExtendedNextApiRequest, res: NextApiResponse) => {
+const handler = async (
+  req: ExtendedNextApiRequest,
+  res: NextApiResponse
+): Promise<void> => {
   const result = await prisma.user.create({
     data: {
       email: req.body.email,
@@ -22,3 +23,5 @@ export default async (req: ExtendedNextApiRequest, res: NextApiResponse) => {
 
   res.status(200).json(result);
 };
+
+export default handler;

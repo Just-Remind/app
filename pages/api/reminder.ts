@@ -1,20 +1,21 @@
-/* eslint-disable import/no-unresolved */
-/* eslint-disable import/extensions */
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-// import type { NextApiRequest, NextApiResponse } from 'next';
+import sgMail from "@sendgrid/mail";
 // import schedule from 'node-schedule';
-import type { NextApiRequest, NextApiResponse } from 'next';
-import sgMail from '@sendgrid/mail';
-import prisma from '../../lib/prisma';
+import type { NextApiRequest, NextApiResponse } from "next";
+
+import prisma from "../../lib/prisma";
 
 type Note = {
   content: string;
   book: {
     title: string;
-  }
-}
+  };
+};
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+const handler = async (
+  req: NextApiRequest,
+  res: NextApiResponse
+): Promise<void> => {
   const result = await prisma.note.findMany({
     select: {
       content: true,
@@ -35,12 +36,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const notes: Note[] = [];
   indices.forEach((index) => notes.push(result[index]));
 
-  sgMail.setApiKey(process.env.SENDGRID_API_KEY || '');
+  sgMail.setApiKey(process.env.SENDGRID_API_KEY || "");
   const msg = {
-    to: 'loic.boset@gmail.com', // Change to your recipient
-    from: 'loic.boset@gmail.com', // Change to your verified sender
-    subject: 'Remind 📚',
-    text: notes.map((note) => note.content).join('\n '),
+    to: "loic.boset@gmail.com", // Change to your recipient
+    from: "loic.boset@gmail.com", // Change to your verified sender
+    subject: "Remind 📚",
+    text: notes.map((note) => note.content).join("\n "),
     html: `<h3>Remind</h3>
 
       <h4>${notes[0].book.title}</h4>
@@ -61,16 +62,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       <p>Stay curious!</p> `,
   };
 
-  sgMail
-    .send(msg)
-    .then(() => {
-      res.status(200).json('success');
-    }, (error) => {
+  sgMail.send(msg).then(
+    () => {
+      res.status(200).json("success");
+    },
+    (error) => {
       console.error(error);
-      res.status(500).json('error');
+      res.status(500).json("error");
 
       if (error.response) {
         console.error(error.response.body);
       }
-    });
-}
+    }
+  );
+};
+
+export default handler;

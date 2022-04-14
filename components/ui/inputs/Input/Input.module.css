@@ -1,0 +1,29 @@
+.input-container {
+  @apply relative px-3 py-2 border border-gray-300 rounded-md shadow-sm focus-within:ring-1 focus-within:ring-green-600 focus-within:border-green-600;
+}
+
+.input-container--xs {
+  @apply px-2 py-1
+}
+
+.input-container--sm {
+  @apply px-3 py-2
+}
+
+.input-field {
+  @apply block w-full p-0 text-gray-900 placeholder-gray-300 border-0 sm:text-sm;
+}
+
+.input-label {
+  @apply absolute inline-block px-1 -mt-px text-xs font-medium text-gray-900 bg-white -top-2 left-2;
+}
+
+/* Error */
+.input-label--error {
+  @apply text-red-500
+}
+
+/* Disabled */
+.text-field--disabled {
+  @apply bg-gray-50;
+}

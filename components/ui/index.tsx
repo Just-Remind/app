@@ -1,6 +1,7 @@
 import Button from "./Button";
-import Header from "./Navigation/Header";
+import TwoColCard from "./cards/TwoColCard";
+import Input from "./inputs/Input";
 import Spinner from "./loaders/Spinner";
-import TwoColCard from './cards/TwoColCard';
+import Header from "./Navigation/Header";
 
-export { Button, Header, Spinner, TwoColCard };
+export { Button, Input, Header, Spinner, TwoColCard };

@@ -10,19 +10,8 @@
     "plugin:@typescript-eslint/recommended",
     // new
     "plugin:prettier/recommended",
-    "plugin:import/errors",
-    "plugin:import/warnings",
-    "plugin:import/typescript",
-    "next",
-    "react-app"
+    "next"
   ],
-  "settings": {
-    "import/resolver": {
-      "node": {
-        "extensions": [".js", ".jsx", ".ts", ".tsx"]
-      }
-    }
-  },
   "env": {
     "browser": true,
     "es2021": true,

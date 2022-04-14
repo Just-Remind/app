@@ -1,16 +1,14 @@
-/* eslint-disable import/no-unresolved */
-/* eslint-disable import/extensions */
-/* eslint-disable react/function-component-definition */
-import Head from 'next/head';
-import { NextPage, NextPageContext } from 'next';
-import prisma from '../../lib/prisma';
+import { GetServerSideProps, NextPage } from "next";
+import Head from "next/head";
+
+import prisma from "../../lib/prisma";
 
 type Props = {
   book: {
     title: string;
     notes: { content: string }[];
-  }
-}
+  };
+};
 
 const Book: NextPage<Props> = (props: Props) => {
   const { book } = props;
@@ -26,14 +24,15 @@ const Book: NextPage<Props> = (props: Props) => {
       </Head>
 
       <main>
-        <h2 className='pb-6 mb-6 text-xl border-b border-gray-300'>{book.title}</h2>
+        <h2 className="pb-6 mb-6 text-xl border-b border-gray-300">
+          {book.title}
+        </h2>
 
         <ul className="space-y-2">
-          {book.notes.map((note) => (
-            <li>{note.content}</li>
+          {book.notes.map((note, index) => (
+            <li key={index}>{note.content}</li>
           ))}
         </ul>
-
       </main>
     </div>
   );
@@ -41,7 +40,7 @@ const Book: NextPage<Props> = (props: Props) => {
 
 export default Book;
 
-export const getServerSideProps = async (context: NextPageContext) => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
   const userId = 1;
   const book = await prisma.book.findFirst({
     where: {
