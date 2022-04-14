@@ -137,7 +137,7 @@ const Home: NextPage<Props> = (props: Props) => {
       </form>
 
       <section>
-        <h2 className="text-xl">Your books</h2>
+        <h2 className="mb-4 text-xl">Your books</h2>
         <div className="overflow-hidden bg-white shadow sm:rounded-md">
           <ul role="list" className="divide-y divide-gray-200">
             {books.map((book: Book) => (

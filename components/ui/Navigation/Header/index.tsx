@@ -27,8 +27,8 @@ const Header = (): JSX.Element => {
   };
 
   return (
-    <div className="relative px-4 bg-white sm:px-6">
-      <div className="flex items-center justify-between py-6 border-b-2 border-gray-100 md:justify-start md:space-x-10">
+    <header className="sticky top-0 z-10 bg-white border-b-2 border-gray-100 shadow-sm">
+      <div className="flex items-center justify-between px-6 py-6 md:justify-start md:space-x-10">
         <div className="flex justify-start lg:w-0 lg:flex-1">
           <Link href="/">
             <a>
@@ -61,7 +61,7 @@ const Header = (): JSX.Element => {
           )}
         </div>
       </div>
-    </div>
+    </header>
   );
 };
 
