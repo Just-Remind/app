@@ -17,11 +17,8 @@ type Props = {
   loading?: boolean;
   className?: string;
   title?: string;
-  /** Callback when clicked */
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
-  /** Callback when button becomes focussed */
   onFocus?: () => void;
-  /** Callback when focus leaves button */
   onBlur?: () => void;
 };
 
@@ -54,17 +51,17 @@ const Button = (props: Props): JSX.Element => {
 
   const loadingMarkup = loading ? (
     <Spinner
-      size="small"
+      size="sm"
       theme={spinnerTheme}
       className={styles.button__spinner}
     />
   ) : null;
 
   const childMarkup = children ? (
-    <>
+    <div className="flex items-center">
       {children}
       {loadingMarkup}
-    </>
+    </div>
   ) : null;
 
   return (

@@ -37,11 +37,13 @@ const Login = (): JSX.Element => {
   }, []);
 
   // METHODS
-  const handleLogin = ({ email, password }: LoginForm): void => {
+  const handleLogin = ({
+    email,
+    password,
+  }: LoginForm): Promise<boolean | void> =>
     Auth.signIn(email, password)
       .then(() => router.push("/"))
       .catch((err) => alert(err));
-  };
 
   return (
     <form

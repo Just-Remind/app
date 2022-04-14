@@ -1,6 +1,5 @@
 .button {
-  @apply inline-flex relative border shadow-sm font-medium
-  text-white focus:outline-none justify-center focus:ring-offset-2;;
+  @apply relative inline-flex justify-center font-medium text-white border shadow-sm focus:outline-none focus:ring-offset-2;;
 }
 
 /* Size */
@@ -25,21 +24,21 @@
 }
 
 .button--wide {
-  @apply w-full py-2 px-4 text-sm rounded-md;
+  @apply w-full px-4 py-2 text-sm rounded-md;
 }
 
 /* color */
 .button--red {
-  @apply bg-red-600 hover:bg-red-700 border-transparent focus:ring-red-500;
+  @apply bg-red-600 border-transparent hover:bg-red-700 focus:ring-red-500;
 }
 .button--purple {
-  @apply bg-purple-600 hover:bg-purple-700 border-transparent focus:ring-purple-500;
+  @apply bg-purple-600 border-transparent hover:bg-purple-700 focus:ring-purple-500;
 }
 .button--yellow {
-  @apply bg-yellow-600 hover:bg-yellow-700 border-transparent focus:ring-yellow-500;
+  @apply bg-yellow-600 border-transparent hover:bg-yellow-700 focus:ring-yellow-500;
 }
 .button--green {
-  @apply bg-green-600 hover:bg-green-700 border-transparent focus:ring-green-500;
+  @apply bg-green-600 border-transparent hover:bg-green-700 focus:ring-green-500;
 }
 .button--white {
   @apply text-gray-700 bg-white border-gray-300 hover:bg-gray-50 focus:ring-green-500;
@@ -47,12 +46,11 @@
 
 /* disabled */
 .button--disabled {
-  @apply disabled:opacity-75 pointer-events-none;
+  @apply pointer-events-none disabled:opacity-75;
 }
 
 /* Loading */
 .button--loading {
-  color: transparent;
   pointer-events: none;
   opacity: 0.75;
 }

@@ -47,10 +47,6 @@ const Input = forwardRef<HTMLInputElement, Props>((props, ref) => {
   const classNameInput = classNames(
     styles["input-field"],
     disabled && styles["text-field--disabled"]
-    // multiline && styles['text-field--multiline'],
-    // readOnly && styles['text-field--readonly'],
-    // !!spanText && styles['text-field--has-span'],
-    // additionalClassname,
   );
 
   const classNameLabel = classNames(
