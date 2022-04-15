@@ -40,7 +40,7 @@ const App = ({ user }: Props): null | ReactElement => {
       </UserContextProvider>
     );
   } else {
-    router.push("/login");
+    router.push("/landing");
     return null;
   }
 };
