@@ -23,7 +23,7 @@ const Header = (): JSX.Element => {
   // METHODS
   const handleLogout = (): void => {
     Auth.signOut()
-      .then(() => router.push("/login"))
+      .then(() => router.push("/landing"))
       .catch((error) => alert(error));
   };
 

@@ -56,10 +56,6 @@ const Input = forwardRef<HTMLInputElement, Props>((props, ref) => {
 
   return (
     <>
-      {error && (
-        <span className="pb-[6px] block text-red-500 text-xs">{error}</span>
-      )}
-
       <div
         className={`
           ${styles["input-container"]}
@@ -87,6 +83,7 @@ const Input = forwardRef<HTMLInputElement, Props>((props, ref) => {
           autoFocus={autoFocus}
         />
       </div>
+      {error && <span className="text-xs text-red-500">{error}</span>}
     </>
   );
 });

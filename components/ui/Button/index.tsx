@@ -17,6 +17,7 @@ type Props = {
   loading?: boolean;
   className?: string;
   title?: string;
+  type?: "button" | "submit";
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
   onFocus?: () => void;
   onBlur?: () => void;
@@ -25,11 +26,11 @@ type Props = {
 const Button = (props: Props): JSX.Element => {
   const {
     children,
-    submit,
     size = "sm",
     disabled,
     loading,
     title,
+    type = "button",
     onClick,
     onFocus,
     onBlur,
@@ -66,7 +67,7 @@ const Button = (props: Props): JSX.Element => {
 
   return (
     <button
-      type={submit ? "submit" : "button"}
+      type={type}
       disabled={isDisabled}
       onClick={onClick}
       onFocus={onFocus}
