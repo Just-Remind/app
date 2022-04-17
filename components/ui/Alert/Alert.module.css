@@ -1,0 +1,47 @@
+.wrapper {
+  @apply p-4 rounded-md
+}
+
+.wrapper--success {
+  @apply bg-green-50
+}
+
+.wrapper--error {
+  @apply bg-red-50
+}
+
+.alert-button {
+  @apply inline-flex rounded-md p-1.5 focus:outline-none focus:ring-2 focus:ring-offset-2
+}
+
+.alert-button--success {
+  @apply bg-green-50 text-green-500 hover:bg-green-100 focus:ring-offset-green-50 focus:ring-green-600
+}
+
+.alert-button--error {
+  @apply bg-red-50 text-red-500 hover:bg-red-100 focus:ring-offset-red-50 focus:ring-red-600
+}
+
+.alert-title {
+  @apply text-sm font-medium;
+}
+
+.alert-title--success {
+  @apply text-green-800
+}
+
+.alert-title--error {
+  @apply text-red-800
+}
+
+.alert-message {
+  @apply mt-2 text-sm
+}
+
+.alert-message--success {
+  @apply text-green-700
+}
+
+.alert-message--error {
+  @apply text-red-700
+}

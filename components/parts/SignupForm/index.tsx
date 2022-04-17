@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 
 import { Input, Button } from "components/ui";
 import { EMAIL_REGEX, PASSWORD_REGEX } from "utils/constants";
+import { useAlert } from "utils/hooks";
 
 type SignUpForm = {
   email: string;
@@ -19,19 +20,26 @@ const SignupForm = (): JSX.Element => {
     formState: { errors, isSubmitting },
   } = useForm<SignUpForm>();
 
+  // HOOKS
+  const [alert, setAlert, clearAlert] = useAlert();
+
   // METHODS
-  const handleSignUp = ({ email, password }: SignUpForm): Promise<void> =>
-    Auth.signUp({
+  const handleSignUp = ({ email, password }: SignUpForm): Promise<void> => {
+    clearAlert();
+
+    return Auth.signUp({
       username: email,
       password,
     })
       .then(() => {
-        alert("Sign up successful! Check you mailbox to confirm your account");
+        setAlert({ message: "Check you mailbox to confirm your account" });
       })
-      .catch((error) => alert(error));
+      .catch((error) => setAlert({ type: "error", message: error.message }));
+  };
 
   return (
     <>
+      {alert && <div className="mb-2">{alert}</div>}
       <h2 className="mb-4 text-xl">Create your account</h2>
       <form className="space-y-6" onSubmit={handleSubmit(handleSignUp)}>
         <Input
