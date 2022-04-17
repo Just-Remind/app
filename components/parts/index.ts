@@ -1,4 +1,5 @@
-import SigninForm from "./SigninForm";
-import SignupModal from "./SignupModal";
+import ResetPassword from "./ResetPassword";
+import SignIn from "./SignIn";
+import SignUp from "./SignUp";
 
-export { SigninForm, SignupModal };
+export { SignIn, SignUp, ResetPassword };
