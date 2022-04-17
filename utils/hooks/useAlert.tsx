@@ -2,7 +2,7 @@ import { useCallback, useState } from "react";
 
 import { Alert } from "components/ui";
 
-type AlertConfig = {
+export type AlertConfig = {
   type?: "success" | "error";
   message: string;
 };

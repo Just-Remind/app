@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { Auth } from "aws-amplify";
 import { parse } from "query-string";
 
-import { SigninForm, SignupForm } from "components/parts";
+import { SigninForm, SignupModal } from "components/parts";
 import { DropdownMenu, Modal } from "components/ui";
 import { useToast } from "utils/hooks";
 
@@ -49,7 +49,7 @@ const Landing = (): JSX.Element => {
 
       <section className="text-center">
         <Modal open={openModal} setOpen={setOpenModal}>
-          <SignupForm />
+          <SignupModal />
         </Modal>
         <h2 className="pt-8 pb-2 pl-8 pr-8 text-5xl font-bold">
           Your daily dose of <span className="text-red-500">re</span>
