@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 import { Alert } from "components/ui";
 
@@ -16,8 +16,11 @@ type UseAlertReturn = [
 const useAlert = (): UseAlertReturn => {
   const [alertConfig, setAlertConfig] = useState<AlertConfig | null>(null);
 
-  const setAlert = (config: AlertConfig): void => setAlertConfig(config);
-  const clearAlert = (): void => setAlertConfig(null);
+  const setAlert = useCallback(
+    (config: AlertConfig): void => setAlertConfig(config),
+    []
+  );
+  const clearAlert = useCallback((): void => setAlertConfig(null), []);
 
   const alert = alertConfig && <Alert {...alertConfig} close={clearAlert} />;
 

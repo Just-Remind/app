@@ -6,6 +6,7 @@ import Input from "./inputs/Input";
 import Spinner from "./loaders/Spinner";
 import Modal from "./Modal";
 import Header from "./Navigation/Header";
+import Toast from "./Toast";
 
 export {
   Alert,
@@ -16,4 +17,5 @@ export {
   TwoColCard,
   DropdownMenu,
   Modal,
+  Toast,
 };

@@ -1,7 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+
+import { Auth } from "aws-amplify";
+import { parse } from "query-string";
 
 import { SigninForm, SignupForm } from "components/parts";
 import { DropdownMenu, Modal } from "components/ui";
+import { useToast } from "utils/hooks";
 
 const Landing = (): JSX.Element => {
   // STATE
@@ -12,8 +16,24 @@ const Landing = (): JSX.Element => {
     setOpenModal(true);
   };
 
+  // HOOKS
+  const [toast, setToast, clearToast] = useToast();
+
+  useEffect(() => {
+    const parsed = parse(location.search) as { code: string; email: string };
+    const { code, email } = parsed;
+    if (code && email) {
+      clearToast();
+
+      Auth.confirmSignUp(email, code)
+        .then(() => setToast({ message: "Account confirmed successfuly!" }))
+        .catch((error) => setToast({ type: "error", message: error.message }));
+    }
+  }, [setToast, clearToast]);
+
   return (
     <div className="w-5/6 mx-auto">
+      {toast}
       <header className="bg-white border-gray-100">
         <div className="flex items-center justify-between px-6 py-6 md:justify-start md:space-x-10">
           <div className="flex justify-start lg:w-0 lg:flex-1">
