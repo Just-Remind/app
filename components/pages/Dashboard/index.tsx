@@ -1,12 +1,12 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 
-import axios from "axios";
 import { useForm } from "react-hook-form";
 
-import { Input, Button, TwoColCard } from "components/ui";
+import { Input, Button, BookCard, Spinner } from "components/ui";
 import { UserContext } from "context";
-import { useGetBooks } from "services/books";
+import { useAddBook, useGetBooks, useDeleteBook } from "services/books";
 import { Book } from "types";
+import { useToast } from "utils/hooks";
 
 type ImportBookForm = {
   highlights: FileList;
@@ -26,16 +26,38 @@ const Dashboard = (): JSX.Element => {
   const [anaylisedBook, setAnalysedBook] = useState<AnalysedBook | null>(null);
 
   // RQ
-  const { data: books = [] } = useGetBooks(user);
+  const { data: books = [], isLoading } = useGetBooks(user);
+  const { mutate: addBook, isSuccess: isBookAdded } = useAddBook();
+  const { mutate: deleteBook, isSuccess: isBookDeleted } = useDeleteBook();
 
   // HOOKS
+  const [toast, setToast, clearToast] = useToast();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<ImportBookForm>();
 
+  useEffect(() => {
+    if (isBookAdded) {
+      clearToast();
+      setToast({ message: "Book added!" });
+    }
+  }, [isBookAdded, setToast, clearToast]);
+
+  useEffect(() => {
+    if (isBookDeleted) {
+      clearToast();
+      setToast({ message: "Book deleted!" });
+    }
+  }, [isBookDeleted, setToast, clearToast]);
+
   // METHODS
+  const handleDeleteBook = (bookId: number): void => {
+    deleteBook(bookId);
+  };
+
   const handleImportNotes = (data: ImportBookForm): void => {
     const file = data.highlights["0"];
     if (!file) return;
@@ -77,55 +99,65 @@ const Dashboard = (): JSX.Element => {
 
   const handleSaveNotesToDB = (): void => {
     if (!anaylisedBook) return alert("No book analysed");
-
-    axios
-      .post("/api/add_notes", {
-        userId: localStorage.getItem("userId"),
-        title: anaylisedBook.title,
-        author: anaylisedBook.author,
-        notes: anaylisedBook.notes,
-      })
-      .then(() => {
-        alert("Book & notes successfully saved! 👌");
-      })
-      .catch((err) => alert(err));
+    addBook({
+      user: user,
+      title: anaylisedBook.title,
+      author: anaylisedBook.author,
+      notes: anaylisedBook.notes,
+    });
   };
+
   return (
     <>
+      {toast}
       <form
         onSubmit={
           anaylisedBook
             ? handleSubmit(handleSaveNotesToDB)
             : handleSubmit(handleImportNotes)
         }
-        className="flex items-center pb-6 mb-6 space-x-4 border-b border-gray-300"
+        className="pb-6 mb-6 border-b border-gray-300"
       >
-        <Input
-          {...register("highlights")}
-          type="file"
-          accept=".html"
-          className="flex-1"
-          error={errors.highlights?.message}
-        />
-        <Button submit>{anaylisedBook ? "Save" : "Analyse"}</Button>
+        <div className="flex items-center space-x-4">
+          <Input
+            {...register("highlights")}
+            type="file"
+            accept=".html"
+            className="flex-1"
+            error={errors.highlights?.message}
+          />
+          <Button type="submit">{anaylisedBook ? "Save" : "Analyse"}</Button>
+        </div>
+        {anaylisedBook && (
+          <div className="mt-2">
+            <p className="font-medium">Your book</p>
+            <div className="text-sm text-gray-700">
+              <span>
+                {anaylisedBook?.title} by {anaylisedBook?.author} (
+                {anaylisedBook?.notes.length} highlights)
+              </span>
+            </div>
+          </div>
+        )}
       </form>
 
       <section>
         <h2 className="mb-4 text-xl">Your books</h2>
-        <div className="overflow-hidden bg-white shadow sm:rounded-md">
-          <ul role="list" className="divide-y divide-gray-200">
-            {books.map((book: Book) => (
-              <TwoColCard
-                href={`/books/${book.id}`}
-                key={book.id}
-                leftTitle={book.title}
-                leftSubtitle={`By ...`}
-                rightTitle={`Notes: xx`}
-                rightSubtitle={`Added on ...`}
-              />
-            ))}
-          </ul>
-        </div>
+        {isLoading ? (
+          <Spinner size="lg" />
+        ) : (
+          <div className="overflow-hidden bg-white shadow sm:rounded-md">
+            <ul role="list" className="divide-y divide-gray-200">
+              {books.map((book: Book) => (
+                <BookCard
+                  key={book.id}
+                  book={book}
+                  handleDeleteBook={handleDeleteBook}
+                />
+              ))}
+            </ul>
+          </div>
+        )}
       </section>
     </>
   );

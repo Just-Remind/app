@@ -3,13 +3,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 
 import prisma from "../../lib/prisma";
 
-// type ExtendedNextApiRequest = {
-//   query: {
-//     userId: string;
-//     title: string;
-//     notes: string[];
-//   };
-// } & NextApiRequest;
+// TODO: convert to prisma transaction
 
 const handler = async (
   req: NextApiRequest,
@@ -17,7 +11,9 @@ const handler = async (
 ): Promise<void> => {
   const book = await prisma.book.findFirst({
     where: {
-      userId: Number(req.body.userId),
+      user: {
+        email: req.body.user.email,
+      },
       title: req.body.title,
     },
   });
@@ -39,7 +35,11 @@ const handler = async (
 
     const result = await prisma.book.create({
       data: {
-        userId: Number(req.body.userId),
+        user: {
+          connect: {
+            email: req.body.user.email,
+          },
+        },
         title: req.body.title,
         notes: {
           create: formatedNotes,
