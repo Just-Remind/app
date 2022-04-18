@@ -9,7 +9,7 @@ import { Book } from "types";
 import { useToast } from "utils/hooks";
 
 type ImportBookForm = {
-  highlights: FileList;
+  book: FileList;
 };
 
 type AnalysedBook = {
@@ -30,18 +30,21 @@ const Dashboard = (): JSX.Element => {
   const { mutate: addBook, isSuccess: isBookAdded } = useAddBook();
   const { mutate: deleteBook, isSuccess: isBookDeleted } = useDeleteBook();
 
-  // HOOKS
-  const [toast, setToast, clearToast] = useToast();
-
+  // RHF
   const {
     register,
+    resetField,
     handleSubmit,
     formState: { errors },
   } = useForm<ImportBookForm>();
 
+  // HOOKS
+  const [toast, setToast, clearToast] = useToast();
+
   useEffect(() => {
     if (isBookAdded) {
       clearToast();
+      setAnalysedBook(null);
       setToast({ message: "Book added!" });
     }
   }, [isBookAdded, setToast, clearToast]);
@@ -49,9 +52,10 @@ const Dashboard = (): JSX.Element => {
   useEffect(() => {
     if (isBookDeleted) {
       clearToast();
+      resetField("book");
       setToast({ message: "Book deleted!" });
     }
-  }, [isBookDeleted, setToast, clearToast]);
+  }, [isBookDeleted, setToast, clearToast, resetField]);
 
   // METHODS
   const handleDeleteBook = (bookId: number): void => {
@@ -59,7 +63,7 @@ const Dashboard = (): JSX.Element => {
   };
 
   const handleImportNotes = (data: ImportBookForm): void => {
-    const file = data.highlights["0"];
+    const file = data.book["0"];
     if (!file) return;
 
     const notes: string[] = [];
@@ -120,11 +124,11 @@ const Dashboard = (): JSX.Element => {
       >
         <div className="flex items-center space-x-4">
           <Input
-            {...register("highlights")}
+            {...register("book")}
             type="file"
             accept=".html"
             className="flex-1"
-            error={errors.highlights?.message}
+            error={errors.book?.message}
           />
           <Button type="submit">{anaylisedBook ? "Save" : "Analyse"}</Button>
         </div>
