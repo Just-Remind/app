@@ -3,7 +3,6 @@ import { useContext, useEffect } from "react";
 import { TrashIcon, PencilAltIcon } from "@heroicons/react/outline";
 import { useMatch } from "@tanstack/react-location";
 
-import { Spinner } from "components/ui";
 import { UserContext } from "context";
 import { useGetBook } from "services/books";
 import { useDeleteHighlight } from "services/highlights";

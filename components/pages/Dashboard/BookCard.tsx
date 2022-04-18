@@ -1,8 +1,13 @@
+import { useState } from "react";
+
 import { TrashIcon, PencilAltIcon } from "@heroicons/react/outline";
 import { Link } from "@tanstack/react-location";
 
+import { Modal } from "components/ui";
 import { Book } from "types";
 import { useAlertModal } from "utils/hooks";
+
+import EditBookForm from "./EditBookForm";
 
 type Props = {
   book: Book;
@@ -10,10 +15,16 @@ type Props = {
 };
 
 const BookCard = ({ book, handleDeleteBook }: Props): JSX.Element => {
+  // STATE
+  const [open, setOpen] = useState(false);
+
   // HOOKS
   const [alertModal, setAlertModal, clearAlertModal] = useAlertModal();
 
   // METHODS
+  const openEditBookModal = (): void => setOpen(true);
+  const handleCloseModal = (): void => setOpen(false);
+
   const openDeleteBookModal = (): void => {
     clearAlertModal();
 
@@ -28,6 +39,9 @@ const BookCard = ({ book, handleDeleteBook }: Props): JSX.Element => {
   return (
     <>
       {alertModal}
+      <Modal open={open} setOpen={setOpen}>
+        <EditBookForm book={book} handleCloseModal={handleCloseModal} />
+      </Modal>
       <li className="flex group">
         <Link
           to={`/books/${book.id}`}
@@ -60,7 +74,7 @@ const BookCard = ({ book, handleDeleteBook }: Props): JSX.Element => {
         </Link>
         <div className="flex flex-col justify-center px-2 space-y-3 group-hover:bg-gray-50 ">
           <PencilAltIcon
-            onClick={(): void => console.log("clicked")}
+            onClick={openEditBookModal}
             className="w-5 text-gray-400 hover:text-yellow-600"
           />
           <TrashIcon

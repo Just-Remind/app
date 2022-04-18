@@ -6,7 +6,7 @@ import { Dialog, Transition } from "@headlessui/react";
 type Props = {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  children: JSX.Element;
+  children: React.ReactNode;
 };
 
 const Modal = ({ open, setOpen, children }: Props): JSX.Element => (

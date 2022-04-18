@@ -2,11 +2,13 @@ import { useState, useContext, useEffect } from "react";
 
 import { useForm } from "react-hook-form";
 
-import { Input, Button, BookCard, Spinner } from "components/ui";
+import { Input, Button, Spinner } from "components/ui";
 import { UserContext } from "context";
 import { useAddBook, useGetBooks, useDeleteBook } from "services/books";
 import { Book } from "types";
 import { useToast } from "utils/hooks";
+
+import BookCard from "./BookCard";
 
 type ImportBookForm = {
   book: FileList;

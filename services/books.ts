@@ -16,6 +16,12 @@ type AddBookPayload = {
   notes: string[];
 };
 
+type EditBookPayload = {
+  id: number;
+  title: string;
+  author: string;
+};
+
 const useGetBooks = (user: User): UseQueryResult<Book[], Error> =>
   useQuery("books", async () => {
     const { data } = await axios.post("/api/get_books", { user });
@@ -41,20 +47,30 @@ const useDeleteBook = (): UseMutationResult<void, unknown, number, unknown> => {
   });
 };
 
-const addBook = (addBookPayload: AddBookPayload): Promise<void> =>
-  axios.post("/api/add_book", addBookPayload);
+const addBook = (payload: AddBookPayload): Promise<void> =>
+  axios.post("/api/add_book", payload);
 
 // eslint-disable-next-line prettier/prettier
 const useAddBook = (): UseMutationResult<void, unknown, AddBookPayload, unknown> => {
   const queryClient = useQueryClient();
-  return useMutation(
-    (addBookPayload: AddBookPayload) => addBook(addBookPayload),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries("books");
-      },
-    }
-  );
+  return useMutation((payload: AddBookPayload) => addBook(payload), {
+    onSuccess: () => {
+      queryClient.invalidateQueries("books");
+    },
+  });
 };
 
-export { useGetBooks, useGetBook, useAddBook, useDeleteBook };
+const editBook = (payload: EditBookPayload): Promise<void> =>
+  axios.post("/api/edit_book", payload);
+
+// eslint-disable-next-line prettier/prettier
+const useEditBook = (): UseMutationResult<void, unknown, EditBookPayload, unknown> => {
+  const queryClient = useQueryClient();
+  return useMutation((payload: EditBookPayload) => editBook(payload), {
+    onSuccess: () => {
+      queryClient.invalidateQueries("books");
+    },
+  });
+};
+
+export { useGetBooks, useGetBook, useAddBook, useDeleteBook, useEditBook };
