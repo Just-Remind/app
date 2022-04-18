@@ -11,11 +11,11 @@ type Props = {
 
 const BookCard = ({ book, handleDeleteBook }: Props): JSX.Element => {
   // HOOKS
-  const [alertModal, setAlertModal, clearAlert] = useAlertModal();
+  const [alertModal, setAlertModal, clearAlertModal] = useAlertModal();
 
   // METHODS
   const openDeleteBookModal = (): void => {
-    clearAlert();
+    clearAlertModal();
 
     setAlertModal({
       title: "Delete book",
@@ -61,11 +61,11 @@ const BookCard = ({ book, handleDeleteBook }: Props): JSX.Element => {
         <div className="flex flex-col justify-center px-2 space-y-3 group-hover:bg-gray-50 ">
           <PencilAltIcon
             onClick={(): void => console.log("clicked")}
-            className="w-5 h-5 text-gray-400 hover:text-yellow-600"
+            className="w-5 text-gray-400 hover:text-yellow-600"
           />
           <TrashIcon
             onClick={openDeleteBookModal}
-            className="w-5 h-5 text-gray-400 hover:text-red-600"
+            className="w-5 text-gray-400 hover:text-red-600"
           />
         </div>
       </li>

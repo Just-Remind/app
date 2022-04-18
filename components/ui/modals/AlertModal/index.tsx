@@ -65,7 +65,7 @@ const AlertModal = (props: Props): JSX.Element => {
                 </div>
                 <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                   <Dialog.Title
-                    as="h3"
+                    as="p"
                     className="text-lg font-medium leading-6 text-gray-900"
                   >
                     {title}
@@ -79,7 +79,10 @@ const AlertModal = (props: Props): JSX.Element => {
                 <button
                   type="button"
                   className="inline-flex justify-center w-full px-4 py-2 text-base font-medium text-white bg-red-600 border border-transparent rounded-md shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
-                  onClick={onClick}
+                  onClick={(): void => {
+                    onClick();
+                    setOpen(false);
+                  }}
                 >
                   {button}
                 </button>

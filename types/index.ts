@@ -6,5 +6,5 @@ export type Book = {
   id: number;
   title: string;
   author: string;
-  notes: { content: string }[];
+  notes: { id: number; content: string }[];
 };

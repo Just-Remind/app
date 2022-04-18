@@ -20,6 +20,7 @@ const handler = async (
       author: true,
       notes: {
         select: {
+          id: true,
           content: true,
         },
       },

@@ -24,7 +24,7 @@ const useAlertModal = (): UseAlertModalReturn => {
     setAlertConfig(config);
   }, []);
 
-  const clearAlert = useCallback((): void => {
+  const clearAlertModal = useCallback((): void => {
     setOpen(false);
     setAlertConfig(null);
   }, []);
@@ -33,7 +33,7 @@ const useAlertModal = (): UseAlertModalReturn => {
     <AlertModal {...alertConfig} open={open} setOpen={setOpen} />
   );
 
-  return [alertModal, setAlertModal, clearAlert];
+  return [alertModal, setAlertModal, clearAlertModal];
 };
 
 export default useAlertModal;
