@@ -8,6 +8,7 @@ const handler = async (
   res: NextApiResponse
 ): Promise<void> => {
   const result = await prisma.book.findMany({
+    orderBy: [{ createdAt: "asc" }],
     where: {
       user: {
         email: req.body.user.email,

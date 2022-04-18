@@ -19,6 +19,7 @@ const handler = async (
       title: true,
       author: true,
       notes: {
+        orderBy: [{ createdAt: "asc" }],
         select: {
           id: true,
           content: true,

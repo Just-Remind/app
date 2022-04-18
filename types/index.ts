@@ -8,3 +8,8 @@ export type Book = {
   author: string;
   notes: { id: number; content: string }[];
 };
+
+export type Highlight = {
+  id: number;
+  content: string;
+};

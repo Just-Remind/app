@@ -1,6 +1,11 @@
 import axios from "axios";
 import { useMutation, UseMutationResult, useQueryClient } from "react-query";
 
+type EditHighlightPayload = {
+  id: number;
+  content: string;
+};
+
 const deleteHighlight = (highlightId: number): Promise<void> =>
   axios.post("/api/delete_highlight", { id: highlightId });
 
@@ -14,4 +19,17 @@ const useDeleteHighlight = (): UseMutationResult<void, unknown, number, unknown>
   });
 };
 
-export { useDeleteHighlight };
+const editBook = (payload: EditHighlightPayload): Promise<void> =>
+  axios.post("/api/edit_highlight", payload);
+
+// eslint-disable-next-line prettier/prettier
+const useEditHighlight = (): UseMutationResult<void, unknown, EditHighlightPayload, unknown> => {
+  const queryClient = useQueryClient();
+  return useMutation((payload: EditHighlightPayload) => editBook(payload), {
+    onSuccess: () => {
+      queryClient.invalidateQueries("book");
+    },
+  });
+};
+
+export { useDeleteHighlight, useEditHighlight };
