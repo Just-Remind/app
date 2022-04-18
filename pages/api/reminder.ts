@@ -1,6 +1,5 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import sgMail from "@sendgrid/mail";
-// import schedule from 'node-schedule';
 import type { NextApiRequest, NextApiResponse } from "next";
 
 import prisma from "../../lib/prisma";
@@ -16,48 +15,67 @@ const handler = async (
   req: NextApiRequest,
   res: NextApiResponse
 ): Promise<void> => {
-  const result = await prisma.note.findMany({
+  if (!req.query.email) return res.status(500).json("No email provided");
+
+  const user = await prisma.user.findUnique({
+    where: {
+      email: req.query.email as string,
+    },
     select: {
-      content: true,
-      book: {
+      books: {
         select: {
-          title: true,
+          notes: {
+            select: {
+              content: true,
+              book: {
+                select: {
+                  title: true,
+                  author: true,
+                },
+              },
+            },
+          },
         },
       },
     },
   });
+
+  if (!user) return res.status(500).json("No user found");
+
+  const notes = user.books.flatMap((book) => book.notes);
+
   const indices = [];
 
   while (indices.length < 5) {
-    const random = Math.floor(Math.random() * result.length);
+    const random = Math.floor(Math.random() * notes.length);
     indices.push(random);
   }
 
-  const notes: Note[] = [];
-  indices.forEach((index) => notes.push(result[index]));
+  const selectedNotes: Note[] = [];
+  indices.forEach((index) => selectedNotes.push(notes[index]));
 
   sgMail.setApiKey(process.env.SENDGRID_API_KEY || "");
   const msg = {
-    to: "loic.boset@gmail.com", // Change to your recipient
-    from: "loic.boset@gmail.com", // Change to your verified sender
-    subject: "Remind 📚",
-    text: notes.map((note) => note.content).join("\n "),
+    to: req.query.email as string,
+    from: req.query.email as string,
+    subject: "Remind 📚 (test)",
+    text: selectedNotes.map((note) => note.content).join("\n "),
     html: `<h3>Remind</h3>
 
-      <h4>${notes[0].book.title}</h4>
-      <p>${notes[0].content}</p>
+      <h4>${selectedNotes[0].book.title}</h4>
+      <p>${selectedNotes[0].content}</p>
 
-      <h4>${notes[1].book.title}</h4>
-      <p>${notes[1].content}</p>
+      <h4>${selectedNotes[1].book.title}</h4>
+      <p>${selectedNotes[1].content}</p>
 
-      <h4>${notes[2].book.title}</h4>
-      <p>${notes[2].content}</p>
+      <h4>${selectedNotes[2].book.title}</h4>
+      <p>${selectedNotes[2].content}</p>
 
-      <h4>${notes[3].book.title}</h4>
-      <p>${notes[3].content}</p>
+      <h4>${selectedNotes[3].book.title}</h4>
+      <p>${selectedNotes[3].content}</p>
 
-      <h4>${notes[4].book.title}</h4>
-      <p>${notes[4].content}</p>
+      <h4>${selectedNotes[4].book.title}</h4>
+      <p>${selectedNotes[4].content}</p>
 
       <p>Stay curious!</p> `,
   };
