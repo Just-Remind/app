@@ -17,7 +17,10 @@ const Book = (): JSX.Element => {
   const { params } = useMatch();
 
   // RQ
-  const { data: book, isFetching } = useGetBook(user, params.id);
+  const { data: book = { title: "", author: "", notes: [] } } = useGetBook(
+    user,
+    params.id
+  );
 
   // HOOKS
   const [toast, setToast, clearToast] = useToast();
@@ -46,10 +49,6 @@ const Book = (): JSX.Element => {
       onClick: () => handleDeleteHighlight(highlightId),
     });
   };
-
-  if (isFetching || !book) {
-    return <Spinner size="lg" />;
-  }
 
   return (
     <>
