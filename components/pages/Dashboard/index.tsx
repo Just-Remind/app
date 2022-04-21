@@ -122,7 +122,7 @@ const Dashboard = (): JSX.Element => {
             ? handleSubmit(handleSaveNotesToDB)
             : handleSubmit(handleImportNotes)
         }
-        className="pb-6 mb-6 border-b border-gray-300"
+        className="hidden pb-6 mb-6 border-b border-gray-300 md:block"
       >
         <div className="flex items-center space-x-4">
           <Input

@@ -1,4 +1,5 @@
 import { Auth } from "aws-amplify";
+import axios from "axios";
 import { useForm } from "react-hook-form";
 
 import { Input, Button } from "components/ui";
@@ -33,6 +34,12 @@ const SignupForm = ({ setAlert, clearAlert }: Props): JSX.Element => {
       username: email,
       password,
     })
+      .then(() => {
+        axios.post("/api/create_user", {
+          email,
+          timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+        });
+      })
       .then(() => {
         setAlert({ message: "Check you mailbox to confirm your account" });
       })

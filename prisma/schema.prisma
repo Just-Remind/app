@@ -15,8 +15,20 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   email     String   @unique
-  password  String
   books     Book[]
+  cronJob   CronJob  @relation(fields: [cronJobId], references: [id])
+  cronJobId Int
+}
+
+model CronJob {
+  id             Int      @id @default(autoincrement())
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  jobId          Int
+  cronExpression String   @default("0 6 * * * *")
+  timezone       String
+  enabled        Boolean  @default(true)
+  User           User[]
 }
 
 model Book {

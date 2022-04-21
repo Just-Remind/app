@@ -1,5 +1,6 @@
 export type User = {
   email: string;
+  cronJobId: number;
 };
 
 export type Book = {

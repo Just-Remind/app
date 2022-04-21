@@ -1,3 +1,4 @@
 import AppWrapper from "./AppWrapper";
+import Sidebar from "./Sidebar";
 
-export { AppWrapper };
+export { AppWrapper, Sidebar };

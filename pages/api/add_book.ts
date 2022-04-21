@@ -3,8 +3,6 @@ import type { NextApiRequest, NextApiResponse } from "next";
 
 import prisma from "../../lib/prisma";
 
-// TODO: convert to prisma transaction
-
 const handler = async (
   req: NextApiRequest,
   res: NextApiResponse

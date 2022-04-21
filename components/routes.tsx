@@ -2,10 +2,12 @@ import { Route } from "@tanstack/react-location";
 
 import Book from "./pages/Book";
 import Dashboard from "./pages/Dashboard";
+import Service from "./pages/Service";
 
 const routes: Route[] = [
   { path: "/", element: <Dashboard /> },
   { path: "/books/:id", element: <Book /> },
+  { path: "/service", element: <Service /> },
   {
     element: <div>Page not found</div>,
   },
