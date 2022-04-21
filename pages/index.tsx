@@ -6,11 +6,10 @@ import { useRouter } from "next/router";
 
 import Application from "components/Application";
 import { UserContextProvider } from "context";
+import { User } from "types";
 
 type Props = {
-  user: {
-    email: string;
-  };
+  user: User;
 };
 
 type CognitoAttributes = {

@@ -2257,19 +2257,10 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react@*":
-  version "18.0.5"
-  resolved "https://registry.yarnpkg.com/@types/react/-/react-18.0.5.tgz#1a4d4b705ae6af5aed369dec22800b20f89f5301"
-  integrity sha512-UPxNGInDCIKlfqBrm8LDXYWNfLHwIdisWcsH5GpMyGjhEDLFgTtlRBaoWuCua9HcyuE0rMkmAeZ3FXV1pYLIYQ==
-  dependencies:
-    "@types/prop-types" "*"
-    "@types/scheduler" "*"
-    csstype "^3.0.2"
-
-"@types/react@17.0.43":
-  version "17.0.43"
-  resolved "https://registry.yarnpkg.com/@types/react/-/react-17.0.43.tgz#4adc142887dd4a2601ce730bc56c3436fdb07a55"
-  integrity sha512-8Q+LNpdxf057brvPu1lMtC5Vn7J119xrP1aq4qiaefNioQUYANF/CYeK4NsKorSZyUGJ66g0IM+4bbjwx45o2A==
+"@types/react@*", "@types/react@17.0.30":
+  version "17.0.30"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-17.0.30.tgz#2f8e6f5ab6415c091cc5e571942ee9064b17609e"
+  integrity sha512-3Dt/A8gd3TCXi2aRe84y7cK1K8G+N9CZRDG8kDGguOKa0kf/ZkSwTmVIDPsm/KbQOVMaDJXwhBtuOXxqwdpWVg==
   dependencies:
     "@types/prop-types" "*"
     "@types/scheduler" "*"
@@ -2728,9 +2719,9 @@ cookie@^0.4.0:
   integrity sha512-aSWTXFzaKWkvHO1Ny/s+ePFpvKsPnjc551iI41v3ny/ow6tBG5Vd+FuqGNhh1LxOmVzOlGUriIlOaokOvhaStA==
 
 core-js-pure@^3.20.2:
-  version "3.22.1"
-  resolved "https://registry.yarnpkg.com/core-js-pure/-/core-js-pure-3.22.1.tgz#4d94e0c9a7b710da20dadd727fe98b43543119f0"
-  integrity sha512-TChjCtgcMDc8t12RiwAsThjqrS/VpBlEvDgL009ot4HESzBo3h2FSZNa6ZS1nWKZEPDoulnszxUll9n0/spflQ==
+  version "3.22.2"
+  resolved "https://registry.yarnpkg.com/core-js-pure/-/core-js-pure-3.22.2.tgz#c10bffdc3028d25c2aae505819a05543db61544f"
+  integrity sha512-Lb+/XT4WC4PaCWWtZpNPaXmjiNDUe5CJuUtbkMrIM1kb1T/jJoAIp+bkVP/r5lHzMr+ZAAF8XHp7+my6Ol0ysQ==
 
 cron-parser@^3.5.0:
   version "3.5.0"
@@ -2864,9 +2855,9 @@ doctrine@^3.0.0:
     esutils "^2.0.2"
 
 electron-to-chromium@^1.4.84:
-  version "1.4.114"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.114.tgz#d85ec0808dd50b0cf6e6b262480ffd385f71c873"
-  integrity sha512-gRwLpVYWHGbERPU6o8pKfR168V6enWEXzZc6zQNNXbgJ7UJna+9qzAIHY94+9KOv71D/CH+QebLA9pChD2q8zA==
+  version "1.4.117"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.117.tgz#829d747deb9faa653cab72764a891ef523ba7413"
+  integrity sha512-ypZHxY+Sf/PXu7LVN+xoeanyisnJeSOy8Ki439L/oLueZb4c72FI45zXcK3gPpmTwyufh9m6NnbMLXnJh/0Fxg==
 
 emoji-regex@^9.2.2:
   version "9.2.2"
@@ -4219,9 +4210,9 @@ react-native-get-random-values@^1.4.0:
     fast-base64-decode "^1.0.0"
 
 react-query@^3.34.19:
-  version "3.35.0"
-  resolved "https://registry.yarnpkg.com/react-query/-/react-query-3.35.0.tgz#f807ba8497f8d6218a73e81a977e44ea786a7267"
-  integrity sha512-mRBJdpELLV+snzyXDsXM5ZEXM+HYt05L7st6ihSXr3nHX+4ULFr30mDjsziZvx0oF5dhlSDB8aMdvG6Ah4Bukg==
+  version "3.37.0"
+  resolved "https://registry.yarnpkg.com/react-query/-/react-query-3.37.0.tgz#f6a8c82ae61120e8d96197d71f6b1d33126e6540"
+  integrity sha512-VRSAe+Dq0hbQgKilovdTG4hr4+lHUFGo7pQYZQMX/b6yvN81eTgab0MejnnTVlw3vyBVyuokKdCtmfJ0xdubTw==
   dependencies:
     "@babel/runtime" "^7.5.5"
     broadcast-channel "^3.4.1"
