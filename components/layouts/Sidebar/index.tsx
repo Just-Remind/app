@@ -3,23 +3,44 @@ import { Fragment, useState } from "react";
 
 import { Dialog, Transition } from "@headlessui/react";
 import {
-  UserIcon,
   BookOpenIcon,
   AdjustmentsIcon,
   MenuAlt2Icon,
   XIcon,
 } from "@heroicons/react/outline";
 import { Link } from "@tanstack/react-location";
+import { Auth } from "aws-amplify";
+import { useRouter } from "next/router";
 
+import { Button } from "components/ui";
 import classNames from "utils/classNames";
 
-const navigation = [
-  { name: "Books", href: "/", icon: BookOpenIcon, current: true },
-  { name: "Service", href: "/service", icon: AdjustmentsIcon, current: false },
-];
+type Props = {
+  children: React.ReactNode;
+};
 
-const Sidebar = ({ children }) => {
+const Sidebar = ({ children }: Props): JSX.Element => {
+  // STATE
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  // NEXT ROUTER
+  const router = useRouter();
+
+  // METHODS
+  const handleLogout = (): void => {
+    Auth.signOut().then(() => router.push("/landing"));
+  };
+
+  // VARS
+  const navigation = [
+    { name: "Books", href: "/", icon: BookOpenIcon, current: true },
+    {
+      name: "Service",
+      href: "/service",
+      icon: AdjustmentsIcon,
+      current: false,
+    },
+  ];
 
   return (
     <>
@@ -72,7 +93,7 @@ const Sidebar = ({ children }) => {
                     <button
                       type="button"
                       className="flex items-center justify-center w-10 h-10 ml-1 rounded-full focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
-                      onClick={() => setSidebarOpen(false)}
+                      onClick={(): void => setSidebarOpen(false)}
                     >
                       <span className="sr-only">Close sidebar</span>
                       <XIcon
@@ -165,7 +186,7 @@ const Sidebar = ({ children }) => {
             <button
               type="button"
               className="px-4 text-gray-500 border-r border-gray-200 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 md:hidden"
-              onClick={() => setSidebarOpen(true)}
+              onClick={(): void => setSidebarOpen(true)}
             >
               <span className="sr-only">Open sidebar</span>
               <MenuAlt2Icon className="w-6 h-6" aria-hidden="true" />
@@ -173,13 +194,9 @@ const Sidebar = ({ children }) => {
             <div className="flex justify-between flex-1 px-4">
               <div className="flex flex-1"></div>
               <div className="flex items-center ml-4 md:ml-6">
-                <button
-                  type="button"
-                  className="p-1 text-gray-400 bg-white rounded-full hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                >
-                  <span className="sr-only">Account</span>
-                  <UserIcon className="w-6 h-6" aria-hidden="true" />
-                </button>
+                <Button onClick={handleLogout} color="white">
+                  Logout
+                </Button>
               </div>
             </div>
           </div>
