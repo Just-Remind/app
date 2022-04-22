@@ -43,6 +43,7 @@ const handler = async (
   if (!user) return res.status(500).json("No user found");
 
   const notes = user.books.flatMap((book) => book.notes);
+  if (notes.length === 0) return res.status(500).json("No highlights found.");
 
   const indices = [];
 
@@ -57,8 +58,11 @@ const handler = async (
   sgMail.setApiKey(process.env.SENDGRID_API_KEY || "");
   const msg = {
     to: req.query.email as string,
-    from: req.query.email as string,
-    subject: "Remind 📚 (test)",
+    from: {
+      name: "Just Remind",
+      email: "hello@justremind.app",
+    },
+    subject: "Remind 📚",
     text: selectedNotes.map((note) => note.content).join("\n "),
     html: `<h3>Remind</h3>
 
