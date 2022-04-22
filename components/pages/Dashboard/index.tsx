@@ -47,14 +47,14 @@ const Dashboard = (): JSX.Element => {
     if (isBookAdded) {
       clearToast();
       setAnalysedBook(null);
+      resetField("book");
       setToast({ message: "Book added!" });
     }
-  }, [isBookAdded, setToast, clearToast]);
+  }, [isBookAdded, setToast, clearToast, resetField]);
 
   useEffect(() => {
     if (isBookDeleted) {
       clearToast();
-      resetField("book");
       setToast({ message: "Book deleted!" });
     }
   }, [isBookDeleted, setToast, clearToast, resetField]);
