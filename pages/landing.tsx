@@ -57,48 +57,61 @@ const Landing = (): JSX.Element => {
   }, [setToast, clearToast]);
 
   return (
-    <div className="w-full min-h-screen bg-dark-blue">
+    <div className="w-full min-h-screen bg-dark-blue lg:grid lg:grid-cols-2">
       {toast}
-      <header className="p-4 text-white">
-        <div className="flex items-center justify-between">
-          <h1 className="text-2xl">Just Remind 📚</h1>
-          <DropdownMenu open={!openModal} button="Sign in" buttonClassName="">
-            <SignIn openSignUpModal={openSignUpModal} />
-          </DropdownMenu>
-        </div>
-      </header>
+      <div>
+        <header className="p-4 text-white">
+          <div className="flex items-center justify-between">
+            <h1 className="text-2xl">Just Remind 📚</h1>
+            <DropdownMenu open={!openModal} button="Sign in" buttonClassName="">
+              <SignIn openSignUpModal={openSignUpModal} />
+            </DropdownMenu>
+          </div>
+        </header>
 
-      <section className="text-center text-white">
-        <Modal open={openModal} setOpen={setOpenModal}>
-          <SignUp />
-        </Modal>
-        <Modal open={resetPasswordModal} setOpen={setResetPasswordModal}>
-          <ResetPassword resetPasswordData={resetPasswordData} />
-        </Modal>
-        <h2 className="px-8 my-8 text-4xl">
-          Your Kindle highlights served daily
-        </h2>
-        <p className="px-8 my-8 text-xl">
-          Just Remind (re)inspire you with a daily email containing random
-          highlights from your books
-        </p>
+        <section className="text-center text-white">
+          <Modal open={openModal} setOpen={setOpenModal}>
+            <SignUp />
+          </Modal>
+          <Modal open={resetPasswordModal} setOpen={setResetPasswordModal}>
+            <ResetPassword resetPasswordData={resetPasswordData} />
+          </Modal>
+          <h2 className="px-8 my-8 text-4xl md:text-5xl md:px-12 md:my-20">
+            Your Kindle highlights served daily
+          </h2>
+          <p className="px-8 my-8 text-xl md:text-2xl md:px-12 md:my-20">
+            Just Remind (re)inspires you with a daily email containing random
+            highlights from your books, for free 👌
+          </p>
+          <div className="lg:hidden">
+            <Image
+              src={landingImage}
+              alt="email with random books highlights"
+              width={window.innerWidth}
+              height={window.innerHeight * 0.36}
+              objectFit="cover"
+            />
+          </div>
+          <div className="p-8 mt-8 md:px-12 md:mt-20">
+            <Button
+              className="w-full px-4 font-bold uppercase md:text-2xl"
+              size="xxl"
+              color="orange"
+              onClick={openSignUpModal}
+            >
+              Get started for free
+            </Button>
+          </div>
+        </section>
+      </div>
+      <div className="hidden lg:block lg:relative">
         <Image
           src={landingImage}
-          alt=""
-          width={window.innerWidth}
-          height={window.innerHeight * 0.36}
+          alt="email with random books highlights"
+          layout="fill"
           objectFit="cover"
         />
-        <div className="p-8 mt-8">
-          <Button
-            className="w-full font-bold uppercase"
-            size="xxl"
-            color="orange"
-          >
-            Get started for free
-          </Button>
-        </div>
-      </section>
+      </div>
     </div>
   );
 };

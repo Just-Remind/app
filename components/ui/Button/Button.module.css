@@ -20,7 +20,7 @@
 }
 
 .button--xxl {
-  @apply px-6 py-3 text-base rounded-md;
+  @apply px-6 py-3 rounded-md;
 }
 
 .button--wide {

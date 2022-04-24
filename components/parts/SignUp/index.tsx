@@ -29,7 +29,10 @@ const SignupModal = (): JSX.Element => {
       ) : (
         <SignupForm setAlert={setAlert} clearAlert={clearAlert} />
       )}
-      <button className="w-full mt-4 text-center" onClick={toggleForms}>
+      <button
+        className="w-full mt-4 text-center text-gray-700"
+        onClick={toggleForms}
+      >
         {resendCodeForm ? "Sign up" : "Resend confirmation email"}
       </button>
     </>

@@ -34,7 +34,7 @@ const SignIn = ({ openSignUpModal }: Props): JSX.Element => {
             <button
               type="button"
               onClick={toggleForms}
-              className="w-full px-8 text-sm font-medium text-indigo-600 hover:text-indigo-500"
+              className="w-full px-8 text-sm font-medium text-gray-700 text-indigo-600 hover:text-indigo-500"
             >
               {isFogotPasswordForm ? "Sign in" : "Forgot your password?"}
             </button>
@@ -44,7 +44,7 @@ const SignIn = ({ openSignUpModal }: Props): JSX.Element => {
             <button
               type="button"
               onClick={openSignUpModal}
-              className="w-full text-sm font-medium text-indigo-600 hover:text-indigo-500"
+              className="w-full text-sm font-medium text-gray-700 text-indigo-600 hover:text-indigo-500"
             >
               Create an account
             </button>
