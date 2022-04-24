@@ -5,7 +5,7 @@ import classNames from "utils/classNames";
 
 import styles from "./Button.module.css";
 
-type Color = "red" | "purple" | "yellow" | "white" | "green";
+type Color = "red" | "purple" | "yellow" | "white" | "green" | "orange";
 type Size = "xs" | "sm" | "lg" | "xl" | "xxl" | "wide";
 
 type Props = {

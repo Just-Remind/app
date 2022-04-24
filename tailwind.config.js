@@ -45,6 +45,11 @@ module.exports = {
       // pink: colors.pink,
       // orange: colors.orange,
       // brown: colors.brown,
+
+      // CUSTOM COLORS
+      'dark-blue': '#00315F',
+      'orange': '#D6870D',
+      'dark-orange': '#AF6E08',
     },
     screens: {
       'sm': '640px',   // => @media (min-width: 640px) { ... }

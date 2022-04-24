@@ -1,11 +1,14 @@
 import { useState, useEffect } from "react";
 
 import { Auth } from "aws-amplify";
+import Image from "next/image";
 import { parse } from "query-string";
 
 import { SignIn, SignUp, ResetPassword } from "components/parts";
-import { DropdownMenu, Modal } from "components/ui";
+import { Button, DropdownMenu, Modal } from "components/ui";
 import { useToast } from "utils/hooks";
+
+import landingImage from "../public/landing_page_image.png";
 
 type ResetPasswordType = {
   email: string;
@@ -54,35 +57,47 @@ const Landing = (): JSX.Element => {
   }, [setToast, clearToast]);
 
   return (
-    <div className="w-5/6 mx-auto">
+    <div className="w-full min-h-screen bg-dark-blue">
       {toast}
-      <header className="bg-white border-gray-100">
-        <div className="flex items-center justify-between px-6 py-6 md:justify-start md:space-x-10">
-          <div className="flex justify-start lg:w-0 lg:flex-1">
-            <h1 className="text-3xl">Remind 📚</h1>
-          </div>
-          <div className="items-center justify-end hidden md:flex md:flex-1 lg:w-0">
-            <DropdownMenu open={!openModal} button="Sign in">
-              <SignIn openSignUpModal={openSignUpModal} />
-            </DropdownMenu>
-          </div>
+      <header className="p-4 text-white">
+        <div className="flex items-center justify-between">
+          <h1 className="text-2xl">Just Remind 📚</h1>
+          <DropdownMenu open={!openModal} button="Sign in" buttonClassName="">
+            <SignIn openSignUpModal={openSignUpModal} />
+          </DropdownMenu>
         </div>
       </header>
 
-      <section className="text-center">
+      <section className="text-center text-white">
         <Modal open={openModal} setOpen={setOpenModal}>
           <SignUp />
         </Modal>
         <Modal open={resetPasswordModal} setOpen={setResetPasswordModal}>
           <ResetPassword resetPasswordData={resetPasswordData} />
         </Modal>
-        <h2 className="pt-8 pb-2 pl-8 pr-8 text-5xl font-bold">
-          Your daily dose of <span className="text-red-500">re</span>
-          <span className="text-green-500">inspiration</span>
+        <h2 className="px-8 my-8 text-4xl">
+          Your Kindle highlights served daily
         </h2>
-        <p className="text-xl">
-          Get your Kindle highlights delivered by email everyday, for free! 👌
+        <p className="px-8 my-8 text-xl">
+          Just Remind (re)inspire you with a daily email containing random
+          highlights from your books
         </p>
+        <Image
+          src={landingImage}
+          alt=""
+          width={window.innerWidth}
+          height={window.innerHeight * 0.36}
+          objectFit="cover"
+        />
+        <div className="p-8 mt-8">
+          <Button
+            className="w-full font-bold uppercase"
+            size="xxl"
+            color="orange"
+          >
+            Get started for free
+          </Button>
+        </div>
       </section>
     </div>
   );

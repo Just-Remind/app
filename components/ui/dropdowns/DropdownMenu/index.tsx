@@ -6,29 +6,29 @@ import { Menu, Transition } from "@headlessui/react";
 
 import classNames from "utils/classNames";
 
+import styles from "./DropdownMenu.module.css";
+
 type Props = {
   open?: boolean;
-  variant?: "naked" | "standard";
+  buttonClassName?: string;
   button: React.ReactNode | string;
   children?: React.ReactNode;
   items?: { label: string; onClick: () => void }[];
 };
 
 const DropdownMenu = (props: Props): JSX.Element => {
-  const { open = true, variant, button, children, items = [] } = props;
+  const {
+    open = true,
+    buttonClassName = styles["dropdown-button"],
+    button,
+    children,
+    items = [],
+  } = props;
 
   return (
     <Menu as="div" className="relative inline-block text-left">
       <div>
-        <Menu.Button
-          className={
-            variant === "naked"
-              ? ""
-              : "inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500"
-          }
-        >
-          {button}
-        </Menu.Button>
+        <Menu.Button className={buttonClassName}>{button}</Menu.Button>
       </div>
 
       {open && (

@@ -7,9 +7,9 @@ type Props = {
 const AppWrapper = ({ children }: Props): JSX.Element => (
   <>
     <Head>
-      <title>Remind</title>
-      <meta name="description" content="Daily re-inspiration" />
-      <link rel="icon" href="/favicon.ico" />
+      <title>Just Remind</title>
+      <meta name="description" content="Your kindle highlights served daily" />
+      {/* <link rel="icon" href="/favicon.ico" /> */}
     </Head>
     {children}
   </>
