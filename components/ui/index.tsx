@@ -1,5 +1,6 @@
 import Alert from "./Alert";
-import Button from "./Button";
+import Button from "./buttons/Button";
+import Toggle from "./buttons/Toggle";
 import DropdownMenu from "./dropdowns/DropdownMenu";
 import Input from "./inputs/Input";
 import Spinner from "./loaders/Spinner";
@@ -18,4 +19,5 @@ export {
   DropdownMenu,
   Modal,
   Toast,
+  Toggle,
 };

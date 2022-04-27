@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 
 import Application from "components/Application";
 import { UserContextProvider } from "context";
+import prisma from "lib/prisma";
 import { User } from "types";
 
 type Props = {
@@ -17,6 +18,7 @@ type CognitoAttributes = {
 };
 
 const App = ({ user }: Props): null | ReactElement => {
+  console.log("user", user);
   // STATE
   const [isMounted, setIsMounted] = useState(false);
 
@@ -49,16 +51,23 @@ export default App;
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { Auth: AuthSSR } = withSSRContext(ctx);
 
-  let user = null;
+  let email = "";
   await AuthSSR.currentUserInfo()
     .then((res: { attributes: CognitoAttributes }) => {
       if (!res) return;
-      const { attributes } = res;
-      user = {
-        email: attributes.email,
-      };
+      email = res.attributes.email;
     })
     .catch(() => null);
+
+  const user = await prisma.user.findUnique({
+    where: {
+      email,
+    },
+    select: {
+      email: true,
+      cronJobId: true,
+    },
+  });
 
   return {
     props: {

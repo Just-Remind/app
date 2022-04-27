@@ -1,10 +1,7 @@
 /* eslint-disable max-len */
-type Theme = "light" | "dark";
-type Size = "sm" | "lg";
-
 type SpinnerProps = {
-  theme?: Theme;
-  size?: Size;
+  theme?: "light" | "dark";
+  size?: "sm" | "lg";
   className?: string;
 };
 
