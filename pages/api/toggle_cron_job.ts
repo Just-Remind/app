@@ -8,10 +8,11 @@ const handler = async (
   res: NextApiResponse
 ): Promise<void> => {
   const easycron = await axios.get(
-    `https://www.easycron.com/rest/enable?token=${process.env.EASY_CRON_API_KEY}&id=${req.body.easycronId}`
+    `https://www.easycron.com/rest/${
+      req.body.enabled ? "enable" : "disable"
+    }?token=${process.env.EASY_CRON_API_KEY}
+    &id=${req.body.easycronId}`
   );
-
-  console.log("easycron", easycron);
 
   if (easycron.data.status === "error")
     return res.status(500).json("Unable to update easycron job");
