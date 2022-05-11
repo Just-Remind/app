@@ -14,9 +14,17 @@ const Application = (): JSX.Element => {
 
   // hooks
   useEffect(() => {
-    Auth.currentAuthenticatedUser().catch(() => {
-      router.push("/landing");
-    });
+    Auth.currentAuthenticatedUser()
+      .then((result) => {
+        const userEmail = result.attributes.email;
+        const extensionId = process.env.NEXT_PUBLIC_CHROME_EXTENSION_ID;
+        if (extensionId) {
+          chrome.runtime.sendMessage(extensionId, { userEmail }, (response) => {
+            console.log("response", response);
+          });
+        }
+      })
+      .catch(() => router.push("/landing"));
   }, [router]);
 
   // Set up a ReactLocation instance

@@ -18,7 +18,6 @@ type CognitoAttributes = {
 };
 
 const App = ({ user }: Props): null | ReactElement => {
-  console.log("user", user);
   // STATE
   const [isMounted, setIsMounted] = useState(false);
 
@@ -65,7 +64,11 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     },
     select: {
       email: true,
-      cronJobId: true,
+      cronJob: {
+        select: {
+          id: true,
+        },
+      },
     },
   });
 

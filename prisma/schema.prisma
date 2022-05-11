@@ -16,8 +16,7 @@ model User {
   updatedAt DateTime @updatedAt
   email     String   @unique
   books     Book[]
-  cronJob   CronJob  @relation(fields: [cronJobId], references: [id])
-  cronJobId Int
+  cronJob   CronJob?
 }
 
 model CronJob {
@@ -28,7 +27,8 @@ model CronJob {
   cronExpression String   @default("0 6 * * * *")
   timezone       String
   enabled        Boolean  @default(true)
-  User           User[]
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId         Int      @unique
 }
 
 model Book {
@@ -37,7 +37,7 @@ model Book {
   updatedAt DateTime @updatedAt
   title     String   @unique @db.VarChar(255)
   author    String?
-  user      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    Int
   notes     Note[]
 }
@@ -47,6 +47,8 @@ model Note {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   content   String
-  book      Book     @relation(fields: [bookId], references: [id])
+  book      Book     @relation(fields: [bookId], references: [id], onDelete: Cascade)
   bookId    Int
+
+  @@unique([bookId, content])
 }
