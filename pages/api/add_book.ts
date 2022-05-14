@@ -2,53 +2,95 @@ import type { NextApiRequest, NextApiResponse } from "next";
 
 import prisma from "../../lib/prisma";
 
+type ImportedBookType = {
+  title: string;
+  author: string;
+  highlights: string[];
+};
+
 const handler = async (
   req: NextApiRequest,
   res: NextApiResponse
 ): Promise<void> => {
   const body = JSON.parse(req.body);
+  const importedBooks: ImportedBookType[] = body.books;
 
-  const book = await prisma.book.findFirst({
+  const user = await prisma.user.findUnique({
     where: {
-      user: {
-        email: body.user.email,
+      email: body.user.email,
+    },
+    select: {
+      id: true,
+      books: {
+        select: {
+          id: true,
+          title: true,
+        },
       },
-      title: body.title,
     },
   });
 
-  if (book) {
-    const formatedNotes = body.notes.map((note: string) => ({
-      bookId: book.id,
-      content: note,
-    }));
-    const result = await prisma.note.createMany({
-      data: formatedNotes,
-    });
+  if (!user) return res.status(500).json("user not found");
 
-    res.status(200).json(result);
-  } else {
-    const formatedNotes = body.notes.map((note: string) => ({
-      content: note,
-    }));
+  const createdHighlights: string[] = [];
+  const createdBooks: string[] = [];
 
-    const result = await prisma.book.create({
-      data: {
-        user: {
-          connect: {
-            email: body.user.email,
-          },
-        },
-        title: body.title,
-        author: body.author,
+  importedBooks.forEach(async (importedBook) => {
+    const existingBook = await prisma.book.findFirst({
+      where: {
+        userId: user.id,
+        title: importedBook.title,
+      },
+      select: {
+        id: true,
+        title: true,
         notes: {
-          create: formatedNotes,
+          select: {
+            content: true,
+          },
         },
       },
     });
 
-    res.status(200).json(result);
-  }
+    if (existingBook) {
+      const bookHighlights = existingBook.notes.map((note) => note.content);
+
+      importedBook.highlights.forEach(async (highlight) => {
+        if (!bookHighlights.includes(highlight)) {
+          await prisma.note.create({
+            data: {
+              content: highlight,
+              bookId: existingBook.id,
+            },
+          });
+
+          createdHighlights.push(highlight);
+          console.log("NEW HIGHLIGHT", highlight);
+        }
+      });
+    } else {
+      const formatedNotes = importedBook.highlights.map((highlight) => ({
+        content: highlight,
+      }));
+
+      await prisma.book.create({
+        data: {
+          userId: user.id,
+          title: importedBook.title,
+          author: importedBook.author,
+          notes: {
+            createMany: {
+              data: formatedNotes,
+            },
+          },
+        },
+      });
+
+      createdBooks.push(importedBook.title);
+    }
+  });
+
+  res.status(200).json({ createdBooks, createdHighlights });
 };
 
 export default handler;

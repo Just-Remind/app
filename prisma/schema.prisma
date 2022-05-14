@@ -35,11 +35,13 @@ model Book {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  title     String   @unique @db.VarChar(255)
+  title     String
   author    String?
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    Int
   notes     Note[]
+
+  @@unique([userId, title])
 }
 
 model Note {
