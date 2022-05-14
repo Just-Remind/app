@@ -51,7 +51,7 @@ const handler = async (
           },
         },
       });
-
+      console.log("EXISTING BOOK", existingBook);
       if (existingBook) {
         const bookHighlights = existingBook.notes.map((note) => note.content);
 
@@ -87,7 +87,6 @@ const handler = async (
         createdBooks.push(importedBook.title);
       }
     });
-    console.log("CREATED HIGHLGHTS", createdHighlights.length);
     res.status(200).json({ createdBooks, createdHighlights });
   } catch (error) {
     res.status(500).json(error);
