@@ -35,6 +35,8 @@ const handler = async (
   const createdHighlights: string[] = [];
   const createdBooks: string[] = [];
 
+  console.log("ADDING BOOK TO USER: ", user.id, body.user.email);
+
   importedBooks.forEach(async (importedBook) => {
     const existingBook = await prisma.book.findFirst({
       where: {
