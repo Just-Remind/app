@@ -36,6 +36,7 @@ const handler = async (
   const createdBooks: string[] = [];
 
   console.log("ADDING BOOK TO USER: ", user.id, body.user.email);
+  console.log("BOOKS TO IMPORT", importedBooks.length);
 
   importedBooks.forEach(async (importedBook) => {
     const existingBook = await prisma.book.findFirst({
@@ -55,6 +56,7 @@ const handler = async (
     });
 
     if (existingBook) {
+      console.log("EXISTING BOOK", existingBook.title);
       const bookHighlights = existingBook.notes.map((note) => note.content);
 
       importedBook.highlights.forEach(async (highlight) => {
@@ -74,7 +76,8 @@ const handler = async (
       const formatedNotes = importedBook.highlights.map((highlight) => ({
         content: highlight,
       }));
-
+      console.log("CREATING BOOK", importedBook.title);
+      console.log(`WITH ${formatedNotes.length} HIGHLIGHTS`);
       await prisma.book.create({
         data: {
           userId: user.id,
