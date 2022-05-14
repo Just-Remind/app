@@ -35,10 +35,11 @@ const handler = async (
   const createdHighlights: string[] = [];
   const createdBooks: string[] = [];
 
-  console.log("ADDING BOOK TO USER: ", user.id, body.user.email);
-  console.log("BOOKS TO IMPORT", importedBooks.length);
+  // console.log("ADDING BOOK TO USER: ", user.id, body.user.email);
+  // console.log("BOOKS TO IMPORT", importedBooks.length);
 
-  importedBooks.forEach(async (importedBook) => {
+  importedBooks.forEach(async (importedBook, index) => {
+    console.log("INDEX", index);
     const existingBook = await prisma.book.findFirst({
       where: {
         userId: user.id,
@@ -55,6 +56,7 @@ const handler = async (
       },
     });
 
+    console.log("EXISTING BOOK?", !!existingBook);
     if (existingBook) {
       console.log("EXISTING BOOK", existingBook.title);
       const bookHighlights = existingBook.notes.map((note) => note.content);
