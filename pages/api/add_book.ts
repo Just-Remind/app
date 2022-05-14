@@ -34,70 +34,64 @@ const handler = async (
 
   const createdHighlights: string[] = [];
   const createdBooks: string[] = [];
-
-  // console.log("ADDING BOOK TO USER: ", user.id, body.user.email);
-  // console.log("BOOKS TO IMPORT", importedBooks.length);
-
-  importedBooks.forEach(async (importedBook, index) => {
-    console.log("INDEX", index);
-    const existingBook = await prisma.book.findFirst({
-      where: {
-        userId: user.id,
-        title: importedBook.title,
-      },
-      select: {
-        id: true,
-        title: true,
-        notes: {
-          select: {
-            content: true,
-          },
-        },
-      },
-    });
-
-    console.log("EXISTING BOOK?", !!existingBook);
-    if (existingBook) {
-      console.log("EXISTING BOOK", existingBook.title);
-      const bookHighlights = existingBook.notes.map((note) => note.content);
-
-      importedBook.highlights.forEach(async (highlight) => {
-        if (!bookHighlights.includes(highlight)) {
-          await prisma.note.create({
-            data: {
-              content: highlight,
-              bookId: existingBook.id,
-            },
-          });
-
-          createdHighlights.push(highlight);
-          console.log("NEW HIGHLIGHT", highlight);
-        }
-      });
-    } else {
-      const formatedNotes = importedBook.highlights.map((highlight) => ({
-        content: highlight,
-      }));
-      console.log("CREATING BOOK", importedBook.title);
-      console.log(`WITH ${formatedNotes.length} HIGHLIGHTS`);
-      await prisma.book.create({
-        data: {
+  try {
+    importedBooks.forEach(async (importedBook) => {
+      const existingBook = await prisma.book.findFirst({
+        where: {
           userId: user.id,
           title: importedBook.title,
-          author: importedBook.author,
+        },
+        select: {
+          id: true,
+          title: true,
           notes: {
-            createMany: {
-              data: formatedNotes,
+            select: {
+              content: true,
             },
           },
         },
       });
 
-      createdBooks.push(importedBook.title);
-    }
-  });
+      if (existingBook) {
+        const bookHighlights = existingBook.notes.map((note) => note.content);
 
-  res.status(200).json({ createdBooks, createdHighlights });
+        importedBook.highlights.forEach(async (highlight) => {
+          if (!bookHighlights.includes(highlight)) {
+            await prisma.note.create({
+              data: {
+                content: highlight,
+                bookId: existingBook.id,
+              },
+            });
+
+            createdHighlights.push(highlight);
+          }
+        });
+      } else {
+        const formatedNotes = importedBook.highlights.map((highlight) => ({
+          content: highlight,
+        }));
+        await prisma.book.create({
+          data: {
+            userId: user.id,
+            title: importedBook.title,
+            author: importedBook.author,
+            notes: {
+              createMany: {
+                data: formatedNotes,
+              },
+            },
+          },
+        });
+
+        createdBooks.push(importedBook.title);
+      }
+    });
+
+    res.status(200).json({ createdBooks, createdHighlights });
+  } catch (error) {
+    res.status(500).json(error);
+  }
 };
 
 export default handler;
