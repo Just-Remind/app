@@ -18,6 +18,7 @@ const handler = async (
     .then((response) => response.data)
     .catch((error) => console.log("error", error));
 
+
   res.status(200).json(cronJob);
 };
 
