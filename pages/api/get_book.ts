@@ -10,15 +10,13 @@ const handler = async (
   const result = await prisma.book.findFirst({
     where: {
       id: Number(req.body.bookId),
-      user: {
-        email: req.body.user.email,
-      },
+      user: req.body.user.email,
     },
     select: {
       id: true,
       title: true,
       author: true,
-      notes: {
+      highlights: {
         orderBy: [{ createdAt: "asc" }],
         select: {
           id: true,

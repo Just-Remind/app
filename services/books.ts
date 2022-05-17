@@ -13,7 +13,7 @@ type AddBookPayload = {
   user: User;
   title: string;
   author: string;
-  notes: string[];
+  highlights: string[];
 };
 
 type EditBookPayload = {

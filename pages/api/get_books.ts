@@ -10,15 +10,13 @@ const handler = async (
   const result = await prisma.book.findMany({
     orderBy: [{ createdAt: "asc" }],
     where: {
-      user: {
-        email: req.body.user.email,
-      },
+      user: req.body.user.email,
     },
     select: {
       id: true,
       title: true,
       author: true,
-      notes: {
+      highlights: {
         select: {
           content: true,
         },

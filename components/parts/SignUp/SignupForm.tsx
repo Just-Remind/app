@@ -35,7 +35,7 @@ const SignupForm = ({ setAlert, clearAlert }: Props): JSX.Element => {
       password,
     })
       .then(() => {
-        axios.post("/api/create_user", {
+        axios.post("/api/create_cron_job", {
           email,
           timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
         });

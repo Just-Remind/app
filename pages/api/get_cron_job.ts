@@ -8,7 +8,7 @@ const handler = async (
 ): Promise<void> => {
   const result = await prisma.cronJob.findUnique({
     where: {
-      id: req.body.id,
+      user: req.body.user,
     },
   });
 

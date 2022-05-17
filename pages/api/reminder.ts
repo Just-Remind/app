@@ -15,24 +15,21 @@ const handler = async (
   req: NextApiRequest,
   res: NextApiResponse
 ): Promise<void> => {
-  if (!req.query.email) return res.status(500).json("No email provided");
+  const userEmail = req.query.email as string;
 
-  const user = await prisma.user.findUnique({
+  if (!userEmail) return res.status(500).json("No email provided");
+
+  const books = await prisma.book.findMany({
     where: {
-      email: req.query.email as string,
+      user: userEmail,
     },
     select: {
-      books: {
+      highlights: {
         select: {
-          notes: {
+          content: true,
+          book: {
             select: {
-              content: true,
-              book: {
-                select: {
-                  title: true,
-                  author: true,
-                },
-              },
+              title: true,
             },
           },
         },
@@ -40,20 +37,20 @@ const handler = async (
     },
   });
 
-  if (!user) return res.status(500).json("No user found");
-
-  const notes = user.books.flatMap((book) => book.notes);
-  if (notes.length === 0) return res.status(500).json("No highlights found.");
+  const highlights = books.flatMap((book) => book.highlights);
+  if (highlights.length === 0) {
+    return res.status(500).json("No highlights found.");
+  }
 
   const indices = [];
 
   while (indices.length < 5) {
-    const random = Math.floor(Math.random() * notes.length);
+    const random = Math.floor(Math.random() * highlights.length);
     indices.push(random);
   }
 
   const selectedNotes: Note[] = [];
-  indices.forEach((index) => selectedNotes.push(notes[index]));
+  indices.forEach((index) => selectedNotes.push(highlights[index]));
 
   sgMail.setApiKey(process.env.SENDGRID_API_KEY || "");
   const msg = {

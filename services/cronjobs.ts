@@ -7,9 +7,9 @@ type EditCronJobPayload = {
   enabled?: boolean;
 };
 
-const useGetCronJob = (id: number): UseQueryResult<CronJob, Error> =>
+const useGetCronJob = (user: string): UseQueryResult<CronJob, Error> =>
   useQuery("cronJob", async () => {
-    const { data } = await axios.post("/api/get_cron_job", { id });
+    const { data } = await axios.post("/api/get_cron_job", { user });
     return data;
   });
 

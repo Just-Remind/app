@@ -12,7 +12,7 @@ const Service = (): JSX.Element => {
   const user = useContext(UserContext);
 
   // RQ
-  const { data: cronJob, isLoading } = useGetCronJob(user.cronJobId);
+  const { data: cronJob, isLoading } = useGetCronJob(user.email);
 
   // HOOKS
   const [toast, setToast, clearToast] = useToast();

@@ -6,7 +6,6 @@ import { useRouter } from "next/router";
 
 import Application from "components/Application";
 import { UserContextProvider } from "context";
-import prisma from "lib/prisma";
 import { User } from "types";
 
 type Props = {
@@ -58,23 +57,11 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     })
     .catch(() => null);
 
-  const user = await prisma.user.findUnique({
-    where: {
-      email,
-    },
-    select: {
-      email: true,
-      cronJob: {
-        select: {
-          id: true,
-        },
-      },
-    },
-  });
-
   return {
     props: {
-      user,
+      user: {
+        email,
+      },
     },
   };
 };

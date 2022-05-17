@@ -15,62 +15,48 @@ const handler = async (
   const body = JSON.parse(req.body);
   const importedBooks: ImportedBookType[] = body.books;
 
-  const user = await prisma.user.findUnique({
-    where: {
-      email: body.user.email,
-    },
-    select: {
-      id: true,
-      books: {
-        select: {
-          id: true,
-          title: true,
-        },
-      },
-    },
-  });
+  res.setHeader(
+    "Access-Control-Allow-Origin",
+    `chrome-extension://${process.env.NEXT_PUBLIC_CHROME_EXTENSION_ID}`
+  );
 
-  if (!user) return res.status(500).json("user not found");
+  if (!body.user.email) return res.status(500).json("no user found");
 
-  await prisma.user.update({
-    where: {
-      email: body.user.email,
-    },
-    data: {
-      books: {
-        upsert: importedBooks.map((book) => ({
-          where: {
-            userId_title: {
-              userId: user.id,
-              title: book.title,
-            },
-          },
-          update: {
-            notes: {
-              createMany: {
-                skipDuplicates: true,
-                data: book.highlights.map((highlight) => ({
-                  content: highlight,
-                })),
-              },
-            },
-          },
-          create: {
+  await prisma.$transaction(
+    importedBooks.map((book) =>
+      prisma.book.upsert({
+        where: {
+          user_title: {
+            user: body.user.email,
             title: book.title,
-            author: book.author,
-            notes: {
-              createMany: {
-                skipDuplicates: true,
-                data: book.highlights.map((highlight) => ({
-                  content: highlight,
-                })),
-              },
+          },
+        },
+        update: {
+          highlights: {
+            createMany: {
+              skipDuplicates: true,
+              data: book.highlights.map((highlight) => ({
+                content: highlight,
+              })),
             },
           },
-        })),
-      },
-    },
-  });
+        },
+        create: {
+          user: body.user.email,
+          title: book.title,
+          author: book.author,
+          highlights: {
+            createMany: {
+              skipDuplicates: true,
+              data: book.highlights.map((highlight) => ({
+                content: highlight,
+              })),
+            },
+          },
+        },
+      })
+    )
+  );
 
   return res.status(200).json("SUCCESS");
 };

@@ -17,7 +17,7 @@ const Book = (): JSX.Element => {
   const { params } = useMatch();
 
   // RQ
-  const { data: book = { title: "", author: "", notes: [] } } = useGetBook(
+  const { data: book = { title: "", author: "", highlights: [] } } = useGetBook(
     user,
     params.id
   );
@@ -47,7 +47,7 @@ const Book = (): JSX.Element => {
         </h2>
 
         <ul className="space-y-6">
-          {book.notes.map((highlight) => (
+          {book.highlights.map((highlight) => (
             <HighlightCard
               key={highlight.id}
               highlight={highlight}

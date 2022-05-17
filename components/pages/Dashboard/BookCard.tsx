@@ -61,7 +61,7 @@ const BookCard = ({ book, handleDeleteBook }: Props): JSX.Element => {
                 <div className="hidden md:block">
                   <div>
                     <p className="text-sm text-gray-900">
-                      Highlights: {book.notes.length}
+                      Highlights: {book.highlights.length}
                     </p>
                     <p className="flex items-center mt-2 text-sm text-gray-500">
                       Added on ...

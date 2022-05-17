@@ -6,7 +6,7 @@ const handler = async (
   req: NextApiRequest,
   res: NextApiResponse
 ): Promise<void> => {
-  const result = await prisma.note.delete({
+  const result = await prisma.highlight.delete({
     where: {
       id: Number(req.body.id),
     },

@@ -2,8 +2,6 @@
 import axios from "axios";
 import type { NextApiRequest, NextApiResponse } from "next";
 
-import prisma from "../../lib/prisma";
-
 const handler = async (
   req: NextApiRequest,
   res: NextApiResponse
@@ -20,19 +18,7 @@ const handler = async (
     .then((response) => response.data)
     .catch((error) => console.log("error", error));
 
-  const result = await prisma.user.create({
-    data: {
-      email: req.body.email,
-      cronJob: {
-        create: {
-          jobId: Number(cronJob.cron_job_id),
-          timezone: req.body.timezone,
-        },
-      },
-    },
-  });
-
-  res.status(200).json(result);
+  res.status(200).json(cronJob);
 };
 
 export default handler;

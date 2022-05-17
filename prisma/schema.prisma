@@ -10,15 +10,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  email     String   @unique
-  books     Book[]
-  cronJob   CronJob?
-}
-
 model CronJob {
   id             Int      @id @default(autoincrement())
   createdAt      DateTime @default(now())
@@ -27,24 +18,22 @@ model CronJob {
   cronExpression String   @default("0 6 * * * *")
   timezone       String
   enabled        Boolean  @default(true)
-  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId         Int      @unique
+  user           String   @unique
 }
 
 model Book {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  title     String
-  author    String?
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId    Int
-  notes     Note[]
+  id         Int         @id @default(autoincrement())
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  title      String
+  author     String?
+  user       String
+  highlights Highlight[]
 
-  @@unique([userId, title])
+  @@unique([user, title])
 }
 
-model Note {
+model Highlight {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
