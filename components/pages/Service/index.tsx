@@ -51,7 +51,6 @@ const Service = (): JSX.Element => {
 
   if (isLoading) return <Spinner size="lg" />;
 
-
   return (
     <div>
       {toast}
