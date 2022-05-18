@@ -31,8 +31,7 @@ const App = ({ user }: Props): null | ReactElement => {
   if (!isMounted) {
     return null;
   }
-
-  if (user) {
+  if (user.email) {
     return (
       <UserContextProvider user={user}>
         <Application />

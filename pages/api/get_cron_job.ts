@@ -12,7 +12,8 @@ const handler = async (
     },
   });
 
-  res.status(200).json(result);
+  if (!result) res.status(500).json("No CRON job found");
+  else res.status(200).json(result);
 };
 
 export default handler;

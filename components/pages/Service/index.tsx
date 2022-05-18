@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 
 import axios from "axios";
 
@@ -12,10 +12,20 @@ const Service = (): JSX.Element => {
   const user = useContext(UserContext);
 
   // RQ
-  const { data: cronJob, isLoading } = useGetCronJob(user.email);
+  const { data: cronJob, isLoading, isError } = useGetCronJob(user.email);
 
   // HOOKS
   const [toast, setToast, clearToast] = useToast();
+
+  useEffect(() => {
+    clearToast();
+    if (isError) {
+      setToast({
+        type: "error",
+        message: "Something went wrong. Please try later.",
+      });
+    }
+  }, [isError, setToast, clearToast]);
 
   // METHODS
   const handleToggleService = (enabled: boolean): void => {
@@ -39,17 +49,19 @@ const Service = (): JSX.Element => {
       );
   };
 
-  if (isLoading || !cronJob) return <Spinner size="lg" />;
+  if (isLoading) return <Spinner size="lg" />;
 
   return (
     <div>
       {toast}
       <div>
-        <Toggle
-          label="Activate service"
-          defaultValue={cronJob.enabled}
-          onChange={handleToggleService}
-        />
+        {cronJob && (
+          <Toggle
+            label="Activate service"
+            defaultValue={cronJob.enabled}
+            onChange={handleToggleService}
+          />
+        )}
       </div>
     </div>
   );
