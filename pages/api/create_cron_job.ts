@@ -2,6 +2,8 @@
 import axios from "axios";
 import type { NextApiRequest, NextApiResponse } from "next";
 
+import prisma from "lib/prisma";
+
 const handler = async (
   req: NextApiRequest,
   res: NextApiResponse
@@ -15,7 +17,18 @@ const handler = async (
        &timezone=${req.body.timezone}
      `
     )
-    .then((response) => response.data)
+    .then((response) => {
+      console.log("response", response);
+      prisma.cronJob.create({
+        data: {
+          jobId: response.data.cron_job_id,
+          cronExpression: "0 8 * * * *",
+          enabled: true,
+          timezone: req.body.timezone,
+          user: req.body.email,
+        },
+      });
+    })
     .catch((error) => console.log("error", error));
 
   res.status(200).json(cronJob);
