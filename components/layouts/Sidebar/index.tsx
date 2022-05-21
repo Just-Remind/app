@@ -9,8 +9,9 @@ import {
   XIcon,
 } from "@heroicons/react/outline";
 import { Link } from "@tanstack/react-location";
+import { useRouter as useReactLocationRouter } from "@tanstack/react-location";
 import { Auth } from "aws-amplify";
-import { useRouter } from "next/router";
+import { useRouter as useNextRouter } from "next/router";
 
 import { Button } from "components/ui";
 import classNames from "utils/classNames";
@@ -24,34 +25,33 @@ const Sidebar = ({ children }: Props): JSX.Element => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   // NEXT ROUTER
-  const router = useRouter();
+  const nextRouter = useNextRouter();
+  const reactLocationRouter = useReactLocationRouter();
+  const { pathname } = reactLocationRouter.state.location;
 
   // METHODS
   const handleLogout = (): void => {
-    Auth.signOut().then(() => router.push("/landing"));
+    Auth.signOut().then(() => nextRouter.push("/landing"));
   };
 
   // VARS
   const navigation = [
-    { name: "Books", href: "/", icon: BookOpenIcon, current: true },
+    {
+      name: "Books",
+      href: "/",
+      icon: BookOpenIcon,
+      current: pathname === "/",
+    },
     {
       name: "Service",
       href: "/service",
       icon: AdjustmentsIcon,
-      current: false,
+      current: pathname === "/service",
     },
   ];
 
   return (
     <>
-      {/*
-        This example requires updating your template:
-
-        ```
-        <html class="h-full bg-gray-100">
-        <body class="h-full">
-        ```
-      */}
       <div>
         <Transition.Root show={sidebarOpen} as={Fragment}>
           <Dialog
@@ -121,16 +121,18 @@ const Sidebar = ({ children }: Props): JSX.Element => {
                           "group flex items-center px-2 py-2 text-base font-medium rounded-md"
                         )}
                       >
-                        <item.icon
-                          className={classNames(
-                            item.current
-                              ? "text-gray-500"
-                              : "text-gray-400 group-hover:text-gray-500",
-                            "mr-4 flex-shrink-0 h-6 w-6"
-                          )}
-                          aria-hidden="true"
-                        />
-                        {item.name}
+                        <div>
+                          <item.icon
+                            className={classNames(
+                              item.current
+                                ? "text-gray-500"
+                                : "text-gray-400 group-hover:text-gray-500",
+                              "mr-4 flex-shrink-0 h-6 w-6"
+                            )}
+                            aria-hidden="true"
+                          />
+                          {item.name}
+                        </div>
                       </Link>
                     ))}
                   </nav>
