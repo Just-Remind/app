@@ -1,21 +1,24 @@
 /* eslint-disable max-len */
+import styles from "./Spinner.module.css";
+
 type SpinnerProps = {
   theme?: "light" | "dark";
-  size?: "sm" | "lg";
+  size?: "sm" | "md" | "lg";
   className?: string;
 };
 
 const Spinner = (props: SpinnerProps): JSX.Element => {
-  // props
+  // PROPS
   const { theme = "dark", size = "sm" } = props;
-
-  const spinnerSize = size === "sm" ? "w-4" : "w-12";
-  const spinnerColor = theme === "dark" ? "text-green-500" : "text-white";
 
   return (
     <svg
       role="status"
-      className={`${spinnerSize} ${spinnerColor} animate-spin fill-grey-400 ml-2`}
+      className={`
+        ${styles[`spinner--${size}`]}
+        ${styles[`spinner--${theme}`]}
+        animate-spin fill-grey-400 ml-2
+      `}
       viewBox="0 0 100 101"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

@@ -5,14 +5,11 @@ import classNames from "utils/classNames";
 
 import styles from "./Button.module.css";
 
-type Color = "red" | "purple" | "yellow" | "white" | "green" | "orange";
-type Size = "xs" | "sm" | "lg" | "xl" | "xxl" | "wide";
-
 type Props = {
   children?: React.ReactNode;
   submit?: boolean;
-  size?: Size;
-  color?: Color;
+  size?: "xs" | "sm" | "lg" | "xl" | "xxl" | "wide";
+  color?: "red" | "purple" | "yellow" | "white" | "green" | "orange";
   disabled?: boolean;
   loading?: boolean;
   className?: string;

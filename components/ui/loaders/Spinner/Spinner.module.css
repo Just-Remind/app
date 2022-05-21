@@ -1,0 +1,19 @@
+.spinner--sm {
+  @apply w-4
+}
+
+.spinner--md {
+  @apply w-8
+}
+
+.spinner--lg {
+  @apply w-12
+}
+
+.spinner--light {
+  @apply text-white
+}
+
+.spinner--dark {
+  @apply text-green-500
+}
