@@ -63,7 +63,7 @@ const Landing = (): JSX.Element => {
         <header className="p-4 text-white">
           <div className="flex items-center justify-between">
             <h1 className="text-2xl">Just Remind 📚</h1>
-            <DropdownMenu open={!openModal} button="Sign in" buttonClassName="">
+            <DropdownMenu button="Sign in">
               <SignIn openSignUpModal={openSignUpModal} />
             </DropdownMenu>
           </div>
