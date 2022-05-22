@@ -1,12 +1,10 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useMemo } from "react";
 
-import { Spinner } from "components/ui";
+import { Spinner, Table, TextButton } from "components/ui";
 import { UserContext } from "context";
 import { useGetBooks, useDeleteBook } from "services/books";
 import { Book } from "types";
-import { useToast } from "utils/hooks";
-
-import BookCard from "./BookCard";
+import { useToast, useAlertModal } from "utils/hooks";
 
 const Dashboard = (): JSX.Element => {
   // CONTEXT
@@ -18,6 +16,7 @@ const Dashboard = (): JSX.Element => {
 
   // HOOKS
   const [toast, setToast, clearToast] = useToast();
+  const [alertModal, setAlertModal, clearAlertModal] = useAlertModal();
 
   useEffect(() => {
     if (isBookDeleted) {
@@ -31,25 +30,66 @@ const Dashboard = (): JSX.Element => {
     deleteBook(bookId);
   };
 
+  const openDeleteBookModal = (book: Book): void => {
+    clearAlertModal();
+
+    setAlertModal({
+      title: "Delete book",
+      message: `Are you sure you want to delete ${book.title} and all its highlights?`,
+      button: "Delete",
+      onClick: () => handleDeleteBook(book.id),
+    });
+  };
+
+  // VARS
+  const columns = [
+    {
+      Header: "Title",
+      accessor: "title",
+    },
+    {
+      Header: "Author",
+      accessor: "author",
+    },
+    {
+      Header: "Highlights",
+      accessor: "highlights",
+    },
+    {
+      Header: "Enabled",
+      accessor: "enabled",
+    },
+    {
+      Header: "",
+      accessor: "actions",
+    },
+  ] as const;
+
+  const formatedData = books.map((book) => ({
+    title: <p className="truncate w-72">{book.title}</p>,
+    author: <p className="w-40 truncate">{book.author}</p>,
+    highlights: book.highlights.length,
+    enabled: "true",
+    actions: (
+      <TextButton onClick={(): void => openDeleteBookModal(book)} color="red">
+        Delete
+      </TextButton>
+    ),
+  }));
+
+  const memoizedData = useMemo(() => formatedData, [formatedData]);
+
   return (
     <>
       {toast}
+      {alertModal}
+
       <section>
         <h2 className="mb-4 text-xl">Your books ({books.length})</h2>
         {isLoading ? (
           <Spinner size="lg" />
         ) : (
-          <div className="overflow-hidden bg-white shadow sm:rounded-md">
-            <ul role="list" className="divide-y divide-gray-200">
-              {books.map((book: Book) => (
-                <BookCard
-                  key={book.id}
-                  book={book}
-                  handleDeleteBook={handleDeleteBook}
-                />
-              ))}
-            </ul>
-          </div>
+          <Table columns={columns} data={memoizedData} />
         )}
       </section>
     </>
