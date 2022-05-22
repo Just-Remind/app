@@ -20,20 +20,10 @@ const Service = (): JSX.Element => {
   const router = useRouter();
 
   // RQ
-  const { data: cronJob, isLoading, isError } = useGetCronJob(user.email);
+  const { data: cronJob, isLoading } = useGetCronJob(user.email);
 
   // HOOKS
   const [toast, setToast, clearToast] = useToast();
-
-  useEffect(() => {
-    clearToast();
-    if (isError) {
-      setToast({
-        type: "error",
-        message: "Something went wrong. Please try later.",
-      });
-    }
-  }, [isError, setToast, clearToast]);
 
   // METHODS
   const handleToggleService = (enabled: boolean): void => {
