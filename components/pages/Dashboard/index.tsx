@@ -1,8 +1,8 @@
 import { useContext, useEffect, useMemo } from "react";
 
-import { Spinner, Table, TextButton } from "components/ui";
+import { Spinner, Table, TextButton, Toggle } from "components/ui";
 import { UserContext } from "context";
-import { useGetBooks, useDeleteBook } from "services/books";
+import { useGetBooks, useDeleteBook, useToggleBook } from "services/books";
 import { Book } from "types";
 import { useToast, useAlertModal } from "utils/hooks";
 
@@ -13,6 +13,11 @@ const Dashboard = (): JSX.Element => {
   // RQ
   const { data: books = [], isLoading } = useGetBooks(user);
   const { mutate: deleteBook, isSuccess: isBookDeleted } = useDeleteBook();
+  const {
+    mutate: toggleBook,
+    isSuccess: isBookToggled,
+    isError: isToggleBookError,
+  } = useToggleBook();
 
   // HOOKS
   const [toast, setToast, clearToast] = useToast();
@@ -24,6 +29,18 @@ const Dashboard = (): JSX.Element => {
       setToast({ message: "Book deleted!" });
     }
   }, [isBookDeleted, setToast, clearToast]);
+
+  useEffect(() => {
+    if (isBookToggled) {
+      clearToast();
+      setToast({ message: "Book updated!" });
+    }
+
+    if (isToggleBookError) {
+      clearToast();
+      setToast({ type: "error", message: "Something went wrong" });
+    }
+  }, [isBookToggled, isToggleBookError, setToast, clearToast]);
 
   // METHODS
   const handleDeleteBook = (bookId: number): void => {
@@ -39,6 +56,10 @@ const Dashboard = (): JSX.Element => {
       button: "Delete",
       onClick: () => handleDeleteBook(book.id),
     });
+  };
+
+  const handleToggleBook = (id: number, enabled: boolean): void => {
+    toggleBook({ id, enabled });
   };
 
   // VARS
@@ -69,7 +90,12 @@ const Dashboard = (): JSX.Element => {
     title: <p className="truncate w-72">{book.title}</p>,
     author: <p className="w-40 truncate">{book.author}</p>,
     highlights: book.highlights.length,
-    enabled: "true",
+    enabled: (
+      <Toggle
+        value={book.enabled}
+        onChange={(checked): void => handleToggleBook(book.id, checked)}
+      />
+    ),
     actions: (
       <TextButton onClick={(): void => openDeleteBookModal(book)} color="red">
         Delete

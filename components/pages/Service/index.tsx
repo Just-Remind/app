@@ -85,7 +85,7 @@ const Service = (): JSX.Element => {
         ) : cronJob ? (
           <Toggle
             label="Activate service"
-            defaultValue={cronJob.enabled}
+            value={cronJob.enabled}
             onChange={handleToggleService}
           />
         ) : (

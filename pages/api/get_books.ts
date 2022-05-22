@@ -16,6 +16,7 @@ const handler = async (
       id: true,
       title: true,
       author: true,
+      enabled: true,
       highlights: {
         select: {
           content: true,

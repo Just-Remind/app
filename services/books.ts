@@ -22,6 +22,11 @@ type EditBookPayload = {
   author: string;
 };
 
+type ToggleBookPayload = {
+  id: number;
+  enabled: boolean;
+};
+
 const useGetBooks = (user: User): UseQueryResult<Book[], Error> =>
   useQuery("books", async () => {
     const { data } = await axios.post("/api/get_books", { user });
@@ -73,4 +78,24 @@ const useEditBook = (): UseMutationResult<void, unknown, EditBookPayload, unknow
   });
 };
 
-export { useGetBooks, useGetBook, useAddBook, useDeleteBook, useEditBook };
+const toggleBook = (payload: ToggleBookPayload): Promise<void> =>
+  axios.post("/api/toggle_book", payload);
+
+// eslint-disable-next-line prettier/prettier
+const useToggleBook = (): UseMutationResult<void, unknown, ToggleBookPayload, unknown> => {
+  const queryClient = useQueryClient();
+  return useMutation((payload: ToggleBookPayload) => toggleBook(payload), {
+    onSuccess: () => {
+      queryClient.invalidateQueries("books");
+    },
+  });
+};
+
+export {
+  useGetBooks,
+  useGetBook,
+  useAddBook,
+  useDeleteBook,
+  useEditBook,
+  useToggleBook,
+};

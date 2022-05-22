@@ -28,6 +28,7 @@ model Book {
   updatedAt  DateTime    @updatedAt
   title      String
   author     String?
+  enabled    Boolean     @default(true)
   user       String
   highlights Highlight[]
 
