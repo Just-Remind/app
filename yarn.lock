@@ -2006,10 +2006,10 @@
     minimatch "^3.1.2"
     strip-json-comments "^3.1.1"
 
-"@headlessui/react@^0.0.0-insiders.591b328":
-  version "0.0.0-insiders.591b328"
-  resolved "https://registry.npmjs.org/@headlessui/react/-/react-0.0.0-insiders.591b328.tgz"
-  integrity sha512-YOdY3GWYq2l/5gE5NRwjpFCHii8Rni9ozDWg2/8rnSEWuniLxoeiz27+Nwmjbl9iXnIHtBw+ADE2IsDTJ4LLSA==
+"@headlessui/react@^0.0.0-insiders.ebf19ca":
+  version "0.0.0-insiders.ebf19ca"
+  resolved "https://registry.yarnpkg.com/@headlessui/react/-/react-0.0.0-insiders.ebf19ca.tgz#ab435602f994d91d7f9ae03d2789a51c895b13b1"
+  integrity sha512-69vdwDMtqINmhNKeT4TOu8hijCO+FloZA9LP/T/QDZZ8rMw4O6MjHaVWS84i1iDcfwbUzxhxg7PWkEqbl/ue0w==
 
 "@heroicons/react@^1.0.6":
   version "1.0.6"

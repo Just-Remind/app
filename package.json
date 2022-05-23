@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@aws-amplify/cli": "^8.0.0",
-    "@headlessui/react": "^0.0.0-insiders.591b328",
+    "@headlessui/react": "^0.0.0-insiders.ebf19ca",
     "@heroicons/react": "^1.0.6",
     "@prisma/client": "^3.11.1",
     "@sendgrid/mail": "^7.6.2",
