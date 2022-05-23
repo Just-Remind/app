@@ -5,6 +5,7 @@ import { UserContext } from "context";
 import { useGetBooks, useDeleteBook, useToggleBook } from "services/books";
 import { Book } from "types";
 import { useToast, useAlertModal } from "utils/hooks";
+import NoBooksInstructions from "./NoBooksInstructions";
 
 const Dashboard = (): JSX.Element => {
   // CONTEXT
@@ -115,7 +116,13 @@ const Dashboard = (): JSX.Element => {
         {isLoading ? (
           <Spinner size="lg" />
         ) : (
-          <Table columns={columns} data={memoizedData} />
+          <>
+            {memoizedData.length > 0 ? (
+              <Table columns={columns} data={memoizedData} />
+            ) : (
+              <NoBooksInstructions />
+            )}
+          </>
         )}
       </section>
     </>
