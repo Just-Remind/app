@@ -17,7 +17,7 @@ const handler = async (
 
   res.setHeader(
     "Access-Control-Allow-Origin",
-    `chrome-extension://${process.env.NEXT_PUBLIC_CHROME_EXTENSION_ID}`
+    `chrome-extension://jdhbhpfkjdamofdbfefpfifiihlaoked`
   );
 
   if (!body.user.email) return res.status(500).json("no user found");

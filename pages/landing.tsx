@@ -81,7 +81,7 @@ const Landing = (): JSX.Element => {
           </h2>
           <p className="px-8 my-8 text-xl md:text-2xl md:px-12 md:my-20">
             Just Remind (re)inspires you with a daily email containing random
-            highlights from your books, for free 👌
+            highlights from your books 👌
           </p>
           <div className="lg:hidden">
             <Image
