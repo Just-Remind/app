@@ -195,7 +195,13 @@ const Sidebar = ({ children }: Props): JSX.Element => {
             </button>
             <div className="flex justify-between flex-1 px-4">
               <div className="flex flex-1"></div>
-              <div className="flex items-center ml-4 md:ml-6">
+              <div className="flex items-center ml-4 space-x-4 md:ml-6">
+                <a
+                  className="text-sm text-gray-700 hover:text-gray-900"
+                  href="mailto:feedback@justremind.app?subject=Reporting issue"
+                >
+                  Report issue
+                </a>
                 <Button onClick={handleLogout} color="white">
                   Logout
                 </Button>
