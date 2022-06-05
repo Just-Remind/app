@@ -30,6 +30,8 @@ const Sidebar = ({ children }: Props): JSX.Element => {
   const { pathname } = reactLocationRouter.state.location;
 
   // METHODS
+  const handleCloseSlidebar = (): void => setSidebarOpen(false);
+
   const handleLogout = (): void => {
     Auth.signOut().then(() => nextRouter.push("/landing"));
   };
@@ -93,7 +95,7 @@ const Sidebar = ({ children }: Props): JSX.Element => {
                     <button
                       type="button"
                       className="flex items-center justify-center w-10 h-10 ml-1 rounded-full focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
-                      onClick={(): void => setSidebarOpen(false)}
+                      onClick={handleCloseSlidebar}
                     >
                       <span className="sr-only">Close sidebar</span>
                       <XIcon
@@ -114,6 +116,7 @@ const Sidebar = ({ children }: Props): JSX.Element => {
                       <Link
                         key={item.name}
                         to={item.href}
+                        onClick={handleCloseSlidebar}
                         className={classNames(
                           item.current
                             ? "bg-gray-100 text-gray-900"
