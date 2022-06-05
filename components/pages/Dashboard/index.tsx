@@ -6,8 +6,9 @@ import { Spinner, Table, TextButton, Toggle } from "components/ui";
 import { UserContext } from "context";
 import { useGetBooks, useDeleteBook, useToggleBook } from "services/books";
 import { Book } from "types";
-import { useToast, useAlertModal } from "utils/hooks";
+import { useToast, useAlertModal, useModal } from "utils/hooks";
 
+import EditBookForm from "./EditBookForm";
 import NoBooksInstructions from "./NoBooksInstructions";
 
 const Dashboard = (): JSX.Element => {
@@ -27,6 +28,7 @@ const Dashboard = (): JSX.Element => {
   // HOOKS
   const [toast, setToast, clearToast] = useToast();
   const [alertModal, setAlertModal, clearAlertModal] = useAlertModal();
+  const [modal, setModal, toggleModal] = useModal();
 
   useEffect(() => {
     if (isBookDeleted) {
@@ -57,6 +59,12 @@ const Dashboard = (): JSX.Element => {
   ]);
 
   // METHODS
+  const openEditBookModal = (book: Book): void => {
+    setModal({
+      children: <EditBookForm book={book} handleCloseModal={toggleModal} />,
+    });
+  };
+
   const handleDeleteBook = (bookId: number): void => {
     deleteBook(bookId);
   };
@@ -118,9 +126,17 @@ const Dashboard = (): JSX.Element => {
       />
     ),
     actions: (
-      <TextButton onClick={(): void => openDeleteBookModal(book)} color="red">
-        Delete
-      </TextButton>
+      <div className="space-x-4">
+        <TextButton
+          onClick={(): void => openEditBookModal(book)}
+          color="yellow"
+        >
+          Edit
+        </TextButton>
+        <TextButton onClick={(): void => openDeleteBookModal(book)} color="red">
+          Delete
+        </TextButton>
+      </div>
     ),
   }));
 
@@ -130,6 +146,7 @@ const Dashboard = (): JSX.Element => {
     <>
       {toast}
       {alertModal}
+      {modal}
 
       <section>
         <h2 className="mb-4 text-xl">Your books ({books.length})</h2>
