@@ -121,18 +121,16 @@ const Sidebar = ({ children }: Props): JSX.Element => {
                           "group flex items-center px-2 py-2 text-base font-medium rounded-md"
                         )}
                       >
-                        <div>
-                          <item.icon
-                            className={classNames(
-                              item.current
-                                ? "text-gray-500"
-                                : "text-gray-400 group-hover:text-gray-500",
-                              "mr-4 flex-shrink-0 h-6 w-6"
-                            )}
-                            aria-hidden="true"
-                          />
-                          {item.name}
-                        </div>
+                        <item.icon
+                          className={classNames(
+                            item.current
+                              ? "text-gray-500"
+                              : "text-gray-400 group-hover:text-gray-500",
+                            "mr-4 flex-shrink-0 h-6 w-6"
+                          )}
+                          aria-hidden="true"
+                        />
+                        {item.name}
                       </Link>
                     ))}
                   </nav>
