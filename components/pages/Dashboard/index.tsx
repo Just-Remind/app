@@ -1,5 +1,7 @@
 import { useContext, useEffect, useMemo } from "react";
 
+import { Link } from "@tanstack/react-location";
+
 import { Spinner, Table, TextButton, Toggle } from "components/ui";
 import { UserContext } from "context";
 import { useGetBooks, useDeleteBook, useToggleBook } from "services/books";
@@ -17,6 +19,7 @@ const Dashboard = (): JSX.Element => {
   const { mutate: deleteBook, isSuccess: isBookDeleted } = useDeleteBook();
   const {
     mutate: toggleBook,
+    data: toggleBookResponse = { data: { enabled: "" } },
     isSuccess: isBookToggled,
     isError: isToggleBookError,
   } = useToggleBook();
@@ -35,14 +38,23 @@ const Dashboard = (): JSX.Element => {
   useEffect(() => {
     if (isBookToggled) {
       clearToast();
-      setToast({ message: "Book updated!" });
+      const message = toggleBookResponse.data.enabled
+        ? "Book activated"
+        : "Book deactivated";
+      setToast({ message });
     }
 
     if (isToggleBookError) {
       clearToast();
       setToast({ type: "error", message: "Something went wrong" });
     }
-  }, [isBookToggled, isToggleBookError, setToast, clearToast]);
+  }, [
+    isBookToggled,
+    toggleBookResponse,
+    isToggleBookError,
+    setToast,
+    clearToast,
+  ]);
 
   // METHODS
   const handleDeleteBook = (bookId: number): void => {
@@ -89,7 +101,14 @@ const Dashboard = (): JSX.Element => {
   ] as const;
 
   const formatedData = books.map((book) => ({
-    title: <p className="truncate w-72">{book.title}</p>,
+    title: (
+      <Link
+        to={`books/${book.id}`}
+        className="block truncate w-72 hover:text-gray-700"
+      >
+        {book.title}
+      </Link>
+    ),
     author: <p className="w-40 truncate">{book.author}</p>,
     highlights: book.highlights.length,
     enabled: (
