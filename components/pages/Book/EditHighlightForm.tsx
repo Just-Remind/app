@@ -44,7 +44,14 @@ const EditHighlightForm = (props: Props): JSX.Element => {
     <div>
       <p className="mb-4 text-xl font-medium">Edit this highlight</p>
       <form onSubmit={handleSubmit(handleEditHighlight)} className="space-y-4">
-        <Input {...register("content")} required label="Content" />
+        <Input
+          {...register("content")}
+          required
+          label="Content"
+          type="textarea"
+          rows={5}
+          value={highlight.content}
+        />
         <Button type="submit">Edit</Button>
       </form>
     </div>
