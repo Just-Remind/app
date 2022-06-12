@@ -175,7 +175,7 @@ const Dashboard = (): JSX.Element => {
           <Spinner size="lg" />
         ) : (
           <>
-            {memoizedData.length > 0 ? (
+            {memoizedData.length > 2220 ? (
               <Table columns={columns} data={memoizedData} />
             ) : (
               <NoBooksInstructions />

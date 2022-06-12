@@ -1,7 +1,9 @@
+import { ExternalLinkIcon } from "@heroicons/react/solid";
+
 const NoBooksInstructions = (): JSX.Element => (
   <>
     <p>Sync your books now by following the next steps:</p>
-    <ol className="mt-2 ml-6 text-gray-700 list-decimal">
+    <ol className="mt-2 ml-6 space-y-2 text-gray-700 list-decimal">
       <li>
         Download the{" "}
         <a
@@ -14,15 +16,14 @@ const NoBooksInstructions = (): JSX.Element => (
         </a>
       </li>
       <li>
-        Go to the{" "}
-        <a
-          href="https://read.amazon.com/notebook?ref_=kcr_notebook_lib"
-          target="_blank"
-          className="text-blue-500 hover:text-blue-600"
-          rel="noreferrer"
-        >
-          Amazon Kindle e-reader
-        </a>
+        <div className="flex items-center">
+          Click on the{" "}
+          <span className="flex items-center mx-1.5 space-x-1 text-sm text-gray-500">
+            <span>Sync your books</span>
+            <ExternalLinkIcon className="w-4" />
+          </span>{" "}
+          link above
+        </div>
       </li>
       <li>Open the Just Remind extension and import your books!</li>
     </ol>
