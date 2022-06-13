@@ -179,7 +179,7 @@ const Dashboard = (): JSX.Element => {
           <Spinner size="lg" />
         ) : (
           <>
-            {memoizedData.length > 220 ? (
+            {memoizedData.length > 0 ? (
               <Table columns={columns} data={memoizedData} />
             ) : (
               <NoBooksInstructions />
