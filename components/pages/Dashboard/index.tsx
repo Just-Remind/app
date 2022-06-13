@@ -161,7 +161,11 @@ const Dashboard = (): JSX.Element => {
         <div className="flex items-center mb-4 space-x-2">
           <h2 className="text-xl">Your books ({books.length})</h2>
           <ExternalLink href="https://read.amazon.com/notebook?ref_=kcr_notebook_lib">
-            <a target="_blank" onClick={sendInfoToChromeExtension}>
+            <a
+              target="_blank"
+              onClick={sendInfoToChromeExtension}
+              className="hidden lg:block"
+            >
               <div className="flex items-center space-x-1 group">
                 <span className="text-sm text-gray-500 group-hover:text-gray-700">
                   Sync your books
@@ -175,7 +179,7 @@ const Dashboard = (): JSX.Element => {
           <Spinner size="lg" />
         ) : (
           <>
-            {memoizedData.length > 0 ? (
+            {memoizedData.length > 220 ? (
               <Table columns={columns} data={memoizedData} />
             ) : (
               <NoBooksInstructions />
