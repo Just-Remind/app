@@ -32,7 +32,7 @@ const Header = (): JSX.Element => {
       <div className="flex items-center justify-between px-6 py-6 md:justify-start md:space-x-10">
         <div className="flex justify-start lg:w-0 lg:flex-1">
           <Link to="/">
-            <h1 className="text-3xl">Remind 📚</h1>
+            <h1 className="text-3xl">Just Remind 📚</h1>
           </Link>
         </div>
         <div className="items-center justify-end hidden md:flex md:flex-1 lg:w-0">

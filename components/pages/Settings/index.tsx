@@ -11,7 +11,7 @@ import { useToast } from "utils/hooks";
 
 import EmailService from "./helpers/EmailService";
 
-const Service = (): JSX.Element => {
+const Settings = (): JSX.Element => {
   // CONTEXT
   const user = useContext(UserContext);
 
@@ -61,4 +61,4 @@ const Service = (): JSX.Element => {
   );
 };
 
-export default Service;
+export default Settings;
