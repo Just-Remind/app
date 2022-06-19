@@ -1,5 +1,3 @@
-import { ExternalLinkIcon } from "@heroicons/react/solid";
-
 const NoBooksInstructions = (): JSX.Element => (
   <>
     <div className="lg:hidden">
