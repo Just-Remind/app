@@ -22,7 +22,7 @@ const SyncWithExtension = (): JSX.Element => {
       <a target="_blank" onClick={sendInfoToChromeExtension}>
         <div className="flex items-center space-x-1 group whitespace-nowrap">
           <span className="text-sm text-gray-500 group-hover:text-gray-700">
-            With the chrome extension (recommanded)
+            Use the chrome extension (recommanded)
           </span>
           <ExternalLinkIcon className="w-4 text-gray-700 group-hover:text-gray-900" />
         </div>
