@@ -2,7 +2,7 @@ import { useCallback, useState } from "react";
 
 import { Toast } from "components/ui";
 
-type ToastConfig = {
+export type ToastConfig = {
   type?: "success" | "error";
   message: string;
 };

@@ -13,6 +13,7 @@ type Props = {
   placeholder?: string;
   name?: string;
   type?: InputType;
+  acceptFiles?: string;
   error?: string | boolean;
   required?: boolean;
   autoComplete?: AutoCompleteType;
@@ -32,6 +33,7 @@ const Input = forwardRef<HTMLInputElement, Props>((props, ref) => {
   const {
     label,
     type,
+    acceptFiles,
     name,
     placeholder,
     disabled,
@@ -96,6 +98,7 @@ const Input = forwardRef<HTMLInputElement, Props>((props, ref) => {
             {...restProps}
             className={`${classNameInput} bg-white focus:ring-0`}
             type={type}
+            accept={acceptFiles}
             name={name}
             id={name}
             required={required}

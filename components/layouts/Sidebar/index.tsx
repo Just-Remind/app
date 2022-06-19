@@ -45,7 +45,7 @@ const Sidebar = ({ children }: Props): JSX.Element => {
       current: pathname === "/",
     },
     {
-      name: "Service",
+      name: "Settings",
       href: "/service",
       icon: AdjustmentsIcon,
       current: pathname === "/service",
@@ -107,7 +107,7 @@ const Sidebar = ({ children }: Props): JSX.Element => {
                 </Transition.Child>
                 <div className="flex items-center flex-shrink-0 px-4">
                   <Link to="/">
-                    <h1 className="text-3xl">Remind 📚</h1>
+                    <h1 className="text-3xl">Just Remind 📚</h1>
                   </Link>
                 </div>
                 <div className="flex-1 h-0 mt-5 overflow-y-auto">
@@ -152,7 +152,7 @@ const Sidebar = ({ children }: Props): JSX.Element => {
           <div className="flex flex-col flex-grow pt-5 overflow-y-auto bg-white border-r border-gray-200">
             <div className="flex items-center flex-shrink-0 px-4">
               <Link to="/">
-                <h1 className="text-3xl">Remind 📚</h1>
+                <h1 className="text-3xl">Just Remind 📚</h1>
               </Link>
             </div>
             <div className="flex flex-col flex-grow mt-5">

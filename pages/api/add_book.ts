@@ -8,12 +8,20 @@ type ImportedBookType = {
   highlights: string[];
 };
 
+type Body = {
+  user: {
+    email: string;
+  };
+  books: ImportedBookType[];
+};
+
 const handler = async (
   req: NextApiRequest,
   res: NextApiResponse
 ): Promise<void> => {
-  const body = JSON.parse(req.body);
-  const importedBooks: ImportedBookType[] = body.books;
+  const body: Body =
+    typeof req.body === "string" ? JSON.parse(req.body) : req.body;
+  const importedBooks = body.books;
 
   res.setHeader(
     "Access-Control-Allow-Origin",
