@@ -1,3 +1,4 @@
 import classNames from "./classNames";
+import nestedArraysBuilder from "./nestedArrayBuilder";
 
-export { classNames };
+export { classNames, nestedArraysBuilder };

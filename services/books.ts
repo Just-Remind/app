@@ -8,12 +8,15 @@ import {
 } from "react-query";
 
 import { User, Book } from "types";
+import { nestedArraysBuilder } from "utils";
 
-type AddBookPayload = {
+type AddBooksPayload = {
   user: User;
-  title: string;
-  author: string;
-  highlights: string[];
+  books: {
+    title: string;
+    author?: string;
+    highlights: string[];
+  }[];
 };
 
 type EditBookPayload = {
@@ -52,13 +55,13 @@ const useDeleteBook = (): UseMutationResult<void, unknown, number, unknown> => {
   });
 };
 
-const addBook = (payload: AddBookPayload): Promise<void> =>
+const addBooks = (payload: AddBooksPayload): Promise<void> =>
   axios.post("/api/add_book", payload);
 
 // eslint-disable-next-line prettier/prettier
-const useAddBook = (): UseMutationResult<void, unknown, AddBookPayload, unknown> => {
+const useAddBooks = (): UseMutationResult<void, unknown, AddBooksPayload, unknown> => {
   const queryClient = useQueryClient();
-  return useMutation((payload: AddBookPayload) => addBook(payload), {
+  return useMutation((payload: AddBooksPayload) => addBooks(payload), {
     onSuccess: () => {
       queryClient.invalidateQueries("books");
     },
@@ -94,7 +97,7 @@ const useToggleBook = (): UseMutationResult<void, unknown, ToggleBookPayload, un
 export {
   useGetBooks,
   useGetBook,
-  useAddBook,
+  useAddBooks,
   useDeleteBook,
   useEditBook,
   useToggleBook,

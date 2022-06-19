@@ -1,8 +1,6 @@
 import { useContext, useEffect, useMemo } from "react";
 
-import { ExternalLinkIcon } from "@heroicons/react/solid";
 import { Link } from "@tanstack/react-location";
-import ExternalLink from "next/link";
 
 import { Spinner, Table, TextButton, Toggle } from "components/ui";
 import { UserContext } from "context";
@@ -12,6 +10,7 @@ import { useToast, useAlertModal, useModal } from "utils/hooks";
 
 import EditBookForm from "./EditBookForm";
 import NoBooksInstructions from "./NoBooksInstructions";
+import SyncDropdown from "./SyncDropdown";
 
 const Dashboard = (): JSX.Element => {
   // CONTEXT
@@ -86,13 +85,6 @@ const Dashboard = (): JSX.Element => {
     toggleBook({ id, enabled });
   };
 
-  const sendInfoToChromeExtension = (): void => {
-    const extensionId = process.env.NEXT_PUBLIC_CHROME_EXTENSION_ID;
-    if (extensionId) {
-      chrome.runtime.sendMessage(extensionId, { userEmail: user.email });
-    }
-  };
-
   // VARS
   const columns = [
     {
@@ -158,22 +150,11 @@ const Dashboard = (): JSX.Element => {
       {modal}
 
       <section>
-        <div className="flex items-center mb-4 space-x-2">
+        <div className="flex items-center justify-between mb-4 space-x-2">
           <h2 className="text-xl">Your books ({books.length})</h2>
-          <ExternalLink href="https://read.amazon.com/notebook?ref_=kcr_notebook_lib">
-            <a
-              target="_blank"
-              onClick={sendInfoToChromeExtension}
-              className="hidden lg:block"
-            >
-              <div className="flex items-center space-x-1 group">
-                <span className="text-sm text-gray-500 group-hover:text-gray-700">
-                  Sync your books
-                </span>
-                <ExternalLinkIcon className="w-4 text-gray-700 group-hover:text-gray-900" />
-              </div>
-            </a>
-          </ExternalLink>
+          <div className="hidden lg:block">
+            <SyncDropdown />
+          </div>
         </div>
         {isLoading ? (
           <Spinner size="lg" />

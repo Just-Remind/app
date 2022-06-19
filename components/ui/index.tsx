@@ -2,6 +2,7 @@ import Alert from "./Alert";
 import Button from "./buttons/Button";
 import TextButton from "./buttons/TextButton";
 import Toggle from "./buttons/Toggle";
+import Dropdown from "./dropdowns/Dropdown";
 import DropdownMenu from "./dropdowns/DropdownMenu";
 import Input from "./inputs/Input";
 import Spinner from "./loaders/Spinner";
@@ -24,4 +25,5 @@ export {
   Table,
   Toast,
   Toggle,
+  Dropdown,
 };

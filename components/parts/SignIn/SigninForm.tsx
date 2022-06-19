@@ -33,7 +33,7 @@ const SigninForm = ({ setAlert, clearAlert }: Props): JSX.Element => {
     password,
   }: LoginForm): Promise<boolean | void> => {
     clearAlert();
-
+    console.log('email', email);
     return Auth.signIn(email, password)
       .then(() => router.push("/"))
       .catch((error) => setAlert({ type: "error", message: error.message }));
