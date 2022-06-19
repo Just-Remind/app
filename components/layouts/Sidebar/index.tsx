@@ -46,9 +46,9 @@ const Sidebar = ({ children }: Props): JSX.Element => {
     },
     {
       name: "Settings",
-      href: "/service",
+      href: "/settings",
       icon: AdjustmentsIcon,
-      current: pathname === "/service",
+      current: pathname === "/settings",
     },
   ];
 
