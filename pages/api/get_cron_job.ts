@@ -12,7 +12,7 @@ const handler = async (
     },
   });
 
-  if (!result) res.status(500).json("No CRON job found");
+  if (!result) res.status(200).json(undefined);
   else res.status(200).json(result);
 };
 

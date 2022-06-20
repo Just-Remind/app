@@ -3,8 +3,8 @@ import { useCallback, useState } from "react";
 import { Toast } from "components/ui";
 
 export type ToastConfig = {
-  type?: "success" | "error";
-  message: string;
+  type?: "success" | "warning" | "error";
+  message: string | React.ReactNode;
 };
 
 type UseToastReturn = [

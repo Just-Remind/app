@@ -35,10 +35,13 @@ const SignupForm = ({ setAlert, clearAlert }: Props): JSX.Element => {
       password,
     })
       .then(() => {
-        axios.post("/api/create_cron_job", {
-          email,
-          timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-        });
+        const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        if (timezone) {
+          axios.post("/api/create_cron_job", {
+            email,
+            timezone: timezone,
+          });
+        }
       })
       .then(() => {
         setAlert({ message: "Check you mailbox to confirm your account" });

@@ -1,10 +1,12 @@
 import { useContext, useEffect, useMemo } from "react";
 
+import { ExclamationCircleIcon } from "@heroicons/react/outline";
 import { Link } from "@tanstack/react-location";
 
 import { Spinner, Table, TextButton, Toggle } from "components/ui";
 import { UserContext } from "context";
 import { useGetBooks, useDeleteBook, useToggleBook } from "services/books";
+import { useGetCronJob } from "services/cronjobs";
 import { Book } from "types";
 import { useToast, useAlertModal, useModal } from "utils/hooks";
 
@@ -17,6 +19,7 @@ const Dashboard = (): JSX.Element => {
   const user = useContext(UserContext);
 
   // RQ
+  const { data: cronJob, isLoading: isLoadingCron } = useGetCronJob(user.email);
   const { data: books = [], isLoading } = useGetBooks(user);
   const { mutate: deleteBook, isSuccess: isBookDeleted } = useDeleteBook();
   const {
@@ -156,6 +159,12 @@ const Dashboard = (): JSX.Element => {
             <SyncDropdown />
           </div>
         </div>
+        {!isLoadingCron && !cronJob && (
+          <div className="flex items-center space-x-2 text-sm text-yellow-600">
+            <ExclamationCircleIcon className="w-4" />
+            <span>Go to the Setting page to configure your daily email</span>
+          </div>
+        )}
         {isLoading ? (
           <Spinner size="lg" />
         ) : (

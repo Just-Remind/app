@@ -9,6 +9,13 @@ import {
 
 import { CronJob } from "types";
 
+type CreateCronJobPayload = {
+  email: string;
+  hour: string;
+  minutes: string;
+  timezone: string;
+};
+
 type EditCronJobPayload = {
   enabled?: boolean;
 };
@@ -26,19 +33,31 @@ type EditDeliveryTimetPayload = {
   hours: string;
 };
 
-const editCronJobTimezone = (payload: EditTimezonetPayload): Promise<void> =>
-  axios.post("/api/edit_cron_timezone", payload);
+// ========= CREATE CRON JOB =========
+const createCronJob = (payload: CreateCronJobPayload): Promise<void> =>
+  axios.post("/api/create_cron_job", payload);
 
-const editCronJobDeliveryTime = (
-  payload: EditDeliveryTimetPayload
-): Promise<void> => axios.post("/api/edit_cron_delivery_time", payload);
+// eslint-disable-next-line prettier/prettier
+const useCreateCronJob = (): UseMutationResult<void, unknown, CreateCronJobPayload, unknown> => {
+  const queryClient = useQueryClient();
+  return useMutation(
+    (payload: CreateCronJobPayload) => createCronJob(payload),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("cronJob");
+      },
+    }
+  );
+};
 
+// ========= GET CRON JOB =========
 const useGetCronJob = (user: string): UseQueryResult<CronJob, Error> =>
   useQuery("cronJob", async () => {
     const { data } = await axios.post("/api/get_cron_job", { user });
     return data;
   });
 
+// ========= EDIT CRON JOB =========
 const useEditCronJob = (
   payload: EditCronJobPayload
 ): UseQueryResult<CronJob, Error> =>
@@ -50,6 +69,10 @@ const useEditCronJob = (
     },
     { retry: 1 }
   );
+
+// ========= EDIT CRON JOB TIMEZONE =========
+const editCronJobTimezone = (payload: EditTimezonetPayload): Promise<void> =>
+  axios.post("/api/edit_cron_timezone", payload);
 
 // eslint-disable-next-line prettier/prettier
 const useEditCronJobTimezone = (): UseMutationResult<void, unknown, EditTimezonetPayload, unknown> => {
@@ -63,6 +86,11 @@ const useEditCronJobTimezone = (): UseMutationResult<void, unknown, EditTimezone
     }
   );
 };
+
+// ========= EDIT CRON JOB DELIVERY TIME =========
+const editCronJobDeliveryTime = (
+  payload: EditDeliveryTimetPayload
+): Promise<void> => axios.post("/api/edit_cron_delivery_time", payload);
 
 // eslint-disable-next-line prettier/prettier
 const useEditCronJobDeliveryTime = (): UseMutationResult<void, unknown, EditDeliveryTimetPayload, unknown> => {
@@ -78,6 +106,7 @@ const useEditCronJobDeliveryTime = (): UseMutationResult<void, unknown, EditDeli
 };
 
 export {
+  useCreateCronJob,
   useGetCronJob,
   useEditCronJob,
   useEditCronJobTimezone,

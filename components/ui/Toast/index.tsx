@@ -2,12 +2,16 @@
 import { Fragment } from "react";
 
 import { Transition } from "@headlessui/react";
-import { CheckCircleIcon, XCircleIcon } from "@heroicons/react/outline";
+import {
+  CheckCircleIcon,
+  ExclamationCircleIcon,
+  XCircleIcon,
+} from "@heroicons/react/outline";
 import { XIcon } from "@heroicons/react/solid";
 
 type Props = {
-  type?: "success" | "error";
-  message: string;
+  type?: "success" | "warning" | "error";
+  message: string | React.ReactNode;
   show: boolean;
   setShow: React.Dispatch<React.SetStateAction<boolean>>;
 };
@@ -21,20 +25,16 @@ const Toast = (props: Props): JSX.Element => {
   let icon;
   switch (type) {
     case "success":
-      title = "Success!";
-      icon = (
-        <CheckCircleIcon
-          className="w-6 h-6 text-green-400"
-          aria-hidden="true"
-        />
-      );
+      title = <span className="text-green-600">Success!</span>;
+      icon = <CheckCircleIcon className="w-6 text-green-600" />;
       break;
-
+    case "warning":
+      title = <span className="text-yellow-600">Attention</span>;
+      icon = <ExclamationCircleIcon className="w-6 text-yellow-600" />;
+      break;
     case "error":
-      title = "Something went wrong";
-      icon = (
-        <XCircleIcon className="w-6 h-6 text-red-400" aria-hidden="true" />
-      );
+      title = <span className="text-red-600">Something went wrong</span>;
+      icon = <XCircleIcon className="w-6 text-red-600" />;
       break;
   }
 
