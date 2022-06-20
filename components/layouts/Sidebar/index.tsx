@@ -11,9 +11,12 @@ import {
 import { Link } from "@tanstack/react-location";
 import { useRouter as useReactLocationRouter } from "@tanstack/react-location";
 import { Auth } from "aws-amplify";
+import Image from "next/image";
+import ExternalLink from "next/link";
 import { useRouter as useNextRouter } from "next/router";
 
 import { Button } from "components/ui";
+import discordImage from "public/discord.svg";
 import classNames from "utils/classNames";
 
 type Props = {
@@ -181,6 +184,18 @@ const Sidebar = ({ children }: Props): JSX.Element => {
                   </Link>
                 ))}
               </nav>
+              <div className="flex items-center mx-2 space-x-2">
+                <ExternalLink href="https://discord.gg/PNKdfwAnW7">
+                  <a target="_blank">
+                    <Image
+                      src={discordImage}
+                      alt="discord"
+                      className="w-4"
+                      width="24px"
+                    />
+                  </a>
+                </ExternalLink>
+              </div>
             </div>
           </div>
         </div>
