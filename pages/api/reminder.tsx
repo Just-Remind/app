@@ -28,6 +28,11 @@ const handler = async (
     },
     select: {
       highlights: {
+        where: {
+          book: {
+            enabled: true,
+          },
+        },
         select: {
           content: true,
           book: {
