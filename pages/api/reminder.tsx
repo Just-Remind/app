@@ -25,14 +25,10 @@ const handler = async (
   const books = await prisma.book.findMany({
     where: {
       user: userEmail,
+      enabled: true,
     },
     select: {
       highlights: {
-        where: {
-          book: {
-            enabled: true,
-          },
-        },
         select: {
           content: true,
           book: {
@@ -63,7 +59,7 @@ const handler = async (
 
   sgMail.setApiKey(process.env.SENDGRID_API_KEY || "");
   const msg = {
-    to: req.query.email as string,
+    to: userEmail,
     from: {
       name: "Just Remind",
       email: "hello@justremind.app",
