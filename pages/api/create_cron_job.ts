@@ -10,7 +10,7 @@ const handler = async (
   axios
     .post(
       `https://www.easycron.com/rest/add?token=${process.env.EASY_CRON_API_KEY}
-       &url=https://remind-next.vercel.app/api/reminder?email=${req.body.email}
+       &url=https://justremind.app/api/reminder?email=${req.body.email}
        &cron_expression=0 8 * * * *
        &timezone_from=2
        &timezone=${req.body.timezone}
