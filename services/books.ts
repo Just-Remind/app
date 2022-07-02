@@ -30,17 +30,23 @@ type ToggleBookPayload = {
   enabled: boolean;
 };
 
+// ****************** GET BOOKS ******************
+
 const useGetBooks = (user: User): UseQueryResult<Book[], Error> =>
   useQuery("books", async () => {
     const { data } = await axios.post("/api/get_books", { user });
     return data;
   });
 
+// ****************** GET BOOK ******************
+
 const useGetBook = (user: User, bookId: string): UseQueryResult<Book, Error> =>
   useQuery("book", async () => {
     const { data } = await axios.post("/api/get_book", { user, bookId });
     return data;
   });
+
+// ****************** DELETE BOOK ******************
 
 const deleteBook = (bookId: number): Promise<void> =>
   axios.post("/api/delete_book", { id: bookId });
@@ -55,6 +61,8 @@ const useDeleteBook = (): UseMutationResult<void, unknown, number, unknown> => {
   });
 };
 
+// ****************** CREATE BOOK ******************
+
 const addBooks = (payload: AddBooksPayload): Promise<void> =>
   axios.post("/api/add_book", payload);
 
@@ -67,6 +75,8 @@ const useAddBooks = (): UseMutationResult<void, unknown, AddBooksPayload, unknow
     },
   });
 };
+
+// ****************** EDIT BOOK ******************
 
 const editBook = (payload: EditBookPayload): Promise<void> =>
   axios.post("/api/edit_book", payload);
@@ -81,6 +91,8 @@ const useEditBook = (): UseMutationResult<void, unknown, EditBookPayload, unknow
   });
 };
 
+// ****************** TOGGLE BOOK ******************
+
 const toggleBook = (payload: ToggleBookPayload): Promise<void> =>
   axios.post("/api/toggle_book", payload);
 
@@ -94,6 +106,16 @@ const useToggleBook = (): UseMutationResult<void, unknown, ToggleBookPayload, un
   });
 };
 
+// ****************** GET BOOK COUNT ******************
+
+const getBookCount = async (email: string): Promise<void> => {
+  const { data } = await axios.post("/api/get_book_count", { email });
+  return data;
+};
+
+const useBookCount = (email: string): UseQueryResult<number, Error> =>
+  useQuery("book_book", () => getBookCount(email));
+
 export {
   useGetBooks,
   useGetBook,
@@ -101,4 +123,5 @@ export {
   useDeleteBook,
   useEditBook,
   useToggleBook,
+  useBookCount,
 };

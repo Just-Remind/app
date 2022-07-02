@@ -21,4 +21,5 @@ export type CronJob = {
   enabled: boolean;
   timezone: string;
   cronExpression: string;
+  uniqueBooksOnly: boolean;
 };

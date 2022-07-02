@@ -1,5 +1,6 @@
 import Alert from "./Alert";
 import Button from "./buttons/Button";
+import Switch from "./buttons/Switch";
 import TextButton from "./buttons/TextButton";
 import Toggle from "./buttons/Toggle";
 import Dropdown from "./dropdowns/Dropdown";
@@ -26,4 +27,5 @@ export {
   Toast,
   Toggle,
   Dropdown,
+  Switch,
 };

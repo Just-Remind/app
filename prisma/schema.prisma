@@ -12,14 +12,15 @@ datasource db {
 }
 
 model CronJob {
-  id             Int      @id @default(autoincrement())
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-  jobId          Int
-  cronExpression String   @default("0 6 * * * *")
-  timezone       String
-  enabled        Boolean  @default(true)
-  user           String   @unique
+  id              Int      @id @default(autoincrement())
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  jobId           Int
+  cronExpression  String   @default("0 8 * * * *")
+  timezone        String
+  enabled         Boolean  @default(true)
+  user            String   @unique
+  uniqueBooksOnly Boolean  @default(false)
 }
 
 model Book {

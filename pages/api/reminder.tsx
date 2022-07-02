@@ -22,6 +22,15 @@ const handler = async (
 
   if (!userEmail) return res.status(500).json("No email provided");
 
+  const settings = await prisma.cronJob.findUnique({
+    where: {
+      user: userEmail,
+    },
+    select: {
+      uniqueBooksOnly: true,
+    },
+  });
+
   const books = await prisma.book.findMany({
     where: {
       user: userEmail,
@@ -42,6 +51,8 @@ const handler = async (
     },
   });
 
+  const selectedBooks: string[] = [];
+
   const highlights = books.flatMap((book) => book.highlights);
   if (highlights.length === 0) {
     return res.status(500).json("No highlights found.");
@@ -51,6 +62,11 @@ const handler = async (
 
   while (indices.length < 5) {
     const random = Math.floor(Math.random() * highlights.length);
+    const bookTitle = highlights[random].book.title;
+    const isBookAlreadyIncluded = selectedBooks.includes(bookTitle);
+    if (settings?.uniqueBooksOnly && isBookAlreadyIncluded) continue;
+
+    selectedBooks.push(bookTitle);
     indices.push(random);
   }
 

@@ -33,6 +33,11 @@ type EditDeliveryTimetPayload = {
   hours: string;
 };
 
+type EditUniqueBooksOnly = {
+  id: number;
+  uniqueBooksOnly: boolean;
+};
+
 // ========= CREATE CRON JOB =========
 const createCronJob = (payload: CreateCronJobPayload): Promise<void> =>
   axios.post("/api/create_cron_job", payload);
@@ -105,10 +110,28 @@ const useEditCronJobDeliveryTime = (): UseMutationResult<void, unknown, EditDeli
   );
 };
 
+// ========= EDIT CRON JOB UNIQUE BOOKS ONLY =========
+const editUniqueBooksOnly = (payload: EditUniqueBooksOnly): Promise<void> =>
+  axios.post("/api/edit_cron_unique_books_only", payload);
+
+// eslint-disable-next-line prettier/prettier
+const useUniqueBooksOnly = (): UseMutationResult<void, unknown, EditUniqueBooksOnly, unknown> => {
+  const queryClient = useQueryClient();
+  return useMutation(
+    (payload: EditUniqueBooksOnly) => editUniqueBooksOnly(payload),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("cronJob");
+      },
+    }
+  );
+};
+
 export {
   useCreateCronJob,
   useGetCronJob,
   useEditCronJob,
   useEditCronJobTimezone,
   useEditCronJobDeliveryTime,
+  useUniqueBooksOnly,
 };

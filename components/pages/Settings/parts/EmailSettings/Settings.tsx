@@ -1,15 +1,17 @@
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 
-import { Switch } from "@headlessui/react";
 import axios from "axios";
 import { ITimezoneOption } from "react-timezone-select";
 
+import { Switch } from "components/ui";
+import { UserContext } from "context";
+import { useBookCount } from "services/books";
 import {
   useEditCronJobDeliveryTime,
   useEditCronJobTimezone,
+  useUniqueBooksOnly,
 } from "services/cronjobs";
 import { CronJob } from "types";
-import { classNames } from "utils";
 import { useToast } from "utils/hooks";
 
 import CronExpressionInput from "./CronExpressionInput";
@@ -20,7 +22,12 @@ type Props = {
 };
 
 const Settings = ({ cronJob }: Props): JSX.Element => {
+  // CONTEXT
+  const user = useContext(UserContext);
+
   // RQ
+  const { data: bookCount = 0 } = useBookCount(user.email);
+
   const {
     mutate: editTimezone,
     isSuccess: isSuccessTimezone,
@@ -31,6 +38,11 @@ const Settings = ({ cronJob }: Props): JSX.Element => {
     isSuccess: isSuccessDeliveryTime,
     isError: isErrorDeliveryTime,
   } = useEditCronJobDeliveryTime();
+  const {
+    mutate: editUniqueBooksOnly,
+    isSuccess: isSuccessUniqueBooksOnly,
+    isError: isErrorUniqueBooksOnly,
+  } = useUniqueBooksOnly();
 
   // HOOKS
   const [toast, setToast, clearToast] = useToast();
@@ -69,6 +81,23 @@ const Settings = ({ cronJob }: Props): JSX.Element => {
     }
   }, [isSuccessDeliveryTime, isErrorDeliveryTime, setToast, clearToast]);
 
+  useEffect(() => {
+    clearToast();
+
+    if (isSuccessUniqueBooksOnly) {
+      setToast({
+        message: "Settings updated!",
+      });
+    }
+
+    if (isErrorUniqueBooksOnly) {
+      setToast({
+        type: "error",
+        message: "Please try again or contact support",
+      });
+    }
+  }, [isSuccessUniqueBooksOnly, isErrorUniqueBooksOnly, setToast, clearToast]);
+
   // METHODS
   const handleToggleService = (enabled: boolean): void => {
     clearToast();
@@ -89,6 +118,13 @@ const Settings = ({ cronJob }: Props): JSX.Element => {
           message: "Something went wrong. Please try later.",
         })
       );
+  };
+
+  const handleToggleUniqueBooksOnly = (checked: boolean): void => {
+    editUniqueBooksOnly({
+      id: cronJob.id,
+      uniqueBooksOnly: checked,
+    });
   };
 
   const handleUpdateTimezone = (timezone: ITimezoneOption): void => {
@@ -114,37 +150,18 @@ const Settings = ({ cronJob }: Props): JSX.Element => {
     <>
       {toast}
 
-      <Switch.Group
-        as="div"
-        className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:pt-5"
-      >
-        <Switch.Label
-          as="dt"
-          className="text-sm font-medium text-gray-500"
-          passive
-        >
-          Service enabled
-        </Switch.Label>
-        <dd className="flex mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-          <Switch
-            checked={cronJob.enabled}
-            onChange={handleToggleService}
-            className={classNames(
-              cronJob.enabled ? "bg-purple-600" : "bg-gray-200",
-              // eslint-disable-next-line max-len
-              "relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 sm:ml-auto"
-            )}
-          >
-            <span
-              aria-hidden="true"
-              className={classNames(
-                cronJob.enabled ? "translate-x-5" : "translate-x-0",
-                "inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200"
-              )}
-            />
-          </Switch>
-        </dd>
-      </Switch.Group>
+      <Switch
+        label="Service enabled"
+        checked={cronJob.enabled}
+        onChange={handleToggleService}
+      />
+      <Switch
+        label="Unique books only"
+        description="You will receive highlights from 5 different books"
+        checked={cronJob.uniqueBooksOnly}
+        onChange={handleToggleUniqueBooksOnly}
+        disabled={bookCount < 5}
+      />
       <CronExpressionInput
         cronExpression={cronJob.cronExpression}
         onChange={(e: React.FocusEvent<HTMLInputElement, Element>): void =>
