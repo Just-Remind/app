@@ -153,7 +153,7 @@ export const getEmail = (selectedNotes: Note[]): string => {
                             <table class="heading_block" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
                               <tr>
                                 <td style="text-align:center;width:100%;">
-                                  <h1 style="margin: 0; color: #393d47; direction: ltr; font-family: 'Merriwheater', 'Georgia', serif; font-size: 40px; font-weight: 700; letter-spacing: normal; line-height: 120%; text-align: left; margin-top: 0; margin-bottom: 0;"><span class="tinyMce-placeholder">Remind 📚</span></h1>
+                                  <h1 style="margin: 0; color: #393d47; direction: ltr; font-family: 'Merriwheater', 'Georgia', serif; font-size: 40px; font-weight: 700; letter-spacing: normal; line-height: 120%; text-align: left; margin-top: 0; margin-bottom: 0;"><span class="tinyMce-placeholder">Just Remind 📚</span></h1>
                                 </td>
                               </tr>
                             </table>
