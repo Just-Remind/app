@@ -9,12 +9,13 @@ import { useBookCount } from "services/books";
 import {
   useEditCronJobDeliveryTime,
   useEditCronJobTimezone,
-  useUniqueBooksOnly,
+  useEditUniqueBooksOnly,
 } from "services/cronjobs";
 import { CronJob } from "types";
 import { useToast } from "utils/hooks";
 
 import CronExpressionInput from "./CronExpressionInput";
+import HighlightsPerEmailSelect from "./HighlightsPerEmailSelect";
 import TimezoneSelect from "./TimezoneSelect";
 
 type Props = {
@@ -42,7 +43,7 @@ const Settings = ({ cronJob }: Props): JSX.Element => {
     mutate: editUniqueBooksOnly,
     isSuccess: isSuccessUniqueBooksOnly,
     isError: isErrorUniqueBooksOnly,
-  } = useUniqueBooksOnly();
+  } = useEditUniqueBooksOnly();
 
   // HOOKS
   const [toast, setToast, clearToast] = useToast();
@@ -161,6 +162,12 @@ const Settings = ({ cronJob }: Props): JSX.Element => {
         checked={cronJob.uniqueBooksOnly}
         onChange={handleToggleUniqueBooksOnly}
         disabled={bookCount < 5}
+      />
+      <HighlightsPerEmailSelect
+        cronId={cronJob.id}
+        highlightsPerEmail={cronJob.highlightsPerEmail}
+        setToast={setToast}
+        clearToast={clearToast}
       />
       <CronExpressionInput
         cronExpression={cronJob.cronExpression}

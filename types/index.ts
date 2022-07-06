@@ -22,4 +22,5 @@ export type CronJob = {
   timezone: string;
   cronExpression: string;
   uniqueBooksOnly: boolean;
+  highlightsPerEmail: number;
 };

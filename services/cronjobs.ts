@@ -38,6 +38,11 @@ type EditUniqueBooksOnly = {
   uniqueBooksOnly: boolean;
 };
 
+type EditHighlightsPerEmail = {
+  cronId: number;
+  highlightsPerEmail: number;
+};
+
 // ========= CREATE CRON JOB =========
 const createCronJob = (payload: CreateCronJobPayload): Promise<void> =>
   axios.post("/api/create_cron_job", payload);
@@ -115,10 +120,28 @@ const editUniqueBooksOnly = (payload: EditUniqueBooksOnly): Promise<void> =>
   axios.post("/api/edit_cron_unique_books_only", payload);
 
 // eslint-disable-next-line prettier/prettier
-const useUniqueBooksOnly = (): UseMutationResult<void, unknown, EditUniqueBooksOnly, unknown> => {
+const useEditUniqueBooksOnly = (): UseMutationResult<void, unknown, EditUniqueBooksOnly, unknown> => {
   const queryClient = useQueryClient();
   return useMutation(
     (payload: EditUniqueBooksOnly) => editUniqueBooksOnly(payload),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("cronJob");
+      },
+    }
+  );
+};
+
+// ========= EDIT CRON JOB HIGHLIGHTS PER EMAIL =========
+const editHighlightsPerEmail = (
+  payload: EditHighlightsPerEmail
+): Promise<void> => axios.post("/api/edit_highlights_per_email", payload);
+
+// eslint-disable-next-line prettier/prettier
+const useEditHighlightsPerEmail = (): UseMutationResult<void, unknown, EditHighlightsPerEmail, unknown> => {
+  const queryClient = useQueryClient();
+  return useMutation(
+    (payload: EditHighlightsPerEmail) => editHighlightsPerEmail(payload),
     {
       onSuccess: () => {
         queryClient.invalidateQueries("cronJob");
@@ -133,5 +156,6 @@ export {
   useEditCronJob,
   useEditCronJobTimezone,
   useEditCronJobDeliveryTime,
-  useUniqueBooksOnly,
+  useEditUniqueBooksOnly,
+  useEditHighlightsPerEmail,
 };
