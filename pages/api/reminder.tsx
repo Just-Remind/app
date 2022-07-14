@@ -57,7 +57,7 @@ const handler = async (
     return res.status(500).json("No highlights found.");
   }
 
-  const indices = [];
+  const indices: number[] = [];
 
   while (indices.length < (settings?.highlightsPerEmail || 5)) {
     const random = Math.floor(Math.random() * highlights.length);
@@ -66,6 +66,7 @@ const handler = async (
     if (settings?.uniqueBooksOnly && isBookAlreadyIncluded) continue;
 
     selectedBooks.push(bookTitle);
+    if (indices.includes(random)) continue;
     indices.push(random);
   }
 
