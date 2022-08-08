@@ -77,11 +77,10 @@ const Landing = (): JSX.Element => {
             <ResetPassword resetPasswordData={resetPasswordData} />
           </Modal>
           <h2 className="px-8 my-8 text-4xl md:text-5xl md:px-12 md:my-20">
-            Your Kindle highlights served daily
+            You&lsquo;ll never forget about a book again
           </h2>
           <p className="px-8 my-8 text-xl md:text-2xl md:px-12 md:my-20">
-            Just Remind re-inspires you with a daily email containing random
-            highlights from your books 👌
+            Get a daily email with some of your Kindle highlights 👌
           </p>
           <div className="lg:hidden">
             <Image
