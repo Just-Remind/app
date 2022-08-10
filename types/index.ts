@@ -23,4 +23,5 @@ export type CronJob = {
   cronExpression: string;
   uniqueBooksOnly: boolean;
   highlightsPerEmail: number;
+  highlightsQualityFilter: boolean;
 };

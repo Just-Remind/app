@@ -27,6 +27,7 @@ const handler = async (
     select: {
       uniqueBooksOnly: true,
       highlightsPerEmail: true,
+      highlightsQualityFilter: true,
     },
   });
 
@@ -58,12 +59,16 @@ const handler = async (
   }
 
   const indices: number[] = [];
+  const minLength = 25;
 
   while (indices.length < (settings?.highlightsPerEmail || 5)) {
     const random = Math.floor(Math.random() * highlights.length);
     const bookTitle = highlights[random].book.title;
     const isBookAlreadyIncluded = selectedBooks.includes(bookTitle);
+    const isBelowMinLength = highlights[random].content.length < minLength;
     if (settings?.uniqueBooksOnly && isBookAlreadyIncluded) continue;
+
+    if (settings?.highlightsQualityFilter && isBelowMinLength) continue;
 
     selectedBooks.push(bookTitle);
     if (indices.includes(random)) continue;
