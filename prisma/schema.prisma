@@ -22,7 +22,7 @@ model CronJob {
   user                    String   @unique
   uniqueBooksOnly         Boolean  @default(false)
   highlightsPerEmail      Int      @default(5)
-  highlightsQualityFilter Boolean  @default(false)
+  highlightsQualityFilter Boolean  @default(true)
 }
 
 model Book {
