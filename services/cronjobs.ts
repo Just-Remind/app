@@ -43,6 +43,11 @@ type EditHighlightsPerEmail = {
   highlightsPerEmail: number;
 };
 
+type EditHighlightsQualityFilter = {
+  cronId: number;
+  highlightsQualityFilter: boolean;
+};
+
 // ========= CREATE CRON JOB =========
 const createCronJob = (payload: CreateCronJobPayload): Promise<void> =>
   axios.post("/api/create_cron_job", payload);
@@ -150,6 +155,26 @@ const useEditHighlightsPerEmail = (): UseMutationResult<void, unknown, EditHighl
   );
 };
 
+// ========= EDIT CRON JOB HIGHLIGHTS QUALITY FILTER =========
+const editHighlightsQualityFilter = (
+  payload: EditHighlightsQualityFilter
+): Promise<void> =>
+  axios.post("/api/edit_cron_highlights_quality_filter", payload);
+
+// eslint-disable-next-line prettier/prettier
+const useEditHighlightsQualityFilter = (): UseMutationResult<void, unknown, EditHighlightsQualityFilter, unknown> => {
+  const queryClient = useQueryClient();
+  return useMutation(
+    (payload: EditHighlightsQualityFilter) =>
+      editHighlightsQualityFilter(payload),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("cronJob");
+      },
+    }
+  );
+};
+
 export {
   useCreateCronJob,
   useGetCronJob,
@@ -158,4 +183,5 @@ export {
   useEditCronJobDeliveryTime,
   useEditUniqueBooksOnly,
   useEditHighlightsPerEmail,
+  useEditHighlightsQualityFilter,
 };

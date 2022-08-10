@@ -2,8 +2,8 @@ import { useContext } from "react";
 
 import { UserContext } from "context";
 
-import AccountSettings from "./parts/AccountSettings";
-import EmailSettings from "./parts/EmailSettings";
+import AccountSettings from "./AccountSettings";
+import EmailSettings from "./EmailSettings";
 
 const Settings = (): JSX.Element => {
   // CONTEXT
