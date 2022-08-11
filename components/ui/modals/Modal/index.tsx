@@ -18,7 +18,7 @@ const Modal = ({ open, setOpen, children }: Props): JSX.Element => (
         className="fixed inset-0 z-10 overflow-y-auto"
         onClose={setOpen}
       >
-        <div className="flex items-end justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+        <div className="flex items-end justify-center px-4 pt-4 pb-20 text-center md:min-h-screen sm:block sm:p-0">
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
@@ -47,7 +47,7 @@ const Modal = ({ open, setOpen, children }: Props): JSX.Element => (
             leaveFrom="opacity-100 translate-y-0 sm:scale-100"
             leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
           >
-            <div className="relative inline-block px-4 pt-5 pb-4 overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl sm:my-8 sm:align-middle sm:max-w-sm sm:w-full sm:p-6">
+            <div className="relative inline-block w-full px-4 pt-5 pb-4 overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl sm:my-8 sm:align-middle sm:max-w-sm sm:w-full sm:p-6">
               {children}
             </div>
           </Transition.Child>

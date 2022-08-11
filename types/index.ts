@@ -1,27 +1,12 @@
-export type User = {
-  email: string;
-};
+import { User, Highlight, Book, CronJob } from "./apiTypes";
+import { Card } from "./frontendTypes";
 
-export type Highlight = {
-  id: number;
-  content: string;
-};
-
-export type Book = {
-  id: number;
-  title: string;
-  author: string;
-  enabled: boolean;
-  highlights: Highlight[];
-};
-
-export type CronJob = {
-  id: number;
-  jobId: number;
-  enabled: boolean;
-  timezone: string;
-  cronExpression: string;
-  uniqueBooksOnly: boolean;
-  highlightsPerEmail: number;
-  highlightsQualityFilter: boolean;
+export type {
+  // API TYPES
+  User,
+  Highlight,
+  Book,
+  CronJob,
+  // FRONTEND TYPES
+  Card,
 };

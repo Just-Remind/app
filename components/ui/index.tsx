@@ -3,6 +3,8 @@ import Button from "./buttons/Button";
 import Switch from "./buttons/Switch";
 import TextButton from "./buttons/TextButton";
 import Toggle from "./buttons/Toggle";
+import Cards from "./Cards";
+import Divider from "./Divider";
 import Dropdown from "./dropdowns/Dropdown";
 import DropdownMenu from "./dropdowns/DropdownMenu";
 import Input from "./inputs/Input";
@@ -28,4 +30,6 @@ export {
   Toggle,
   Dropdown,
   Switch,
+  Divider,
+  Cards,
 };

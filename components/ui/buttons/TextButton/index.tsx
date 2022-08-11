@@ -4,6 +4,7 @@ type Props = {
   children: React.ReactNode;
   color: "yellow" | "red";
   onClick: () => void;
+  className?: string;
 };
 
 const TextButton = (props: Props): JSX.Element => {
@@ -13,7 +14,7 @@ const TextButton = (props: Props): JSX.Element => {
   return (
     <button
       onClick={onClick}
-      className={`${styles.button} ${styles[`button--${color}`]}`}
+      className={`text-md font-medium ${styles[`button--${color}`]}`}
     >
       {children}
     </button>

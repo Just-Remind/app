@@ -1,47 +1,116 @@
-const NoBooksInstructions = (): JSX.Element => (
-  <>
-    <div className="lg:hidden">
-      <p>Visit the app on desktop to sync your books 👌</p>
-    </div>
-    <div className="hidden lg:block">
-      <p className="mb-4 text-xl text-gray-700">Welcome on Just Remind! 🥳</p>
-      <p className="mb-2">
-        You don&apos;t have any book yet, so let&apos;s quickly fix that!
-      </p>
-      <p>The easiest way to import your books:</p>
-      <ol className="mt-2 ml-6 space-y-2 text-gray-700 list-decimal">
-        <li>
-          Download the{" "}
-          <a
-            href="https://chrome.google.com/webstore/detail/just-remind-chrome-extens/iidldfielonfgiabbjjkbigjjclcpefa"
-            target="_blank"
-            className="text-blue-500 hover:text-blue-600"
-            rel="noreferrer"
-          >
-            Just Remind Google Chrome Extension
-          </a>
-        </li>
-        <li>
-          <div>
-            Open the <span className="text-gray-500">Import your books</span>{" "}
-            dropdown
-          </div>
-        </li>
-        <li>
-          <div>
-            Click on the{" "}
-            <span className="text-gray-500">Use the chrome extension</span> link
-            (it will open a new tab to read.amazon.com)
-          </div>
-        </li>
-        <li>
-          Once on read.amazon.com, open the Just Remind extension and import
-          your books!
-        </li>
-        <li>Enjoy your daily dose of re-inspiration 👌</li>
-      </ol>
-    </div>
-  </>
-);
+import { useContext } from "react";
+
+import axios from "axios";
+
+import { Button, Cards } from "components/ui";
+import { UserContext } from "context";
+import { Card } from "types";
+import { useToast, useModalContent } from "utils/hooks";
+
+import ImportMyClippingsModal from "./SyncDropdown/ImportMyClippingsModal";
+
+const NoBooksInstructions = (): JSX.Element => {
+  // CONTEXT
+  const user = useContext(UserContext);
+
+  // HOOKS
+  const [toast, setToast, clearToast] = useToast();
+  const [isOpen, toggle, setIsOpen] = useModalContent();
+
+  // METHODS
+  const sendReminderEmail = (): void => {
+    clearToast();
+
+    axios
+      .post("/api/finish_setup_email", { email: user.email })
+      .then(() => setToast({ message: "Email sent!" }))
+      .catch(() =>
+        setToast({
+          type: "error",
+          message: "Something went wrong. Please reload and try again.",
+        })
+      );
+  };
+
+  const handleConnectWhispersync = (): void => {
+    clearToast();
+
+    const extensionId = process.env.NEXT_PUBLIC_CHROME_EXTENSION_ID;
+    if (extensionId) {
+      chrome.runtime.sendMessage(
+        extensionId,
+        { userEmail: user.email },
+        (response) => {
+          if (response) {
+            window.open(
+              "https://read.amazon.com/notebook?ref_=kcr_notebook_lib",
+              "_blank"
+            );
+          } else {
+            setToast({
+              type: "info",
+              message:
+                "You first need to add our Chrome extension before importing your books from amazon.",
+            });
+            window.open(
+              "https://chrome.google.com/webstore/detail/just-remind-chrome-extens/iidldfielonfgiabbjjkbigjjclcpefa",
+              "_blank"
+            );
+          }
+        }
+      );
+    }
+  };
+
+  // VARS
+  const syncBookOptions: Card[] = [
+    {
+      title: "Kindle",
+      description: "Sync your Kindle higlhights via Amazon",
+      btnText: "Import",
+      onClick: handleConnectWhispersync,
+    },
+    {
+      title: "My Clippings.txt",
+      description: "Import your My Clippings.txt file",
+      btnText: "Import",
+      onClick: toggle,
+    },
+  ];
+
+  return (
+    <>
+      {toast}
+
+      <ImportMyClippingsModal
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        setToast={setToast}
+        clearToast={clearToast}
+      />
+
+      <div className="space-y-4 lg:hidden">
+        <p className="text-grey-500">
+          To sync your Kindle highlights, you need to be on a desktop computer
+          using Google Chrome 👌
+        </p>
+        <div className="flex justify-center">
+          <Button onClick={sendReminderEmail}>
+            Email me a link to finish on desktop
+          </Button>
+        </div>
+      </div>
+
+      <div className="hidden lg:block">
+        <p className="mb-4 text-xl">Welcome on Just Remind! 🥳</p>
+        <p className="mb-2">
+          You don&apos;t have any book yet, so let&apos;s quickly fix that!
+        </p>
+
+        <Cards cards={syncBookOptions} containerClassName="mt-6" />
+      </div>
+    </>
+  );
+};
 
 export default NoBooksInstructions;

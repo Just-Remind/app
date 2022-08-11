@@ -5,12 +5,13 @@ import { Transition } from "@headlessui/react";
 import {
   CheckCircleIcon,
   ExclamationCircleIcon,
+  InformationCircleIcon,
   XCircleIcon,
 } from "@heroicons/react/outline";
 import { XIcon } from "@heroicons/react/solid";
 
 type Props = {
-  type?: "success" | "warning" | "error";
+  type?: "success" | "warning" | "info" | "error";
   message: string | React.ReactNode;
   show: boolean;
   setShow: React.Dispatch<React.SetStateAction<boolean>>;
@@ -31,6 +32,10 @@ const Toast = (props: Props): JSX.Element => {
     case "warning":
       title = <span className="text-yellow-600">Attention</span>;
       icon = <ExclamationCircleIcon className="w-6 text-yellow-600" />;
+      break;
+    case "info":
+      title = <span className="text-blue-600">Info</span>;
+      icon = <InformationCircleIcon className="w-6 text-blue-600" />;
       break;
     case "error":
       title = <span className="text-red-600">Something went wrong</span>;

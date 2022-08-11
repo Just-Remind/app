@@ -112,7 +112,7 @@ const Dashboard = (): JSX.Element => {
     },
   ] as const;
 
-  const formatedData = books.map((book) => ({
+  const formatedBooks = books.map((book) => ({
     title: (
       <Link
         to={`books/${book.id}`}
@@ -144,7 +144,7 @@ const Dashboard = (): JSX.Element => {
     ),
   }));
 
-  const memoizedData = useMemo(() => formatedData, [formatedData]);
+  const memoizedBooks = useMemo(() => formatedBooks, [formatedBooks]);
 
   return (
     <>
@@ -153,24 +153,28 @@ const Dashboard = (): JSX.Element => {
       {modal}
 
       <section>
-        <div className="flex items-center justify-between mb-4 space-x-2">
-          <h2 className="text-xl">Your books ({books.length})</h2>
-          <div className="hidden lg:block">
-            <SyncDropdown />
-          </div>
-        </div>
-        {!isLoadingCron && !cronJob && (
-          <div className="flex items-center space-x-2 text-sm text-yellow-600">
-            <ExclamationCircleIcon className="w-4" />
-            <span>Go to the Setting page to configure your daily email</span>
-          </div>
-        )}
         {isLoading ? (
           <Spinner size="lg" />
         ) : (
           <>
-            {memoizedData.length > 0 ? (
-              <Table columns={columns} data={memoizedData} />
+            {memoizedBooks.length > 0 ? (
+              <>
+                <div className="flex items-center justify-between mb-4 space-x-2">
+                  <h2 className="text-xl">Your books ({books.length})</h2>
+                  <div className="hidden lg:block">
+                    <SyncDropdown />
+                  </div>
+                </div>
+                {!isLoadingCron && !cronJob && (
+                  <div className="flex items-center space-x-2 text-sm text-yellow-600">
+                    <ExclamationCircleIcon className="w-4" />
+                    <span>
+                      Go to the Setting page to configure your daily email
+                    </span>
+                  </div>
+                )}
+                <Table columns={columns} data={memoizedBooks} />
+              </>
             ) : (
               <NoBooksInstructions />
             )}

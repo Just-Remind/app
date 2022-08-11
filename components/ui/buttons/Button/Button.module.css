@@ -41,7 +41,7 @@
   @apply bg-green-600 border-transparent hover:bg-green-700 focus:ring-green-500;
 }
 .button--white {
-  @apply text-gray-700 bg-white border-gray-300 hover:bg-gray-50 focus:ring-green-500;
+  @apply text-gray-700 bg-white border-gray-300 hover:bg-gray-50 focus:ring-gray-500;
 }
 .button--orange {
   @apply text-white bg-orange hover:bg-dark-orange focus:ring-dark-orange border-orange;
