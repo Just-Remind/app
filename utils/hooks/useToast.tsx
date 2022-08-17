@@ -3,7 +3,7 @@ import { useCallback, useState } from "react";
 import { Toast } from "components/ui";
 
 export type ToastConfig = {
-  type?: "success" | "warning" | "error";
+  type?: "success" | "warning" | "info" | "error";
   message: string | React.ReactNode;
 };
 
