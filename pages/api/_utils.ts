@@ -1,15 +1,15 @@
 /* eslint-disable */
-import { Note } from "./reminder";
+import { Highlight } from "./reminder/_utils";
 
-const buildRemindersHTML = (selectedNotes: Note[]): string => {
+const buildRemindersHTML = (selectedHighlights: Highlight[]): string => {
   const htmlBlocks: string[] = [];
 
-  selectedNotes.forEach((note) => {
+  selectedHighlights.forEach((highlight) => {
     htmlBlocks.push(`<table class="paragraph_block" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;">
       <tr>
         <td style="padding-left:10px;padding-right:10px;padding-top:10px;">
           <div style="color:#393d47;direction:ltr;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:14px;font-weight:400;letter-spacing:0px;line-height:120%;text-align:left;">
-            <p style="margin: 0;"><strong>${note.book.title}<em> </em></strong>(by ${note.book.author})</p>
+            <p style="margin: 0;"><strong>${highlight.book.title}<em> </em></strong>(by ${highlight.book.author})</p>
           </div>
         </td>
       </tr>
@@ -31,7 +31,7 @@ const buildRemindersHTML = (selectedNotes: Note[]): string => {
       <tr>
         <td style="padding-bottom:30px;padding-left:10px;padding-right:10px;">
           <div style="color:#393d47;direction:ltr;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:14px;font-weight:400;letter-spacing:0px;line-height:120%;text-align:left;">
-            <p style="margin: 0;">${note.content}</p>
+            <p style="margin: 0;">${highlight.content}</p>
           </div>
         </td>
       </tr>
@@ -41,9 +41,9 @@ const buildRemindersHTML = (selectedNotes: Note[]): string => {
   return htmlBlocks.join("");
 };
 
-export const getEmail = (selectedNotes: Note[]): string => {
-  const remindersHMTML = buildRemindersHTML(selectedNotes);
-  const title = `Your daily ${selectedNotes.length > 1 ? 'highlights' : 'highlight'}`;
+export const getEmail = (selectedHighlights: Highlight[]): string => {
+  const remindersHMTML = buildRemindersHTML(selectedHighlights);
+  const title = `Your daily ${selectedHighlights.length > 1 ? 'highlights' : 'highlight'}`;
 
   const email = `<!DOCTYPE html>
   <html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" lang="en">

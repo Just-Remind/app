@@ -44,23 +44,43 @@
   ],
   "rules": {
     "@typescript-eslint/explicit-function-return-type": "off",
-    "arrow-body-style": ["error", "as-needed"],
+    "arrow-body-style": [
+      "error",
+      "as-needed"
+    ],
     "no-console": "warn",
     "eqeqeq": "error",
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "error",
-    "max-len": [2, { "code": 120, "tabWidth": 4, "ignoreUrls": true }],
+    "max-len": [
+      2,
+      {
+        "code": 120,
+        "tabWidth": 4,
+        "ignoreUrls": true
+      }
+    ],
     "prettier/prettier": "error",
     // new
-    "@typescript-eslint/indent": ["error", 2],
+    "@typescript-eslint/indent": [
+      "error",
+      2
+    ],
     "@typescript-eslint/no-unused-vars": "error",
     "@typescript-eslint/no-explicit-any": "error",
-    "@typescript-eslint/consistent-type-definitions": ["error", "type"],
+    "@typescript-eslint/consistent-type-definitions": [
+      "error",
+      "type"
+    ],
     // import manager
     "import/order": [
       "error",
       {
-        "groups": ["builtin", "external", "internal"],
+        "groups": [
+          "builtin",
+          "external",
+          "internal"
+        ],
         "pathGroups": [
           {
             "pattern": "react",
@@ -68,7 +88,9 @@
             "position": "before"
           }
         ],
-        "pathGroupsExcludedImportTypes": ["react"],
+        "pathGroupsExcludedImportTypes": [
+          "react"
+        ],
         "newlines-between": "always",
         "alphabetize": {
           "order": "asc",
@@ -80,9 +102,14 @@
   "overrides": [
     {
       // enable the rule specifically for TypeScript files
-      "files": ["*.ts", "*.tsx"],
+      "files": [
+        "*.ts",
+        "*.tsx"
+      ],
       "rules": {
-        "@typescript-eslint/explicit-function-return-type": ["error"]
+        "@typescript-eslint/explicit-function-return-type": [
+          "error"
+        ]
       }
     }
   ]

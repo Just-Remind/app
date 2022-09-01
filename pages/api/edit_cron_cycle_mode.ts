@@ -3,14 +3,14 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../lib/prisma";
 const handler = async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
   try {
-    const { cronId, highlightsQualityFilter } = req.body;
+    const { cronId, cycleMode } = req.body;
 
     const cronJob = await prisma.cronJob.update({
       where: {
         id: cronId,
       },
       data: {
-        highlightsQualityFilter: highlightsQualityFilter,
+        cycleMode: cycleMode,
       },
     });
 

@@ -23,6 +23,7 @@ model CronJob {
   uniqueBooksOnly         Boolean  @default(false)
   highlightsPerEmail      Int      @default(5)
   highlightsQualityFilter Boolean  @default(true)
+  cycleMode               Boolean  @default(true)
   currentCycle            Int      @default(1)
 }
 

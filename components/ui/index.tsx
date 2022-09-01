@@ -14,6 +14,7 @@ import Modal from "./modals/Modal";
 import Header from "./Navigation/Header";
 import Table from "./Table";
 import Toast from "./Toast";
+import Tooltip from "./Tooltip";
 
 export {
   Alert,
@@ -32,4 +33,5 @@ export {
   Switch,
   Divider,
   Cards,
+  Tooltip,
 };
