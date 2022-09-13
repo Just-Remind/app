@@ -44,9 +44,7 @@ const Dashboard = (): JSX.Element => {
   useEffect(() => {
     if (isBookToggled) {
       clearToast();
-      const message = toggleBookResponse.data.enabled
-        ? "Book activated"
-        : "Book deactivated";
+      const message = toggleBookResponse.data.enabled ? "Book activated" : "Book deactivated";
       setToast({ message });
     }
 
@@ -54,13 +52,7 @@ const Dashboard = (): JSX.Element => {
       clearToast();
       setToast({ type: "error", message: "Something went wrong" });
     }
-  }, [
-    isBookToggled,
-    toggleBookResponse,
-    isToggleBookError,
-    setToast,
-    clearToast,
-  ]);
+  }, [isBookToggled, toggleBookResponse, isToggleBookError, setToast, clearToast]);
 
   // METHODS
   const openEditBookModal = (book: Book): void => {
@@ -114,10 +106,7 @@ const Dashboard = (): JSX.Element => {
 
   const formatedBooks = books.map((book) => ({
     title: (
-      <Link
-        to={`books/${book.id}`}
-        className="block truncate w-72 hover:text-gray-700"
-      >
+      <Link to={`books/${book.id}`} className="block truncate w-72 hover:text-gray-700">
         {book.title}
       </Link>
     ),
@@ -131,10 +120,7 @@ const Dashboard = (): JSX.Element => {
     ),
     actions: (
       <div className="space-x-4">
-        <TextButton
-          onClick={(): void => openEditBookModal(book)}
-          color="yellow"
-        >
+        <TextButton onClick={(): void => openEditBookModal(book)} color="yellow">
           Edit
         </TextButton>
         <TextButton onClick={(): void => openDeleteBookModal(book)} color="red">
@@ -168,9 +154,7 @@ const Dashboard = (): JSX.Element => {
                 {!isLoadingCron && !cronJob && (
                   <div className="flex items-center space-x-2 text-sm text-yellow-600">
                     <ExclamationCircleIcon className="w-4" />
-                    <span>
-                      Go to the Setting page to configure your daily email
-                    </span>
+                    <span>Go to the Setting page to configure your daily email</span>
                   </div>
                 )}
                 <Table columns={columns} data={memoizedBooks} />

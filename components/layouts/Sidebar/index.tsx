@@ -2,12 +2,7 @@
 import { Fragment, useState } from "react";
 
 import { Dialog, Transition } from "@headlessui/react";
-import {
-  BookOpenIcon,
-  AdjustmentsIcon,
-  MenuAlt2Icon,
-  XIcon,
-} from "@heroicons/react/outline";
+import { BookOpenIcon, AdjustmentsIcon, MenuAlt2Icon, XIcon } from "@heroicons/react/outline";
 import { Link } from "@tanstack/react-location";
 import { useRouter as useReactLocationRouter } from "@tanstack/react-location";
 import { Auth } from "aws-amplify";
@@ -59,11 +54,7 @@ const Sidebar = ({ children }: Props): JSX.Element => {
     <>
       <div>
         <Transition.Root show={sidebarOpen} as={Fragment}>
-          <Dialog
-            as="div"
-            className="fixed inset-0 z-40 flex md:hidden"
-            onClose={setSidebarOpen}
-          >
+          <Dialog as="div" className="fixed inset-0 z-40 flex md:hidden" onClose={setSidebarOpen}>
             <Transition.Child
               as={Fragment}
               enter="transition-opacity ease-linear duration-300"
@@ -101,10 +92,7 @@ const Sidebar = ({ children }: Props): JSX.Element => {
                       onClick={handleCloseSlidebar}
                     >
                       <span className="sr-only">Close sidebar</span>
-                      <XIcon
-                        className="w-6 h-6 text-white"
-                        aria-hidden="true"
-                      />
+                      <XIcon className="w-6 h-6 text-white" aria-hidden="true" />
                     </button>
                   </div>
                 </Transition.Child>
@@ -124,7 +112,7 @@ const Sidebar = ({ children }: Props): JSX.Element => {
                           item.current
                             ? "bg-gray-100 text-gray-900"
                             : "text-gray-600 hover:bg-gray-50 hover:text-gray-900",
-                          "group flex items-center px-2 py-2 text-base font-medium rounded-md"
+                          "group flex items-center px-2 py-2 text-base font-medium rounded-md",
                         )}
                       >
                         <item.icon
@@ -132,7 +120,7 @@ const Sidebar = ({ children }: Props): JSX.Element => {
                             item.current
                               ? "text-gray-500"
                               : "text-gray-400 group-hover:text-gray-500",
-                            "mr-4 flex-shrink-0 h-6 w-6"
+                            "mr-4 flex-shrink-0 h-6 w-6",
                           )}
                           aria-hidden="true"
                         />
@@ -168,15 +156,13 @@ const Sidebar = ({ children }: Props): JSX.Element => {
                       item.current
                         ? "bg-gray-100 text-gray-900"
                         : "text-gray-600 hover:bg-gray-50 hover:text-gray-900",
-                      "group flex items-center px-2 py-2 text-sm font-medium rounded-md"
+                      "group flex items-center px-2 py-2 text-sm font-medium rounded-md",
                     )}
                   >
                     <item.icon
                       className={classNames(
-                        item.current
-                          ? "text-gray-500"
-                          : "text-gray-400 group-hover:text-gray-500",
-                        "mr-3 flex-shrink-0 h-6 w-6"
+                        item.current ? "text-gray-500" : "text-gray-400 group-hover:text-gray-500",
+                        "mr-3 flex-shrink-0 h-6 w-6",
                       )}
                       aria-hidden="true"
                     />
@@ -187,12 +173,7 @@ const Sidebar = ({ children }: Props): JSX.Element => {
               <div className="flex items-center mx-2 space-x-2">
                 <ExternalLink href="https://discord.gg/PNKdfwAnW7">
                   <a target="_blank">
-                    <Image
-                      src={discordImage}
-                      alt="discord"
-                      className="w-4"
-                      width="24px"
-                    />
+                    <Image src={discordImage} alt="discord" className="w-4" width="24px" />
                   </a>
                 </ExternalLink>
               </div>
@@ -227,9 +208,7 @@ const Sidebar = ({ children }: Props): JSX.Element => {
 
           <main className="flex-1">
             <div className="py-6">
-              <div className="px-4 mx-auto max-w-7xl sm:px-6 md:px-8">
-                {children}
-              </div>
+              <div className="px-4 mx-auto max-w-7xl sm:px-6 md:px-8">{children}</div>
             </div>
           </main>
         </div>

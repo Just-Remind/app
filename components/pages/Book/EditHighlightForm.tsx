@@ -27,8 +27,7 @@ const EditHighlightForm = (props: Props): JSX.Element => {
   });
 
   // RQ
-  const { mutate: editHighlight, isSuccess: isHighlightUpdated } =
-    useEditHighlight();
+  const { mutate: editHighlight, isSuccess: isHighlightUpdated } = useEditHighlight();
 
   // HOOKS
   useEffect(() => {

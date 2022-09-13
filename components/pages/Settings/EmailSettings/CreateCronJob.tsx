@@ -20,12 +20,7 @@ const CreateCronJob = (): JSX.Element => {
   const [selectedMinutes, setSelectedMinutes] = useState("00");
 
   // RQ
-  const {
-    mutate: createCronJob,
-    isLoading,
-    isSuccess,
-    isError,
-  } = useCreateCronJob();
+  const { mutate: createCronJob, isLoading, isSuccess, isError } = useCreateCronJob();
 
   // HOOKS
   const [toast, setToast, clearToast] = useToast();
@@ -50,8 +45,7 @@ const CreateCronJob = (): JSX.Element => {
   }, [isError, clearToast, setToast]);
 
   // METHODS
-  const onChangeTimezone = (timezone: ITimezoneOption): void =>
-    setSelectedTimezone(timezone.value);
+  const onChangeTimezone = (timezone: ITimezoneOption): void => setSelectedTimezone(timezone.value);
 
   const handleUpdateDeliveryTime = (deliveryTime: string): void => {
     const [hours, minutes] = deliveryTime.split(":");

@@ -24,4 +24,5 @@ export type CronJob = {
   uniqueBooksOnly: boolean;
   highlightsPerEmail: number;
   highlightsQualityFilter: boolean;
+  cycleMode: boolean;
 };

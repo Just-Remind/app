@@ -28,8 +28,7 @@ const EmailSettings = ({ userEmail }: Props): JSX.Element => {
           <span>
             Choose a <span className="font-bold">delivery time</span> and a{" "}
             <span className="font-bold">timezone</span> and click on{" "}
-            <span className="font-bold">Create</span> to receive your daily
-            email.
+            <span className="font-bold">Create</span> to receive your daily email.
           </span>
         ),
       });
@@ -42,20 +41,12 @@ const EmailSettings = ({ userEmail }: Props): JSX.Element => {
 
       <div className={`${isLoading ? "" : "divide-y divide-gray-200"} `}>
         <div className="mb-4 space-y-1">
-          <h3 className="text-lg font-medium leading-6 text-gray-900">
-            Email Settings
-          </h3>
+          <h3 className="text-lg font-medium leading-6 text-gray-900">Email Settings</h3>
           <p className="max-w-2xl text-sm text-gray-500">
             Manage the delivery of your daily reminder email.
           </p>
         </div>
-        {isLoading ? (
-          <Spinner />
-        ) : cronJob ? (
-          <Settings cronJob={cronJob} />
-        ) : (
-          <CreateCronJob />
-        )}
+        {isLoading ? <Spinner /> : cronJob ? <Settings cronJob={cronJob} /> : <CreateCronJob />}
       </div>
     </>
   );

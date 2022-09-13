@@ -12,10 +12,7 @@ const TextButton = (props: Props): JSX.Element => {
   const { children, color, onClick } = props;
 
   return (
-    <button
-      onClick={onClick}
-      className={`text-md font-medium ${styles[`button--${color}`]}`}
-    >
+    <button onClick={onClick} className={`text-md font-medium ${styles[`button--${color}`]}`}>
       {children}
     </button>
   );

@@ -30,9 +30,7 @@ const ResetPassword = ({ resetPasswordData }: Props): JSX.Element => {
   const [alert, setAlert, clearAlert] = useAlert();
 
   // METHODS
-  const handleResetPassword = ({
-    password,
-  }: ResetPasswordFormType): Promise<boolean | void> => {
+  const handleResetPassword = ({ password }: ResetPasswordFormType): Promise<boolean | void> => {
     clearAlert();
 
     const { email, code } = resetPasswordData;
@@ -55,8 +53,7 @@ const ResetPassword = ({ resetPasswordData }: Props): JSX.Element => {
             },
             pattern: {
               value: PASSWORD_REGEX,
-              message:
-                "Requires at least one capital, one digit or one symbol.",
+              message: "Requires at least one capital, one digit or one symbol.",
             },
           })}
           required
@@ -67,16 +64,14 @@ const ResetPassword = ({ resetPasswordData }: Props): JSX.Element => {
         <Input
           {...register("repeatPassword", {
             validate: (repeatPassword) =>
-              repeatPassword === watch("password") ||
-              "The passwords don't match",
+              repeatPassword === watch("password") || "The passwords don't match",
             minLength: {
               value: 8,
               message: "Minimum 8 characters.",
             },
             pattern: {
               value: PASSWORD_REGEX,
-              message:
-                "Requires at least one capital, one digit or one symbol.",
+              message: "Requires at least one capital, one digit or one symbol.",
             },
           })}
           required

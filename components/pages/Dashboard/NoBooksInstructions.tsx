@@ -28,7 +28,7 @@ const NoBooksInstructions = (): JSX.Element => {
         setToast({
           type: "error",
           message: "Something went wrong. Please reload and try again.",
-        })
+        }),
       );
   };
 
@@ -37,28 +37,21 @@ const NoBooksInstructions = (): JSX.Element => {
 
     const extensionId = process.env.NEXT_PUBLIC_CHROME_EXTENSION_ID;
     if (extensionId) {
-      chrome.runtime.sendMessage(
-        extensionId,
-        { userEmail: user.email },
-        (response) => {
-          if (response) {
-            window.open(
-              "https://read.amazon.com/notebook?ref_=kcr_notebook_lib",
-              "_blank"
-            );
-          } else {
-            setToast({
-              type: "info",
-              message:
-                "You first need to add our Chrome extension before importing your books from amazon.",
-            });
-            window.open(
-              "https://chrome.google.com/webstore/detail/just-remind-chrome-extens/iidldfielonfgiabbjjkbigjjclcpefa",
-              "_blank"
-            );
-          }
+      chrome.runtime.sendMessage(extensionId, { userEmail: user.email }, (response) => {
+        if (response) {
+          window.open("https://read.amazon.com/notebook?ref_=kcr_notebook_lib", "_blank");
+        } else {
+          setToast({
+            type: "info",
+            message:
+              "You first need to add our Chrome extension before importing your books from amazon.",
+          });
+          window.open(
+            "https://chrome.google.com/webstore/detail/just-remind-chrome-extens/iidldfielonfgiabbjjkbigjjclcpefa",
+            "_blank",
+          );
         }
-      );
+      });
     }
   };
 
@@ -91,21 +84,17 @@ const NoBooksInstructions = (): JSX.Element => {
 
       <div className="space-y-4 lg:hidden">
         <p className="text-grey-500">
-          To sync your Kindle highlights, you need to be on a desktop computer
-          using Google Chrome 👌
+          To sync your Kindle highlights, you need to be on a desktop computer using Google Chrome
+          👌
         </p>
         <div className="flex justify-center">
-          <Button onClick={sendReminderEmail}>
-            Email me a link to finish on desktop
-          </Button>
+          <Button onClick={sendReminderEmail}>Email me a link to finish on desktop</Button>
         </div>
       </div>
 
       <div className="hidden lg:block">
         <p className="mb-4 text-xl">Welcome on Just Remind! 🥳</p>
-        <p className="mb-2">
-          You don&apos;t have any book yet, so let&apos;s quickly fix that!
-        </p>
+        <p className="mb-2">You don&apos;t have any book yet, so let&apos;s quickly fix that!</p>
 
         <Cards cards={syncBookOptions} containerClassName="mt-6" />
       </div>

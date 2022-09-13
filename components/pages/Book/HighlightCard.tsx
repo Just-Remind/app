@@ -42,10 +42,7 @@ const HighlightCard = (props: Props): JSX.Element => {
     <>
       {alertModal}
       <Modal open={open} setOpen={setOpen}>
-        <EditHighlightForm
-          highlight={highlight}
-          handleCloseModal={handleCloseModal}
-        />
+        <EditHighlightForm highlight={highlight} handleCloseModal={handleCloseModal} />
       </Modal>
       <li className="p-6 border rounded shadow border-gray-50">
         <p className="text-gray-700">{highlight.content}</p>

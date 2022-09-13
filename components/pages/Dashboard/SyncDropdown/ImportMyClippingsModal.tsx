@@ -54,9 +54,7 @@ const ImportMyClippingsModal = (props: Props): JSX.Element => {
   }, [status, clearAlert, setAlert]);
 
   // METHODS
-  const splitTitleAndAuthor = (
-    string: string
-  ): [title: string, author: string] => {
+  const splitTitleAndAuthor = (string: string): [title: string, author: string] => {
     if (string.at(-1) !== ")") return [string, ""];
 
     const authorParts = [];
@@ -77,9 +75,7 @@ const ImportMyClippingsModal = (props: Props): JSX.Element => {
     return [title, formattedAuthor];
   };
 
-  const onImportMyClippingsFile = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ): void => {
+  const onImportMyClippingsFile = (e: React.ChangeEvent<HTMLInputElement>): void => {
     clearAlert();
 
     const booksToImport: BookToImport[] = [];
@@ -90,12 +86,7 @@ const ImportMyClippingsModal = (props: Props): JSX.Element => {
     const file = files[0];
     const reader = new FileReader();
     reader.onload = (evt): void => {
-      if (
-        !evt.target ||
-        !evt.target.result ||
-        typeof evt.target.result !== "string"
-      )
-        return;
+      if (!evt.target || !evt.target.result || typeof evt.target.result !== "string") return;
 
       if (!evt.target.result.includes("=========="))
         return setAlert({
@@ -133,12 +124,7 @@ const ImportMyClippingsModal = (props: Props): JSX.Element => {
         {alert}
 
         <h2>Import your My Clippings.txt file</h2>
-        <Input
-          label="File"
-          type="file"
-          acceptFiles=".txt"
-          onChange={onImportMyClippingsFile}
-        />
+        <Input label="File" type="file" acceptFiles=".txt" onChange={onImportMyClippingsFile} />
         {status === "loading" && (
           <div className="flex items-center space-x-2">
             <span className="text-sm text-gray-500">Importing books</span>

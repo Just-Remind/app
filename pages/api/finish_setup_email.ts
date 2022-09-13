@@ -3,10 +3,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 
 import { getFinishSetupEmail } from "./_utils";
 
-const handler = async (
-  req: NextApiRequest,
-  res: NextApiResponse
-): Promise<void> => {
+const handler = async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
   const userEmail = req.body.email as string;
 
   const msg = {
@@ -43,7 +40,7 @@ const handler = async (
       } else {
         res.status(500).json(`error: ${error}`);
       }
-    }
+    },
   );
 };
 

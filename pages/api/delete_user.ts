@@ -3,10 +3,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 
 import prisma from "lib/prisma";
 
-const handler = async (
-  req: NextApiRequest,
-  res: NextApiResponse
-): Promise<void> => {
+const handler = async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
   try {
     const cronJob = await prisma.cronJob.delete({
       where: {
@@ -15,7 +12,7 @@ const handler = async (
     });
 
     await axios.post(
-      `https://www.easycron.com/rest/delete?token=${process.env.EASY_CRON_API_KEY}&id=${cronJob.jobId}`
+      `https://www.easycron.com/rest/delete?token=${process.env.EASY_CRON_API_KEY}&id=${cronJob.jobId}`,
     );
 
     // delete all books

@@ -15,6 +15,7 @@ import { CronJob } from "types";
 import { useToast } from "utils/hooks";
 
 import CronExpressionInput from "./parts/CronExpressionInput";
+// import CycleMode from "./parts/CycleMode";
 import HighlightsPerEmailSelect from "./parts/HighlightsPerEmailSelect";
 import HighlightsQualityFilter from "./parts/HighlightsQualityFilter";
 import TimezoneSelect from "./parts/TimezoneSelect";
@@ -118,7 +119,7 @@ const Settings = ({ cronJob }: Props): JSX.Element => {
         setToast({
           type: "error",
           message: "Something went wrong. Please try later.",
-        })
+        }),
       );
   };
 
@@ -152,14 +153,10 @@ const Settings = ({ cronJob }: Props): JSX.Element => {
     <>
       {toast}
 
-      <Switch
-        label="Service enabled"
-        checked={cronJob.enabled}
-        onChange={handleToggleService}
-      />
+      <Switch label="Service enabled" checked={cronJob.enabled} onChange={handleToggleService} />
       <Switch
         label="Unique books only"
-        description="You will receive highlights from 5 different books"
+        description="You will receive highlights from different books, if you have enough highlights"
         checked={cronJob.uniqueBooksOnly}
         onChange={handleToggleUniqueBooksOnly}
         disabled={bookCount < 5}
@@ -170,6 +167,12 @@ const Settings = ({ cronJob }: Props): JSX.Element => {
         setToast={setToast}
         clearToast={clearToast}
       />
+      {/* <CycleMode
+        cronId={cronJob.id}
+        cycleMode={cronJob.cycleMode}
+        setToast={setToast}
+        clearToast={clearToast}
+      /> */}
       <HighlightsPerEmailSelect
         cronId={cronJob.id}
         highlightsPerEmail={cronJob.highlightsPerEmail}
@@ -182,10 +185,7 @@ const Settings = ({ cronJob }: Props): JSX.Element => {
           handleUpdateDeliveryTime(e.target.value)
         }
       />
-      <TimezoneSelect
-        value={cronJob.timezone}
-        onChange={handleUpdateTimezone}
-      />
+      <TimezoneSelect value={cronJob.timezone} onChange={handleUpdateTimezone} />
     </>
   );
 };

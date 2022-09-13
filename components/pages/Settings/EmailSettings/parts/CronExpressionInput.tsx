@@ -17,10 +17,7 @@ const CronExpressionInput = (props: Props): JSX.Element => {
         <input
           type="time"
           onBlur={onChange}
-          defaultValue={`${deliveryHour.padStart(
-            2,
-            "0"
-          )}:${deliveryMinute.padStart(2, "0")}`}
+          defaultValue={`${deliveryHour.padStart(2, "0")}:${deliveryMinute.padStart(2, "0")}`}
         />
       </div>
     </div>
