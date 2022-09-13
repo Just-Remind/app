@@ -30,6 +30,7 @@ export const getHighlights = async (
     where: {
       book: {
         user: userEmail,
+        enabled: true,
       },
       currentCycle: {
         equals: currentCycle,
