@@ -19,9 +19,10 @@ const Landing = (): JSX.Element => {
   // STATE
   const [openModal, setOpenModal] = useState(false);
   const [resetPasswordModal, setResetPasswordModal] = useState(false);
-  const [resetPasswordData, setResetPasswordData] = useState<ResetPasswordType>(
-    { code: "", email: "" }
-  );
+  const [resetPasswordData, setResetPasswordData] = useState<ResetPasswordType>({
+    code: "",
+    email: "",
+  });
 
   // METHODS
   const openSignUpModal = (): void => {
@@ -44,9 +45,7 @@ const Landing = (): JSX.Element => {
       if (action === "confirmation") {
         Auth.confirmSignUp(email, code)
           .then(() => setToast({ message: "Account confirmed successfuly!" }))
-          .catch((error) =>
-            setToast({ type: "error", message: error.message })
-          );
+          .catch((error) => setToast({ type: "error", message: error.message }));
       }
 
       if (action === "password") {

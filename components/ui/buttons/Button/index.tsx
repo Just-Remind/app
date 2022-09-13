@@ -44,15 +44,11 @@ const Button = (props: Props): JSX.Element => {
     size && styles[`button--${size}`],
     disabled && styles["button--disabled"],
     loading && styles["button--loading"],
-    additionalClassName
+    additionalClassName,
   );
 
   const loadingMarkup = loading ? (
-    <Spinner
-      size="sm"
-      theme={spinnerTheme}
-      className={styles.button__spinner}
-    />
+    <Spinner size="sm" theme={spinnerTheme} className={styles.button__spinner} />
   ) : null;
 
   const childMarkup = children ? (

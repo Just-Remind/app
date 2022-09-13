@@ -15,17 +15,13 @@ type Body = {
   books: ImportedBookType[];
 };
 
-const handler = async (
-  req: NextApiRequest,
-  res: NextApiResponse
-): Promise<void> => {
-  const body: Body =
-    typeof req.body === "string" ? JSON.parse(req.body) : req.body;
+const handler = async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
+  const body: Body = typeof req.body === "string" ? JSON.parse(req.body) : req.body;
   const importedBooks = body.books;
 
   res.setHeader(
     "Access-Control-Allow-Origin",
-    `chrome-extension://${process.env.NEXT_PUBLIC_CHROME_EXTENSION_ID}`
+    `chrome-extension://${process.env.NEXT_PUBLIC_CHROME_EXTENSION_ID}`,
   );
 
   if (!body.user.email) return res.status(500).json("no user found");
@@ -62,8 +58,8 @@ const handler = async (
             },
           },
         },
-      })
-    )
+      }),
+    ),
   );
 
   return res.status(200).json("SUCCESS");

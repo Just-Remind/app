@@ -3,10 +3,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 
 import prisma from "lib/prisma";
 
-const handler = async (
-  req: NextApiRequest,
-  res: NextApiResponse
-): Promise<void> => {
+const handler = async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
   axios
     .post(
       `https://www.easycron.com/rest/add?token=${process.env.EASY_CRON_API_KEY}
@@ -14,7 +11,7 @@ const handler = async (
        &cron_expression=0 8 * * * *
        &timezone_from=2
        &timezone=${req.body.timezone}
-     `
+     `,
     )
     .then((response) =>
       prisma.cronJob.create({
@@ -25,7 +22,7 @@ const handler = async (
           timezone: req.body.timezone,
           user: req.body.email,
         },
-      })
+      }),
     )
     .then(() => res.status(200).json("success"))
     .catch((error) => res.status(200).json(error));

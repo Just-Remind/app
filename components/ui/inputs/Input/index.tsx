@@ -50,13 +50,10 @@ const Input = forwardRef<HTMLInputElement, Props>((props, ref) => {
 
   const classNameInput = classNames(
     styles["input-field"],
-    disabled && styles["text-field--disabled"]
+    disabled && styles["text-field--disabled"],
   );
 
-  const classNameLabel = classNames(
-    styles["input-label"],
-    error && styles["input-label--error"]
-  );
+  const classNameLabel = classNames(styles["input-label"], error && styles["input-label--error"]);
 
   return (
     <>

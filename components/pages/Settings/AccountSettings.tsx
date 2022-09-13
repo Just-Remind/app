@@ -32,8 +32,7 @@ const AccountSettings = (): JSX.Element => {
       .catch(() => {
         setToast({
           type: "error",
-          message:
-            "Something went wrong. Please contact support at hello@justremind.app",
+          message: "Something went wrong. Please contact support at hello@justremind.app",
         });
       })
       .finally(() => setIsDeletingUser(false));
@@ -44,14 +43,8 @@ const AccountSettings = (): JSX.Element => {
       {toast}
 
       <div>
-        <p className="mb-2 text-lg font-medium text-gray-700">
-          Account Settings
-        </p>
-        <Button
-          color="red"
-          onClick={handleDeleteAccount}
-          loading={isDeletingUser}
-        >
+        <p className="mb-2 text-lg font-medium text-gray-700">Account Settings</p>
+        <Button color="red" onClick={handleDeleteAccount} loading={isDeletingUser}>
           Delete account
         </Button>
       </div>

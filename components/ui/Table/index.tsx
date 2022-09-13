@@ -3,15 +3,15 @@ import { useTable, TableOptions } from "react-table";
 
 type Props<T extends Record<string, unknown>> = TableOptions<T>;
 
-const Table = <T extends Record<string, unknown>>(
-  props: Props<T>
-): JSX.Element => {
+const Table = <T extends Record<string, unknown>>(props: Props<T>): JSX.Element => {
   // PROPS
   const { columns, data } = props;
 
   // RT
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable({ columns, data });
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable({
+    columns,
+    data,
+  });
 
   return (
     <div className="flex flex-col mt-8">
@@ -28,10 +28,7 @@ const Table = <T extends Record<string, unknown>>(
                 </button>
               </div>
             )} */}
-            <table
-              {...getTableProps()}
-              className="min-w-full divide-y divide-gray-300 table-fixed"
-            >
+            <table {...getTableProps()} className="min-w-full divide-y divide-gray-300 table-fixed">
               <thead className="bg-gray-50">
                 {headerGroups.map((headerGroup, index) => (
                   <tr {...headerGroup.getHeaderGroupProps()} key={index}>
@@ -48,10 +45,7 @@ const Table = <T extends Record<string, unknown>>(
                   </tr>
                 ))}
               </thead>
-              <tbody
-                {...getTableBodyProps()}
-                className="bg-white divide-y divide-gray-200"
-              >
+              <tbody {...getTableBodyProps()} className="bg-white divide-y divide-gray-200">
                 {rows.map((row, index) => {
                   prepareRow(row);
 

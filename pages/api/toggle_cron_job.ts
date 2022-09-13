@@ -1,17 +1,14 @@
+/* eslint-disable prettier/prettier */
 import axios from "axios";
 import { NextApiRequest, NextApiResponse } from "next";
 
 import prisma from "lib/prisma";
 
-const handler = async (
-  req: NextApiRequest,
-  res: NextApiResponse
-): Promise<void> => {
+const handler = async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
   const easycron = await axios.get(
-    `https://www.easycron.com/rest/${
-      req.body.enabled ? "enable" : "disable"
-    }?token=${process.env.EASY_CRON_API_KEY}
-    &id=${req.body.easycronId}`
+    `https://www.easycron.com/rest/${req.body.enabled ? "enable" : "disable"}?token=${process.env.EASY_CRON_API_KEY
+    }
+    &id=${req.body.easycronId}`,
   );
 
   if (easycron.data.status === "error")

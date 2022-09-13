@@ -28,10 +28,7 @@ const SigninForm = ({ setAlert, clearAlert }: Props): JSX.Element => {
   } = useForm<LoginForm>();
 
   // METHODS
-  const handleSignIn = ({
-    email,
-    password,
-  }: LoginForm): Promise<boolean | void> => {
+  const handleSignIn = ({ email, password }: LoginForm): Promise<boolean | void> => {
     clearAlert();
     return Auth.signIn(email, password)
       .then(() => router.push("/"))

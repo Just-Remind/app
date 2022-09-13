@@ -13,27 +13,16 @@ type Props = {
 const Alert = ({ type = "success", message, close }: Props): JSX.Element => {
   // VARS
   const wrapperStyle = classNames(styles.wrapper, styles[`wrapper--${type}`]);
-  const titleStyle = classNames(
-    styles["alert-title"],
-    styles[`alert-title--${type}`]
-  );
-  const messageStyle = classNames(
-    styles["alert-message"],
-    styles[`alert-message--${type}`]
-  );
-  const buttonStyle = classNames(
-    styles["alert-button"],
-    styles[`alert-button--${type}`]
-  );
+  const titleStyle = classNames(styles["alert-title"], styles[`alert-title--${type}`]);
+  const messageStyle = classNames(styles["alert-message"], styles[`alert-message--${type}`]);
+  const buttonStyle = classNames(styles["alert-button"], styles[`alert-button--${type}`]);
 
   let title;
   let icon;
   switch (type) {
     case "success":
       title = "Success!";
-      icon = (
-        <CheckCircleIcon className="w-4 text-green-400" aria-hidden="true" />
-      );
+      icon = <CheckCircleIcon className="w-4 text-green-400" aria-hidden="true" />;
       break;
     case "error":
       title = "Something went wrong";

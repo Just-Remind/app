@@ -17,10 +17,7 @@ const Book = (): JSX.Element => {
   const { params } = useMatch();
 
   // RQ
-  const { data: book = { title: "", author: "", highlights: [] } } = useGetBook(
-    user,
-    params.id
-  );
+  const { data: book = { title: "", author: "", highlights: [] } } = useGetBook(user, params.id);
 
   // HOOKS
   const [toast, setToast, clearToast] = useToast();
@@ -34,8 +31,7 @@ const Book = (): JSX.Element => {
   }, [isSuccess, setToast, clearToast]);
 
   // METHODS
-  const handleDeleteHighlight = (highlightId: number): void =>
-    deleteHighlight(highlightId);
+  const handleDeleteHighlight = (highlightId: number): void => deleteHighlight(highlightId);
 
   return (
     <>

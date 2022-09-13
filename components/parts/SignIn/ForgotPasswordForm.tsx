@@ -23,15 +23,11 @@ const ForgotPasswordForm = ({ setAlert, clearAlert }: Props): JSX.Element => {
   } = useForm<ForgotPasswordFormType>();
 
   // METHODS
-  const handleSignIn = ({
-    email,
-  }: ForgotPasswordFormType): Promise<boolean | void> => {
+  const handleSignIn = ({ email }: ForgotPasswordFormType): Promise<boolean | void> => {
     clearAlert();
 
     return Auth.forgotPassword(email)
-      .then(() =>
-        setAlert({ message: "An email has been sent to reset your password." })
-      )
+      .then(() => setAlert({ message: "An email has been sent to reset your password." }))
       .catch((error) => setAlert({ type: "error", message: error.message }));
   };
 

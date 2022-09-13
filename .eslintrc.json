@@ -31,7 +31,10 @@
     "tailwind.config.js",
     "colors.js",
     "postcss.config.js",
-    "next.config.js"
+    "next.config.js",
+    "_error.js",
+    "sentry.client.config.js",
+    "sentry.server.config.js"
   ],
   "plugins": [
     "react",
@@ -69,8 +72,20 @@
     "@typescript-eslint/no-unused-vars": "error",
     "@typescript-eslint/no-explicit-any": "error",
     "@typescript-eslint/consistent-type-definitions": [
-      "error",
+      "warn",
       "type"
+    ],
+    "@typescript-eslint/naming-convention": [
+      "warn",
+      {
+        "selector": "variable",
+        "format": [
+          "camelCase",
+          "PascalCase",
+          "UPPER_CASE",
+          "snake_case"
+        ]
+      }
     ],
     // import manager
     "import/order": [
