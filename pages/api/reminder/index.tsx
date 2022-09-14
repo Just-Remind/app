@@ -23,16 +23,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse): Promise<void>
 
   // 3. FETCH CURRENT CYCLE HIGHLIGHTS
   const highlights = await getHighlights(userEmail, currentCycle - 1, highlightsQualityFilter);
-
   let selectedHighlights: Highlight[] = [];
 
   if (highlights.length < highlightsPerEmail) {
     // 4.1 FETCH NEXT CYCLE HIGHLIGHTS IF NOT ENOUGH IN CURRENT CYCLE
     const nextHighlights = await getHighlights(userEmail, currentCycle, highlightsQualityFilter);
-
     // 4.2 RETURN ERROR IF NO HIGHLIGHTS FOUND
-    if ([...highlights, ...nextHighlights].length === 0) {
-      return res.status(500).json("No highlights found.");
+    const totalHighlightsLength = [...highlights, ...nextHighlights].length;
+    if (totalHighlightsLength === 0 || totalHighlightsLength < highlightsPerEmail) {
+      return res.status(500).json("Not enougth higlights.");
     }
 
     // 4.3 SELECT RANDOM NEXT CYCLE HIGHLIGHTS

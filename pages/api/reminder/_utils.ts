@@ -25,8 +25,8 @@ export const getHighlights = async (
   userEmail: string,
   currentCycle: number,
   highlightsQualityFilter: boolean,
-): Promise<Highlight[]> =>
-  prisma.highlight.findMany({
+): Promise<Highlight[]> => {
+  let result = await prisma.highlight.findMany({
     where: {
       book: {
         user: userEmail,
@@ -34,9 +34,6 @@ export const getHighlights = async (
       },
       currentCycle: {
         equals: currentCycle,
-      },
-      content: {
-        gt: highlightsQualityFilter ? "25" : "0",
       },
     },
     select: {
@@ -51,6 +48,13 @@ export const getHighlights = async (
       },
     },
   });
+
+  if (highlightsQualityFilter) {
+    result = result.filter((highlight) => highlight.content.length > 25);
+  }
+
+  return result;
+};
 
 export const getSettings = async (userEmail: string): Promise<Settings | null> =>
   prisma.cronJob.findUnique({
@@ -73,7 +77,6 @@ export const getRandomHighlights = (
 ): Highlight[] => {
   const randomHighlights: Highlight[] = [];
 
-  // TODO: add explanation sentence in Settings (only possible if enough highlights)
   let index = 0;
   while (randomHighlights.length < count) {
     index++;
