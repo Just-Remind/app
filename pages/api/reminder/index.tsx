@@ -6,8 +6,8 @@ import { getSettings, Highlight } from "./_utils";
 import {
   getHighlights,
   getRandomHighlights,
-  incrementCronJobCurrentCycle,
-  incrementHighlightsCycle,
+  updateLastSentOn,
+  setNewCycleStartDate,
 } from "./_utils";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
@@ -19,41 +19,31 @@ const handler = async (req: NextApiRequest, res: NextApiResponse): Promise<void>
   const settings = await getSettings(userEmail);
   if (!settings) return res.status(500).json("No user settings found");
 
-  const { currentCycle, highlightsQualityFilter, highlightsPerEmail } = settings;
+  const { cycleStartDate, highlightsQualityFilter, highlightsPerEmail } = settings;
+  let isNewCycleStartDateNeeded = false;
 
-  // 3. FETCH CURRENT CYCLE HIGHLIGHTS
-  const highlights = await getHighlights(userEmail, currentCycle - 1, highlightsQualityFilter);
+  if (!cycleStartDate) setNewCycleStartDate(userEmail);
+
+  const highlights = await getHighlights(userEmail, cycleStartDate, highlightsQualityFilter);
+
   let selectedHighlights: Highlight[] = [];
 
-  if (highlights.length < highlightsPerEmail) {
-    // 4.1 FETCH NEXT CYCLE HIGHLIGHTS IF NOT ENOUGH IN CURRENT CYCLE
-    const nextHighlights = await getHighlights(userEmail, currentCycle, highlightsQualityFilter);
-    // 4.2 RETURN ERROR IF NO HIGHLIGHTS FOUND
-    const totalHighlightsLength = [...highlights, ...nextHighlights].length;
-    if (totalHighlightsLength === 0 || totalHighlightsLength < highlightsPerEmail) {
-      return res.status(500).json("Not enougth higlights.");
-    }
-
-    // 4.3 SELECT RANDOM NEXT CYCLE HIGHLIGHTS
-    const count = highlightsPerEmail - highlights.length;
-    const randomNextHighlights = getRandomHighlights(nextHighlights, count, settings);
-
-    // 4.4 COMPLETE SELECTED HIGHLIGHTS
-    selectedHighlights = [...highlights, ...randomNextHighlights];
-
-    // 4.5 INCREMENT CRONJOB CURRENT CYCLE
-    try {
-      incrementCronJobCurrentCycle(userEmail, settings.currentCycle + 1);
-    } catch {
-      return res.status(500).json("Failed to increment cron job current cycle");
-    }
+  if (highlights.length >= highlightsPerEmail) {
+    selectedHighlights = getRandomHighlights(highlights, highlightsPerEmail, settings);
   } else {
-    // 4. GATHER RANDOM CURRENT CYCLE HIGHLIGHTS
-    selectedHighlights = getRandomHighlights(highlights, settings.highlightsPerEmail, settings);
-  }
+    const nextCyclehighlights = await getHighlights(
+      userEmail,
+      new Date(),
+      highlightsQualityFilter,
+      highlights,
+    );
+    const shortCount = highlightsPerEmail - highlights.length;
+    const randomRestHighlights = getRandomHighlights(nextCyclehighlights, shortCount, settings);
 
-  // 5. INCREMENT HIGHLIGTS CYCLE
-  incrementHighlightsCycle(selectedHighlights);
+    selectedHighlights = [...highlights, ...randomRestHighlights];
+
+    isNewCycleStartDateNeeded = true;
+  }
 
   // 6. GENERATE EMAIL
   const email = getEmail(selectedHighlights);
@@ -74,6 +64,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse): Promise<void>
   // 8. SEND EMAIL
   sgMail.send(msg).then(
     () => {
+      updateLastSentOn(selectedHighlights);
+      if (isNewCycleStartDateNeeded) setNewCycleStartDate(userEmail);
       res.status(200).json("success");
     },
     (error) => {
