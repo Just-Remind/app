@@ -22,7 +22,7 @@ model CronJob {
   highlightsQualityFilter Boolean   @default(true)
   currentCycle            Int       @default(1)
   cycleMode               Boolean   @default(true)
-  cycleDate               DateTime?
+  cycleStartDate          DateTime?
 }
 
 model Book {
