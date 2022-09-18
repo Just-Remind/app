@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider        = "prisma-client-js"
   previewFeatures = ["interactiveTransactions"]
@@ -33,8 +30,8 @@ model Book {
   updatedAt  DateTime    @updatedAt
   title      String
   author     String?
-  enabled    Boolean     @default(true)
   user       String
+  enabled    Boolean     @default(true)
   highlights Highlight[]
 
   @@unique([user, title])
@@ -45,9 +42,9 @@ model Highlight {
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
   content    String
-  book       Book      @relation(fields: [bookId], references: [id], onDelete: Cascade)
   bookId     Int
   lastSentOn DateTime?
+  book       Book      @relation(fields: [bookId], references: [id], onDelete: Cascade)
 
   @@unique([bookId, content])
 }
