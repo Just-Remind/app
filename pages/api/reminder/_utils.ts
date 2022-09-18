@@ -1,12 +1,9 @@
-import { Prisma } from "@prisma/client";
-
 import prisma from "lib/prisma";
-import { CronJob } from "types";
 
 export type Highlight = {
   id: number;
   content: string;
-  currentCycle: number;
+  lastSentOn: Date | null;
   book: {
     title: string;
     author: string | null;
@@ -17,29 +14,33 @@ type Settings = {
   uniqueBooksOnly: boolean;
   highlightsPerEmail: number;
   highlightsQualityFilter: boolean;
-  currentCycle: number;
   cycleMode: boolean;
+  cycleStartDate: Date | null;
 };
 
 export const getHighlights = async (
   userEmail: string,
-  currentCycle: number,
+  cycleStartDate: Date | null,
   highlightsQualityFilter: boolean,
+  excludedHighlights?: Highlight[],
 ): Promise<Highlight[]> => {
+  const exculdedIDs: number[] = [];
+  if (excludedHighlights) excludedHighlights.map((highlight) => exculdedIDs.push(highlight.id));
   let result = await prisma.highlight.findMany({
     where: {
       book: {
         user: userEmail,
         enabled: true,
       },
-      currentCycle: {
-        equals: currentCycle,
+      OR: [{ lastSentOn: { equals: null } }, { lastSentOn: { lt: cycleStartDate || undefined } }],
+      NOT: {
+        id: { in: exculdedIDs },
       },
     },
     select: {
       id: true,
       content: true,
-      currentCycle: true,
+      lastSentOn: true,
       book: {
         select: {
           title: true,
@@ -65,7 +66,7 @@ export const getSettings = async (userEmail: string): Promise<Settings | null> =
       uniqueBooksOnly: true,
       highlightsPerEmail: true,
       highlightsQualityFilter: true,
-      currentCycle: true,
+      cycleStartDate: true,
       cycleMode: true,
     },
   });
@@ -83,17 +84,17 @@ export const getRandomHighlights = (
 
     const random = Math.floor(Math.random() * highlights.length);
     const randomHighlight = highlights[random];
+
+    const highlightAlreadyIncluded = !!randomHighlights.find(
+      (highlight) => highlight.id === randomHighlight.id,
+    );
+    if (highlightAlreadyIncluded) continue;
+
     const bookTitle = randomHighlight.book.title;
     const isBookAlreadyIncluded = !!randomHighlights.find(
       (highlight) => highlight.book.title === bookTitle,
     );
-    const highlightAlreadyIncluded = !!randomHighlights.find(
-      (highlight) => highlight.content === randomHighlight.content,
-    );
-
     if (settings.uniqueBooksOnly && isBookAlreadyIncluded && index < highlights.length) continue;
-
-    if (highlightAlreadyIncluded) continue;
 
     randomHighlights.push(randomHighlight);
   }
@@ -101,36 +102,25 @@ export const getRandomHighlights = (
   return randomHighlights;
 };
 
-export const incrementCronJobCurrentCycle = async (
-  userEmail: string,
-  incrementedCyclce: number,
-): Promise<CronJob> => {
-  const result = await prisma.cronJob.update({
-    where: {
-      user: userEmail,
-    },
-    data: {
-      currentCycle: incrementedCyclce,
-    },
-  });
-  return result;
-};
-
-export const incrementHighlightsCycle = async (
-  highlights: Highlight[],
-): Promise<Prisma.BatchPayload> => {
+export const updateLastSentOn = async (highlights: Highlight[]): Promise<void> => {
   const highlightIDs = highlights.map((highlight) => highlight.id);
-
-  const result = await prisma.highlight.updateMany({
+  await prisma.highlight.updateMany({
     where: {
       id: { in: highlightIDs },
     },
     data: {
-      currentCycle: {
-        increment: 1,
-      },
+      lastSentOn: new Date(),
     },
   });
+};
 
-  return result;
+export const setNewCycleStartDate = async (userEmail: string): Promise<void> => {
+  await prisma.cronJob.update({
+    where: {
+      user: userEmail,
+    },
+    data: {
+      cycleStartDate: new Date(),
+    },
+  });
 };
