@@ -20,8 +20,9 @@ model CronJob {
   uniqueBooksOnly         Boolean   @default(false)
   highlightsPerEmail      Int       @default(5)
   highlightsQualityFilter Boolean   @default(true)
+  currentCycle            Int       @default(1)
   cycleMode               Boolean   @default(true)
-  cycleStartDate          DateTime?
+  cycleDate               DateTime?
 }
 
 model Book {
@@ -38,13 +39,14 @@ model Book {
 }
 
 model Highlight {
-  id         Int       @id @default(autoincrement())
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
-  content    String
-  bookId     Int
-  lastSentOn DateTime?
-  book       Book      @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  id           Int       @id @default(autoincrement())
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  content      String
+  bookId       Int
+  currentCycle Int       @default(0)
+  lastSentOn   DateTime?
+  book         Book      @relation(fields: [bookId], references: [id], onDelete: Cascade)
 
   @@unique([bookId, content])
 }
