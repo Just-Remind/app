@@ -17,7 +17,7 @@ type Props = {
   clearToast: () => void;
 };
 
-const ImportMyClippingsModal = (props: Props): JSX.Element => {
+const ImportAndroidHTMLFileModal = (props: Props): JSX.Element => {
   // PROPS
   const { setIsOpen, setToast, clearToast } = props;
 
@@ -35,7 +35,7 @@ const ImportMyClippingsModal = (props: Props): JSX.Element => {
 
     if (status === "success") {
       setToast({
-        message: "Books imported!",
+        message: "Book imported!",
       });
       setIsOpen(false);
     }
@@ -53,28 +53,7 @@ const ImportMyClippingsModal = (props: Props): JSX.Element => {
   }, [status, clearAlert, setAlert]);
 
   // METHODS
-  const splitTitleAndAuthor = (string: string): [title: string, author: string] => {
-    if (string.at(-1) !== ")") return [string, ""];
-
-    const authorParts = [];
-    let title = "";
-
-    let isAuthorNotFound = true;
-    const breakerPoint = string.length;
-    let i = -1;
-    while (isAuthorNotFound) {
-      if (string.at(i) === "(" || -i === breakerPoint) isAuthorNotFound = false;
-      authorParts.push(string.at(i));
-      i--;
-    }
-
-    const author = authorParts.reverse().join("");
-    title = string.split(author)[0].trimEnd().replace("\n", "");
-    const formattedAuthor = author.slice(1, -1).split(", ").reverse().join(" ");
-    return [title, formattedAuthor];
-  };
-
-  const onImportMyClippingsFile = (e: React.ChangeEvent<HTMLInputElement>): void => {
+  const onImportHTMLFile = (e: React.ChangeEvent<HTMLInputElement>): void => {
     clearAlert();
 
     const booksToImport: BookToImport[] = [];
@@ -83,22 +62,28 @@ const ImportMyClippingsModal = (props: Props): JSX.Element => {
     if (!files || files.length === 0) return;
 
     const file = files[0];
+
     const reader = new FileReader();
     reader.onload = (evt): void => {
       if (!evt.target || !evt.target.result || typeof evt.target.result !== "string") return;
 
-      if (!evt.target.result.includes("=========="))
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(evt.target.result, "text/html");
+
+      if (!doc.querySelector(".noteText"))
         return setAlert({
           type: "error",
-          message: "It doesn't look like a clippings file.",
+          message: "There seems to be no highlight in this file.",
         });
 
-      const clippings = evt.target.result.split("==========\r");
-      clippings.forEach((clipping) => {
-        const [titleAndAuhor, , , highlight] = clipping.split("\r\n");
-        if (!highlight) return;
+      const title = doc.querySelector(".bookTitle")?.textContent || "";
+      const author = doc.querySelector(".authors")?.textContent || "";
 
-        const [title, author] = splitTitleAndAuthor(titleAndAuhor);
+      const highlightsNodes = doc.querySelectorAll(".noteText");
+
+      highlightsNodes.forEach((node) => {
+        const highlight = node.textContent;
+        if (!highlight) return;
 
         const importedBook = booksToImport.find((book) => book.title === title);
         if (importedBook) {
@@ -121,8 +106,8 @@ const ImportMyClippingsModal = (props: Props): JSX.Element => {
     <div className="space-y-4">
       {alert}
 
-      <h2>Import your My Clippings.txt file</h2>
-      <Input label="File" type="file" acceptFiles=".txt" onChange={onImportMyClippingsFile} />
+      <h2>Import the HTML file from your Kindle Android app</h2>
+      <Input label="File" type="file" acceptFiles=".html" onChange={onImportHTMLFile} />
       {status === "loading" && (
         <div className="flex items-center space-x-2">
           <span className="text-sm text-gray-500">Importing books</span>
@@ -133,4 +118,4 @@ const ImportMyClippingsModal = (props: Props): JSX.Element => {
   );
 };
 
-export default ImportMyClippingsModal;
+export default ImportAndroidHTMLFileModal;

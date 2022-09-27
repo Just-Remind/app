@@ -2,7 +2,7 @@ import { useContext } from "react";
 
 import axios from "axios";
 
-import { Button, Cards } from "components/ui";
+import { Button, Cards, Modal } from "components/ui";
 import { UserContext } from "context";
 import { Card } from "types";
 import { useToast, useModalContent } from "utils/hooks";
@@ -75,12 +75,9 @@ const NoBooksInstructions = (): JSX.Element => {
     <>
       {toast}
 
-      <ImportMyClippingsModal
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
-        setToast={setToast}
-        clearToast={clearToast}
-      />
+      <Modal open={isOpen} setOpen={setIsOpen}>
+        <ImportMyClippingsModal setIsOpen={setIsOpen} setToast={setToast} clearToast={clearToast} />
+      </Modal>
 
       <div className="space-y-4 lg:hidden">
         <p className="text-grey-500">

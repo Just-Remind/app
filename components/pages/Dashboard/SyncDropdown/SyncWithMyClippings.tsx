@@ -1,11 +1,11 @@
 type Props = {
-  toggle: () => void;
+  handleOpenModal: (modalName: string) => void;
 };
 
-const SyncWithMyClippings = ({ toggle }: Props): JSX.Element => (
+const SyncWithMyClippings = ({ handleOpenModal }: Props): JSX.Element => (
   <button
     className="w-full text-sm text-left text-gray-500 hover:text-gray-700 whitespace-nowrap"
-    onClick={toggle}
+    onClick={(): void => handleOpenModal("Clippings Modal")}
   >
     Import My Clippings.txt
   </button>
