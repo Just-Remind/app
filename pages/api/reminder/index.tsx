@@ -39,14 +39,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse): Promise<void>
     );
     const shortCount = highlightsPerEmail - highlights.length;
     const randomRestHighlights = getRandomHighlights(nextCyclehighlights, shortCount, settings);
-
     selectedHighlights = [...highlights, ...randomRestHighlights];
 
     isNewCycleStartDateNeeded = true;
   }
 
   // 6. GENERATE EMAIL
-  const email = getEmail(selectedHighlights);
+  const email = getEmail(selectedHighlights, userEmail);
 
   // 7. SGMAIL SETTINGS
   sgMail.setApiKey(process.env.SENDGRID_API_KEY || "");

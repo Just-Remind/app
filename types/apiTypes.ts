@@ -5,6 +5,7 @@ export type User = {
 export type Highlight = {
   id: number;
   content: string;
+  enabled: boolean;
 };
 
 export type Book = {

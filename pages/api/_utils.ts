@@ -1,10 +1,16 @@
 /* eslint-disable */
 import { Highlight } from "./reminder/_utils";
+import CryptoJS from 'crypto-js'
 
-const buildRemindersHTML = (selectedHighlights: Highlight[]): string => {
+const buildRemindersHTML = (selectedHighlights: Highlight[], userEmail: string): string => {
   const htmlBlocks: string[] = [];
 
   selectedHighlights.forEach((highlight) => {
+    const query = `user=${userEmail}&id=${highlight.id}`;
+    const key = process.env.ENCRYPTION_KEY;
+    let encrypted;
+    if (key) encrypted = CryptoJS.AES.encrypt(query, key);
+
     htmlBlocks.push(`<table class="paragraph_block" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;">
       <tr>
         <td style="padding-left:10px;padding-right:10px;padding-top:10px;">
@@ -29,9 +35,16 @@ const buildRemindersHTML = (selectedHighlights: Highlight[]): string => {
     </table>
     <table class="paragraph_block" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;">
       <tr>
-        <td style="padding-bottom:30px;padding-left:10px;padding-right:10px;">
+        <td style="padding-bottom:10px;padding-left:10px;padding-right:10px;">
           <div style="color:#393d47;direction:ltr;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:14px;font-weight:400;letter-spacing:0px;line-height:120%;text-align:left;">
             <p style="margin: 0;">${highlight.content}</p>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td style="padding-bottom:30px;padding-left:10px;padding-right:10px;">
+          <div style="color:#393d47;direction:ltr;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:14px;font-weight:400;letter-spacing:0px;line-height:120%;text-align:right;">
+            <a href="http://localhost:3000/user_update?${encrypted ? encodeURIComponent(encrypted.toString()) : query}" target="_blank" style="margin: 0; color: rgb(37, 99, 235); cursor: pointer; text-decoration: none;">Deactivate</a>
           </div>
         </td>
       </tr>
@@ -41,8 +54,8 @@ const buildRemindersHTML = (selectedHighlights: Highlight[]): string => {
   return htmlBlocks.join("");
 };
 
-export const getEmail = (selectedHighlights: Highlight[]): string => {
-  const remindersHMTML = buildRemindersHTML(selectedHighlights);
+export const getEmail = (selectedHighlights: Highlight[], userEmail: string): string => {
+  const remindersHMTML = buildRemindersHTML(selectedHighlights, userEmail);
   const title = `Your daily ${selectedHighlights.length > 1 ? 'highlights' : 'highlight'}`;
 
   const email = `<!DOCTYPE html>

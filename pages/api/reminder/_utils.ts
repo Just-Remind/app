@@ -26,8 +26,10 @@ export const getHighlights = async (
 ): Promise<Highlight[]> => {
   const exculdedIDs: number[] = [];
   if (excludedHighlights) excludedHighlights.map((highlight) => exculdedIDs.push(highlight.id));
+
   let result = await prisma.highlight.findMany({
     where: {
+      enabled: true,
       book: {
         user: userEmail,
         enabled: true,
@@ -77,6 +79,7 @@ export const getRandomHighlights = (
   settings: Settings,
 ): Highlight[] => {
   const randomHighlights: Highlight[] = [];
+  if (randomHighlights.length === 0) return randomHighlights;
 
   let index = 0;
   while (randomHighlights.length < count) {
