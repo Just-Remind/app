@@ -79,7 +79,7 @@ export const getRandomHighlights = (
   settings: Settings,
 ): Highlight[] => {
   const randomHighlights: Highlight[] = [];
-  if (randomHighlights.length === 0) return randomHighlights;
+  if (highlights.length === 0) return randomHighlights;
 
   let index = 0;
   while (randomHighlights.length < count) {
