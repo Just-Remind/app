@@ -5,5 +5,5 @@
 
 */
 -- AlterTable
-ALTER TABLE "Highlight" DROP COLUMN "enabled2",
-ADD COLUMN     "enabled3" BOOLEAN NOT NULL DEFAULT true;
+-- ALTER TABLE "Highlight" DROP COLUMN "enabled2",
+-- ADD COLUMN     "enabled3" BOOLEAN NOT NULL DEFAULT true;
