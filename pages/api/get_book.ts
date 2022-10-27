@@ -19,6 +19,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse): Promise<void>
         select: {
           id: true,
           content: true,
+          enabled: true,
         },
       },
     },
