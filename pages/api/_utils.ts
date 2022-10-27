@@ -44,7 +44,7 @@ const buildRemindersHTML = (selectedHighlights: Highlight[], userEmail: string):
       <tr>
         <td style="padding-bottom:30px;padding-left:10px;padding-right:10px;">
           <div style="color:#393d47;direction:ltr;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:14px;font-weight:400;letter-spacing:0px;line-height:120%;text-align:right;">
-            <a href="http://localhost:3000/user_update?${encrypted ? encodeURIComponent(encrypted.toString()) : query}" target="_blank" style="margin: 0; color: rgb(37, 99, 235); cursor: pointer; text-decoration: none;">Deactivate</a>
+            <a href="${process.env.ENV_URL}/user_update?${encrypted ? encodeURIComponent(encrypted.toString()) : query}" target="_blank" style="margin: 0; color: rgb(37, 99, 235); cursor: pointer; text-decoration: none;">Deactivate</a>
           </div>
         </td>
       </tr>
