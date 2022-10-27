@@ -44,9 +44,9 @@ model Highlight {
   updatedAt    DateTime  @updatedAt
   content      String
   bookId       Int
-  // enabled      Boolean   @default(true)
   currentCycle Int       @default(0)
   lastSentOn   DateTime?
+  enabled      Boolean   @default(true)
   book         Book      @relation(fields: [bookId], references: [id], onDelete: Cascade)
 
   @@unique([bookId, content])
