@@ -62,8 +62,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse): Promise<void>
 
   // 8. SEND EMAIL
   sgMail.send(msg).then(
-    () => {
-      updateLastSentOn(selectedHighlights);
+    async () => {
+      await updateLastSentOn(selectedHighlights);
       if (isNewCycleStartDateNeeded) setNewCycleStartDate(userEmail);
       res.status(200).json("success");
     },
