@@ -62,13 +62,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse): Promise<void>
 
   // 8. SEND EMAIL
   sgMail.send(msg).then(
-    () => {
-      console.log("MESSAGE BEING SENT");
-      updateLastSentOn(selectedHighlights).then(() => {
-        if (isNewCycleStartDateNeeded) setNewCycleStartDate(userEmail);
-        console.log("READY TO RETURN");
-        res.status(200).json("success");
-      });
+    async () => {
+      await updateLastSentOn(selectedHighlights);
+      if (isNewCycleStartDateNeeded) setNewCycleStartDate(userEmail);
+      res.status(200).json("success");
     },
     (error) => {
       if (error.response.body) {
