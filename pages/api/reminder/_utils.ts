@@ -108,7 +108,7 @@ export const getRandomHighlights = (
 export const updateLastSentOn = async (highlights: Highlight[]): Promise<void> => {
   const highlightIDs = highlights.map((highlight) => highlight.id);
   console.log("updateLastSentOn", highlightIDs);
-  await prisma.highlight.updateMany({
+  const result = await prisma.highlight.updateMany({
     where: {
       id: { in: highlightIDs },
     },
@@ -116,7 +116,7 @@ export const updateLastSentOn = async (highlights: Highlight[]): Promise<void> =
       lastSentOn: new Date(),
     },
   });
-  console.log("done");
+  console.log("done", result);
 };
 
 export const setNewCycleStartDate = async (userEmail: string): Promise<void> => {
