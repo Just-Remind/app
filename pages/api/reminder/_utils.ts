@@ -16,6 +16,7 @@ type Settings = {
   highlightsQualityFilter: boolean;
   cycleMode: boolean;
   cycleStartDate: Date | null;
+  cronExpression: string;
 };
 
 export const getHighlights = async (
@@ -70,6 +71,7 @@ export const getSettings = async (userEmail: string): Promise<Settings | null> =
       highlightsQualityFilter: true,
       cycleStartDate: true,
       cycleMode: true,
+      cronExpression: true,
     },
   });
 

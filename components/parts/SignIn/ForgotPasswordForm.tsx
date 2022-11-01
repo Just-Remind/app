@@ -3,18 +3,18 @@ import { useForm } from "react-hook-form";
 
 import { Input, Button } from "components/ui";
 import { EMAIL_REGEX } from "utils/constants";
-import { AlertConfig } from "utils/hooks";
+import { ToastConfig } from "utils/hooks";
 
 type ForgotPasswordFormType = {
   email: string;
 };
 
 type Props = {
-  setAlert: (config: AlertConfig) => void;
-  clearAlert: () => void;
+  setToast: (config: ToastConfig) => void;
+  clearToast: () => void;
 };
 
-const ForgotPasswordForm = ({ setAlert, clearAlert }: Props): JSX.Element => {
+const ForgotPasswordForm = ({ setToast, clearToast }: Props): JSX.Element => {
   // RHF
   const {
     register,
@@ -24,11 +24,11 @@ const ForgotPasswordForm = ({ setAlert, clearAlert }: Props): JSX.Element => {
 
   // METHODS
   const handleSignIn = ({ email }: ForgotPasswordFormType): Promise<boolean | void> => {
-    clearAlert();
+    clearToast();
 
     return Auth.forgotPassword(email)
-      .then(() => setAlert({ message: "An email has been sent to reset your password." }))
-      .catch((error) => setAlert({ type: "error", message: error.message }));
+      .then(() => setToast({ message: "An email has been sent to reset your password." }))
+      .catch((error) => setToast({ type: "error", message: error.message }));
   };
 
   return (

@@ -2,11 +2,13 @@ import { ReactElement, useEffect, useState } from "react";
 
 import { withSSRContext } from "aws-amplify";
 import type { GetServerSideProps } from "next";
-import { useRouter } from "next/router";
+// import { useRouter } from "next/router";
 
 import Application from "components/Application";
 import { UserContextProvider } from "context";
 import { User } from "types";
+
+import Landing from "./landing";
 
 type Props = {
   user: User;
@@ -21,7 +23,7 @@ const App = ({ user }: Props): null | ReactElement => {
   const [isMounted, setIsMounted] = useState(false);
 
   // next router
-  const router = useRouter();
+  // const router = useRouter();
 
   // hooks
   useEffect(() => {
@@ -38,8 +40,7 @@ const App = ({ user }: Props): null | ReactElement => {
       </UserContextProvider>
     );
   } else {
-    router.push("/landing");
-    return null;
+    return <Landing />;
   }
 };
 
