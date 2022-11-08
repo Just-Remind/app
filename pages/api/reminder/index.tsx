@@ -19,6 +19,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse): Promise<void>
   const settings = await getSettings(userEmail);
   if (!settings) return res.status(500).json("No user settings found");
 
+  const cronExpression = settings.cronExpression.split(" ");
+  const hour = Number(cronExpression[1]);
+  let greeting = "Hello";
+  if (hour > 4) greeting = "Good morning";
+  if (hour > 12) greeting = "Good afternoon";
+  if (hour > 17) greeting = "Good evening";
+
   const { cycleStartDate, highlightsQualityFilter, highlightsPerEmail } = settings;
   let isNewCycleStartDateNeeded = false;
 
@@ -45,7 +52,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse): Promise<void>
   }
 
   // 6. GENERATE EMAIL
-  const email = getEmail(selectedHighlights, userEmail);
+  const email = getEmail(selectedHighlights, userEmail, greeting);
 
   // 7. SGMAIL SETTINGS
   sgMail.setApiKey(process.env.SENDGRID_API_KEY || "");

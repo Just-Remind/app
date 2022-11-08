@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 
 import { Input, Button } from "components/ui";
 import { EMAIL_REGEX, PASSWORD_REGEX } from "utils/constants";
-import { AlertConfig } from "utils/hooks";
+import { ToastConfig } from "utils/hooks";
 
 type LoginForm = {
   email: string;
@@ -12,11 +12,11 @@ type LoginForm = {
 };
 
 type Props = {
-  setAlert: (config: AlertConfig) => void;
-  clearAlert: () => void;
+  setToast: (config: ToastConfig) => void;
+  clearToast: () => void;
 };
 
-const SigninForm = ({ setAlert, clearAlert }: Props): JSX.Element => {
+const SigninForm = ({ setToast, clearToast }: Props): JSX.Element => {
   // NEXT ROUTER
   const router = useRouter();
 
@@ -29,10 +29,10 @@ const SigninForm = ({ setAlert, clearAlert }: Props): JSX.Element => {
 
   // METHODS
   const handleSignIn = ({ email, password }: LoginForm): Promise<boolean | void> => {
-    clearAlert();
+    clearToast();
     return Auth.signIn(email, password)
       .then(() => router.push("/"))
-      .catch((error) => setAlert({ type: "error", message: error.message }));
+      .catch((error) => setToast({ type: "error", message: error.message }));
   };
 
   return (
