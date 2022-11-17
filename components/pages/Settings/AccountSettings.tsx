@@ -42,12 +42,14 @@ const AccountSettings = (): JSX.Element => {
     <>
       {toast}
 
-      <div>
-        <p className="mb-2 text-lg font-medium text-gray-700">Account Settings</p>
-        <Button color="red" onClick={handleDeleteAccount} loading={isDeletingUser}>
-          Delete account
-        </Button>
+      <div className="pb-4 mb-4 space-y-1 border-b">
+        <h3 className="text-lg font-medium leading-6 text-gray-900">Account Settings</h3>
+        <p className="max-w-2xl text-sm text-gray-500">Manage your account.</p>
       </div>
+
+      <Button color="red" onClick={handleDeleteAccount} loading={isDeletingUser}>
+        Delete account
+      </Button>
     </>
   );
 };

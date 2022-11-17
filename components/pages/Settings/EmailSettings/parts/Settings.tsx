@@ -14,11 +14,11 @@ import {
 import { CronJob } from "types";
 import { useToast } from "utils/hooks";
 
-import CronExpressionInput from "./parts/CronExpressionInput";
-// import CycleMode from "./parts/CycleMode";
-import HighlightsPerEmailSelect from "./parts/HighlightsPerEmailSelect";
-import HighlightsQualityFilter from "./parts/HighlightsQualityFilter";
-import TimezoneSelect from "./parts/TimezoneSelect";
+import BonusHighlights from "./BonusHighlights";
+import CronExpressionInput from "./CronExpressionInput";
+import HighlightsPerEmailSelect from "./HighlightsPerEmailSelect";
+import HighlightsQualityFilter from "./HighlightsQualityFilter";
+import TimezoneSelect from "./TimezoneSelect";
 
 type Props = {
   cronJob: CronJob;
@@ -167,12 +167,6 @@ const Settings = ({ cronJob }: Props): JSX.Element => {
         setToast={setToast}
         clearToast={clearToast}
       />
-      {/* <CycleMode
-        cronId={cronJob.id}
-        cycleMode={cronJob.cycleMode}
-        setToast={setToast}
-        clearToast={clearToast}
-      /> */}
       <HighlightsPerEmailSelect
         cronId={cronJob.id}
         highlightsPerEmail={cronJob.highlightsPerEmail}
@@ -186,6 +180,11 @@ const Settings = ({ cronJob }: Props): JSX.Element => {
         }
       />
       <TimezoneSelect value={cronJob.timezone} onChange={handleUpdateTimezone} />
+      <BonusHighlights
+        cronId={cronJob.id}
+        bonusHighlightsEnabled={cronJob.bonusHighlightEnabled}
+        bonusHighlightsPerEmail={cronJob.bonusHighlightsPerEmail}
+      />
     </>
   );
 };

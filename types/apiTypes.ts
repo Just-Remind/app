@@ -26,4 +26,6 @@ export type CronJob = {
   highlightsPerEmail: number;
   highlightsQualityFilter: boolean;
   cycleMode: boolean;
+  bonusHighlightEnabled: boolean;
+  bonusHighlightsPerEmail: number;
 };

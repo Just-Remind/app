@@ -2,7 +2,7 @@
 import { Highlight } from "./reminder/_utils";
 import CryptoJS from 'crypto-js'
 
-const buildRemindersHTML = (selectedHighlights: Highlight[], userEmail: string): string => {
+const buildRemindersHTML = (selectedHighlights: Highlight[], userEmail: string, withDeactivate = true): string => {
   const htmlBlocks: string[] = [];
 
   selectedHighlights.forEach((highlight) => {
@@ -53,11 +53,11 @@ const buildRemindersHTML = (selectedHighlights: Highlight[], userEmail: string):
       </td>
     </tr>
     <tr>
-    <td style="padding-bottom:30px;padding-left:10px;padding-right:10px;">
+    ${withDeactivate ? `<td style="padding-bottom:30px;padding-left:10px;padding-right:10px;">
       <div style="color:#393d47;direction:ltr;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:14px;font-weight:400;letter-spacing:0px;line-height:120%;text-align:right;">
         <a href="${process.env.ENV_URL}/user_update?${encrypted ? encodeURIComponent(encrypted.toString()) : query}" target="_blank" style="margin: 0; color: rgb(37, 99, 235); cursor: pointer; text-decoration: none;">Deactivate</a>
       </div>
-    </td>
+    </td>` : ''}
   </tr>
   </table>`)
   });
@@ -65,9 +65,12 @@ const buildRemindersHTML = (selectedHighlights: Highlight[], userEmail: string):
   return htmlBlocks.join("");
 };
 
-export const getEmail = (selectedHighlights: Highlight[], userEmail: string, greeting: string): string => {
-  const remindersHMTML = buildRemindersHTML(selectedHighlights, userEmail);
-  const title = `Your daily ${selectedHighlights.length > 1 ? 'highlights' : 'highlight'}`;
+export const getEmail = (selectedHighlights: Highlight[], userEmail: string, greeting: string, bonusHighlighs?: Highlight[] | null): string => {
+  let remindersHTML = '';
+  if (selectedHighlights.length > 0) remindersHTML = buildRemindersHTML(selectedHighlights, userEmail);
+
+  let bonusHighlightsHTML = '';
+  if (bonusHighlighs) bonusHighlightsHTML = buildRemindersHTML(bonusHighlighs, userEmail, false);
 
   const email = `<!DOCTYPE html>
 
@@ -242,7 +245,8 @@ export const getEmail = (selectedHighlights: Highlight[], userEmail: string, gre
                 </tr>
               </tbody>
             </table>
-            <table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-2" role="presentation"
+
+            ${remindersHTML && `<table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-2" role="presentation"
               style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
               <tbody>
                 <tr>
@@ -288,7 +292,41 @@ export const getEmail = (selectedHighlights: Highlight[], userEmail: string, gre
                           <td class="column column-1"
                             style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: top; padding-top: 5px; padding-bottom: 5px; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;"
                             width="100%">
-                            ${remindersHMTML}
+                            ${remindersHTML}
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </td>
+                </tr>
+              </tbody>
+            </table>`}
+
+            ${bonusHighlightsHTML && `<table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-2" role="presentation"
+            style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
+              <tbody>
+                <tr>
+                  <td>
+                    <table align="center" border="0" cellpadding="0" cellspacing="0" class="row-content stack"
+                      role="presentation"
+                      style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; color: #000000; width: 700px;" width="700">
+                      <tbody>
+                        <tr>
+                          <td class="column column-1"
+                            style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: top; padding-top: 5px; padding-bottom: 20px; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;"
+                            width="100%">
+                            <table border="0" cellpadding="0" cellspacing="0" class="paragraph_block block-1"
+                              role="presentation"
+                              style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;" width="100%">
+                              <tr>
+                                <td class="pad">
+                                  <div
+                                    style="color:#9a6f3d;font-size:19px;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-weight:400;line-height:120%;text-align:left;direction:ltr;letter-spacing:0px;mso-line-height-alt:22.8px;">
+                                    <p style="margin: 0;">The community highlights:</p>
+                                  </div>
+                                </td>
+                              </tr>
+                            </table>
                           </td>
                         </tr>
                       </tbody>
@@ -297,8 +335,32 @@ export const getEmail = (selectedHighlights: Highlight[], userEmail: string, gre
                 </tr>
               </tbody>
             </table>
-            <table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-4" role="presentation"
+            <table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-3" role="presentation"
               style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
+              <tbody>
+                <tr>
+                  <td>
+                    <table align="center" border="0" cellpadding="0" cellspacing="0" class="row-content stack"
+                      role="presentation"
+                      style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; color: #000000; width: 700px;" width="700">
+                      <tbody>
+                        <tr>
+                          <td class="column column-1"
+                            style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: top; padding-top: 5px; padding-bottom: 5px; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;"
+                            width="100%">
+                            ${bonusHighlightsHTML}
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </td>
+                </tr>
+              </tbody>
+            </table>`}
+
+
+            <table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-4" role="presentation"
+              style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; padding-top: 20px;" width="100%">
               <tbody>
                 <tr>
                   <td>

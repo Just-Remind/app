@@ -1,3 +1,5 @@
+import LanguageDetect from "languagedetect";
+
 import prisma from "lib/prisma";
 
 export type Highlight = {
@@ -17,6 +19,8 @@ type Settings = {
   cycleMode: boolean;
   cycleStartDate: Date | null;
   cronExpression: string;
+  bonusHighlightEnabled: boolean;
+  bonusHighlightsPerEmail: number;
 };
 
 export const getHighlights = async (
@@ -72,6 +76,8 @@ export const getSettings = async (userEmail: string): Promise<Settings | null> =
       cycleStartDate: true,
       cycleMode: true,
       cronExpression: true,
+      bonusHighlightEnabled: true,
+      bonusHighlightsPerEmail: true,
     },
   });
 
@@ -128,4 +134,56 @@ export const setNewCycleStartDate = async (userEmail: string): Promise<void> => 
       cycleStartDate: new Date(),
     },
   });
+};
+
+export const getBonusHighlights = async (
+  userEmail: string,
+  bonusHighlightNb: number,
+): Promise<Highlight[] | null> => {
+  const books = await prisma.book.findMany({
+    where: {
+      user: userEmail,
+    },
+    select: {
+      title: true,
+    },
+  });
+  const bookTitles = books.map((book) => book.title);
+  const lngDetector = new LanguageDetect();
+  const productsCount = await prisma.highlight.count();
+  const highlights: Highlight[] = [];
+
+  while (highlights.length < bonusHighlightNb) {
+    const skip = Math.floor(Math.random() * productsCount);
+    const highlight = await prisma.highlight.findFirst({
+      take: 1,
+      skip: skip,
+      select: {
+        id: true,
+        content: true,
+        lastSentOn: true,
+        book: {
+          select: {
+            title: true,
+            author: true,
+          },
+        },
+      },
+    });
+
+    if (!highlight) continue;
+
+    const isLongEnough = highlight.content.length > 25;
+    const regexSentence = new RegExp(/^([A-Z])(.*)([.?!])$/g);
+    const isSentence = regexSentence.test(highlight.content);
+
+    if (isLongEnough && isSentence) {
+      const lang = lngDetector.detect(highlight.content);
+      const isEnglish = lang[0][0] === "english";
+      const hasBook = bookTitles.includes(highlight.book.title);
+      if (isEnglish && !hasBook) highlights.push(highlight);
+    }
+  }
+
+  return highlights;
 };

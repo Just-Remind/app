@@ -7,8 +7,8 @@ import { UserContext } from "context";
 import { useCreateCronJob } from "services/cronjobs";
 import { useToast } from "utils/hooks";
 
-import CronExpressionInput from "./parts/CronExpressionInput";
-import TimezoneSelect from "./parts/TimezoneSelect";
+import CronExpressionInput from "./CronExpressionInput";
+import TimezoneSelect from "./TimezoneSelect";
 
 const CreateCronJob = (): JSX.Element => {
   // CONTEXT
