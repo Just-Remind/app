@@ -14,7 +14,7 @@ import {
 import { CronJob } from "types";
 import { useToast } from "utils/hooks";
 
-import BonusHighlights from "./BonusHighlights";
+// import BonusHighlights from "./BonusHighlights";
 import CronExpressionInput from "./CronExpressionInput";
 import HighlightsPerEmailSelect from "./HighlightsPerEmailSelect";
 import HighlightsQualityFilter from "./HighlightsQualityFilter";
@@ -180,11 +180,11 @@ const Settings = ({ cronJob }: Props): JSX.Element => {
         }
       />
       <TimezoneSelect value={cronJob.timezone} onChange={handleUpdateTimezone} />
-      <BonusHighlights
+      {/* <BonusHighlights
         cronId={cronJob.id}
         bonusHighlightsEnabled={cronJob.bonusHighlightEnabled}
         bonusHighlightsPerEmail={cronJob.bonusHighlightsPerEmail}
-      />
+      /> */}
     </>
   );
 };

@@ -3,7 +3,7 @@ import { Switch as ReactSwitch } from "@headlessui/react";
 import { classNames } from "utils";
 
 type Props = {
-  label: string;
+  label: string | JSX.Element;
   description?: string | JSX.Element;
   checked: boolean;
   disabled?: boolean;

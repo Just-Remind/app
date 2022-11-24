@@ -1,3 +1,5 @@
+import { BeakerIcon } from "@heroicons/react/outline";
+
 import { Switch } from "components/ui";
 import { useEditBonusHighlightEnabled, useEditBonusHighlightNumber } from "services/cronjobs";
 
@@ -26,7 +28,14 @@ const BonusHighlights = (props: Props): JSX.Element => {
   return (
     <div>
       <Switch
-        label="Bonus highlights"
+        label={
+          <p>
+            Bonus highlights{" "}
+            <span className="text-blue-500">
+              (Beta <BeakerIcon className="inline w-3 h-3" />)
+            </span>
+          </p>
+        }
         description="You will be inspired by highlights from books you have not read, yet!"
         checked={bonusHighlightsEnabled}
         onChange={handleToggleBonusHighlights}

@@ -2,7 +2,7 @@ import sgMail from "@sendgrid/mail";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 import { getEmail } from "../_utils";
-import { getBonusHighlights, getSettings, Highlight } from "./_utils";
+import { getSettings, Highlight, saveBooksTagsAndUniqueId } from "./_utils";
 import {
   getHighlights,
   getRandomHighlights,
@@ -14,6 +14,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse): Promise<void>
   // 1. RETRIEVE USER EMAIL
   const userEmail = req.query.email as string;
   if (!userEmail) return res.status(500).json("No email provided");
+
+  // [TEMPORARY] - TAGS & ASIN / ISBN
+  await saveBooksTagsAndUniqueId(userEmail);
 
   // 2. FETCH USER SETTINGS
   const settings = await getSettings(userEmail);
@@ -54,10 +57,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse): Promise<void>
   }
 
   // 6. GET BONUS HIGHLIGHTS
-  let bonusHighlights = undefined;
-  if (settings.bonusHighlightEnabled) {
-    bonusHighlights = await getBonusHighlights(userEmail, settings.bonusHighlightsPerEmail);
-  }
+  const bonusHighlights = undefined;
+  // if (settings.bonusHighlightEnabled) {
+  //   bonusHighlights = await getBonusHighlights(userEmail, settings.bonusHighlightsPerEmail);
+  // }
 
   // 7. GENERATE EMAIL
   const email = getEmail(selectedHighlights, userEmail, greeting, bonusHighlights);

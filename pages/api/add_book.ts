@@ -3,9 +3,14 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../lib/prisma";
 
 type ImportedBookType = {
+  asin: string;
   title: string;
   author: string;
   highlights: string[];
+};
+
+type BookWithCategories = ImportedBookType & {
+  categories: string[];
 };
 
 type Body = {
@@ -26,8 +31,34 @@ const handler = async (req: NextApiRequest, res: NextApiResponse): Promise<void>
 
   if (!body.user.email) return res.status(500).json("no user found");
 
+  const booksWithCategories: BookWithCategories[] = [];
+
+  let index = 0;
+
+  while (index < importedBooks.length) {
+    const book = importedBooks[index];
+    const searchableTitle = book.title.replace(" ", "_");
+    const googleBookDetails = await fetch(
+      `https://www.googleapis.com/books/v1/volumes?q=${searchableTitle}`,
+    )
+      .then((data) => data.json())
+      .then((result) => {
+        if (result.items) return result.items[0];
+        else return result;
+      });
+
+    index++;
+
+    if (!googleBookDetails.volumeInfo || !googleBookDetails.volumeInfo.categories) {
+      booksWithCategories.push({ ...book, categories: [] });
+    } else {
+      const { categories } = googleBookDetails.volumeInfo;
+      booksWithCategories.push({ ...book, categories: categories || [] });
+    }
+  }
+
   await prisma.$transaction(
-    importedBooks.map((book) =>
+    booksWithCategories.map((book) =>
       prisma.book.upsert({
         where: {
           user_title: {
@@ -44,9 +75,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse): Promise<void>
               })),
             },
           },
+          tags: {
+            connectOrCreate: book.categories.map((category) => ({
+              where: { name: category },
+              create: { name: category },
+            })),
+          },
         },
         create: {
           user: body.user.email,
+          asin: book.asin,
           title: book.title,
           author: book.author,
           highlights: {
@@ -56,6 +94,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse): Promise<void>
                 content: highlight,
               })),
             },
+          },
+          tags: {
+            connectOrCreate: book.categories.map((category) => ({
+              where: { name: category },
+              create: { name: category },
+            })),
           },
         },
       }),

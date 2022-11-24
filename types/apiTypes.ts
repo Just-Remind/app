@@ -13,6 +13,9 @@ export type Book = {
   title: string;
   author: string;
   enabled: boolean;
+  asin?: string;
+  isbn?: string;
+  tags?: string[];
   highlights: Highlight[];
 };
 

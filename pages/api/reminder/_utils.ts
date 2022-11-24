@@ -148,13 +148,26 @@ export const getBonusHighlights = async (
       title: true,
     },
   });
+  if (!books || !books.length) return null;
+
   const bookTitles = books.map((book) => book.title);
   const lngDetector = new LanguageDetect();
-  const productsCount = await prisma.highlight.count();
+  const highlightsCount = await prisma.highlight.count({
+    where: {
+      book: {
+        NOT: {
+          user: userEmail,
+        },
+      },
+    },
+  });
+  console.log("highlightsCount", highlightsCount);
+  if (highlightsCount < bonusHighlightNb) return null;
+
   const highlights: Highlight[] = [];
 
   while (highlights.length < bonusHighlightNb) {
-    const skip = Math.floor(Math.random() * productsCount);
+    const skip = Math.floor(Math.random() * highlightsCount);
     const highlight = await prisma.highlight.findFirst({
       take: 1,
       skip: skip,
@@ -174,16 +187,76 @@ export const getBonusHighlights = async (
     if (!highlight) continue;
 
     const isLongEnough = highlight.content.length > 25;
+    if (!isLongEnough) continue;
+
+    const isNotTooLong = highlight.content.length <= 600;
+    if (!isNotTooLong) continue;
+
     const regexSentence = new RegExp(/^([A-Z])(.*)([.?!])$/g);
     const isSentence = regexSentence.test(highlight.content);
+    if (!isSentence) continue;
 
-    if (isLongEnough && isSentence) {
-      const lang = lngDetector.detect(highlight.content);
-      const isEnglish = lang[0][0] === "english";
-      const hasBook = bookTitles.includes(highlight.book.title);
-      if (isEnglish && !hasBook) highlights.push(highlight);
-    }
+    const lang = lngDetector.detect(highlight.content);
+    const isEnglish = lang[0][0] === "english";
+    if (!isEnglish) continue;
+
+    const hasBook = bookTitles.includes(highlight.book.title);
+    if (!hasBook) highlights.push(highlight);
   }
 
   return highlights;
+};
+
+export const saveBooksTagsAndUniqueId = async (userEmail: string): Promise<void> => {
+  const books = await prisma.book.findMany({
+    take: 15,
+    where: {
+      user: userEmail,
+      AND: {
+        asin: null,
+        isbn: null,
+      },
+    },
+  });
+
+  console.log("books", books.length);
+  if (!books) return;
+
+  let index = 0;
+
+  while (index < books.length) {
+    console.log(index);
+    const book = books[index];
+    index++;
+
+    const googleBookDetails = await fetch(
+      `https://www.googleapis.com/books/v1/volumes?q=${book.title}`,
+    )
+      .then((data) => data.json())
+      .then((result) => {
+        if (result.items) return result.items[0];
+        else return result;
+      });
+
+    const categories: string[] = googleBookDetails?.volumeInfo?.categories || [];
+    const industryIdentifiers: { type: string; identifier: string }[] =
+      googleBookDetails?.volumeInfo?.industryIdentifiers || [];
+
+    if (categories.length && industryIdentifiers.length) {
+      await prisma.book.update({
+        where: {
+          id: book.id,
+        },
+        data: {
+          isbn: industryIdentifiers[0].identifier,
+          tags: {
+            connectOrCreate: categories.map((tag) => ({
+              where: { name: tag },
+              create: { name: tag },
+            })),
+          },
+        },
+      });
+    }
+  }
 };
