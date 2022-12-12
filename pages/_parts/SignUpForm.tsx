@@ -39,7 +39,7 @@ const SignUp = (): JSX.Element => {
         if (timezone) {
           axios.post("/api/create_cron_job", {
             email,
-            timezone: timezone,
+            timezone: timezone || "UTC",
           });
         }
       })
@@ -109,9 +109,9 @@ const SignUp = (): JSX.Element => {
         </div>
 
         <div className="flex justify-center p-4 mt-4 space-x-2 text-center">
-          <p className="font-medium text-gray-700  hover:text-gray-900">Already have an account?</p>
+          <p className="font-medium text-gray-700 hover:text-gray-900">Already have an account?</p>
           <Link href="/sign_in">
-            <a className="font-medium text-blue-700  hover:text-blue-900">Sign in.</a>
+            <a className="font-medium text-blue-700 hover:text-blue-900">Sign in.</a>
           </Link>
         </div>
       </form>

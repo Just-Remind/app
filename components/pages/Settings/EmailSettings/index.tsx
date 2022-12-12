@@ -1,19 +1,19 @@
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 
 import { Spinner } from "components/ui";
+import { UserContext } from "context";
 import { useGetCronJob } from "services/cronjobs";
 import { useToast } from "utils/hooks";
 
-import CreateCronJob from "./CreateCronJob";
-import Settings from "./Settings";
+import CreateCronJob from "./parts/CreateCronJob";
+import Settings from "./parts/Settings";
 
-type Props = {
-  userEmail: string;
-};
+const EmailSettings = (): JSX.Element => {
+  // CONTEXT
+  const user = useContext(UserContext);
 
-const EmailSettings = ({ userEmail }: Props): JSX.Element => {
   // RQ
-  const { data: cronJob, isLoading } = useGetCronJob(userEmail);
+  const { data: cronJob, isLoading } = useGetCronJob(user.email);
 
   // HOOKS
   const [toast, setToast, clearToast] = useToast();
@@ -39,7 +39,7 @@ const EmailSettings = ({ userEmail }: Props): JSX.Element => {
     <>
       {toast}
 
-      <div className={`${isLoading ? "" : "divide-y divide-gray-200"} `}>
+      <div className={`${isLoading ? "" : "divide-y divide-gray-200 mb-10"}`}>
         <div className="mb-4 space-y-1">
           <h3 className="text-lg font-medium leading-6 text-gray-900">Email Settings</h3>
           <p className="max-w-2xl text-sm text-gray-500">

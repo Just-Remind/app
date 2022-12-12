@@ -13,6 +13,9 @@ export type Book = {
   title: string;
   author: string;
   enabled: boolean;
+  asin?: string;
+  isbn?: string;
+  tags?: string[];
   highlights: Highlight[];
 };
 
@@ -26,4 +29,6 @@ export type CronJob = {
   highlightsPerEmail: number;
   highlightsQualityFilter: boolean;
   cycleMode: boolean;
+  bonusHighlightEnabled: boolean;
+  bonusHighlightsPerEmail: number;
 };

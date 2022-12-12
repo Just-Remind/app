@@ -53,6 +53,16 @@ type EditCycleMode = {
   cycleMode: boolean;
 };
 
+type EditBonusHighlightEnabled = {
+  cronId: number;
+  enabled: boolean;
+};
+
+type EditBonusHighlightNumber = {
+  cronId: number;
+  number: number;
+};
+
 // ========= CREATE CRON JOB =========
 const createCronJob = (payload: CreateCronJobPayload): Promise<void> =>
   axios.post("/api/create_cron_job", payload);
@@ -172,6 +182,36 @@ const useEditCycleMode = (): UseMutationResult<void, unknown, EditCycleMode, unk
   });
 };
 
+// ========= EDIT BONUS HIGHLIGHT ENABLED =========
+const editBonusHighlightEnabled = (payload: EditBonusHighlightEnabled): Promise<void> =>
+  axios.post("/api/edit_cron_bonus_highlight_enabled", payload);
+
+// eslint-disable-next-line prettier/prettier
+const useEditBonusHighlightEnabled = (): UseMutationResult<void, unknown, EditBonusHighlightEnabled, unknown> => {
+  const queryClient = useQueryClient();
+  return useMutation((payload: EditBonusHighlightEnabled) => editBonusHighlightEnabled(payload), {
+    onSuccess: () => {
+      queryClient.invalidateQueries("cronJob");
+    },
+  });
+};
+
+// ========= EDIT BONUS HIGHLIGHT NUMBER =========
+const editBonusHighlightNumber = (payload: EditBonusHighlightNumber): Promise<void> => {
+  console.log("payload", payload);
+  return axios.post("/api/edit_cron_bonus_highlight_number", payload);
+};
+
+// eslint-disable-next-line prettier/prettier
+const useEditBonusHighlightNumber = (): UseMutationResult<void, unknown, EditBonusHighlightNumber, unknown> => {
+  const queryClient = useQueryClient();
+  return useMutation((payload: EditBonusHighlightNumber) => editBonusHighlightNumber(payload), {
+    onSuccess: () => {
+      queryClient.invalidateQueries("cronJob");
+    },
+  });
+};
+
 export {
   useCreateCronJob,
   useGetCronJob,
@@ -182,4 +222,6 @@ export {
   useEditHighlightsPerEmail,
   useEditHighlightsQualityFilter,
   useEditCycleMode,
+  useEditBonusHighlightEnabled,
+  useEditBonusHighlightNumber,
 };

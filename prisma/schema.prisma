@@ -23,6 +23,8 @@ model CronJob {
   currentCycle            Int       @default(1)
   cycleMode               Boolean   @default(true)
   cycleStartDate          DateTime?
+  bonusHighlightEnabled   Boolean   @default(true)
+  bonusHighlightsPerEmail Int       @default(3)
 }
 
 model Book {

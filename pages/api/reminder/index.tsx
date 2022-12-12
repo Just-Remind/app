@@ -2,7 +2,7 @@ import sgMail from "@sendgrid/mail";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 import { getEmail } from "../_utils";
-import { getSettings, Highlight } from "./_utils";
+import { getSettings, Highlight, saveBooksTagsAndUniqueId } from "./_utils";
 import {
   getHighlights,
   getRandomHighlights,
@@ -14,6 +14,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse): Promise<void>
   // 1. RETRIEVE USER EMAIL
   const userEmail = req.query.email as string;
   if (!userEmail) return res.status(500).json("No email provided");
+
+  // [TEMPORARY] - TAGS & ASIN / ISBN
+  await saveBooksTagsAndUniqueId(userEmail);
 
   // 2. FETCH USER SETTINGS
   const settings = await getSettings(userEmail);
@@ -35,26 +38,34 @@ const handler = async (req: NextApiRequest, res: NextApiResponse): Promise<void>
 
   let selectedHighlights: Highlight[] = [];
 
-  if (highlights.length >= highlightsPerEmail) {
-    selectedHighlights = getRandomHighlights(highlights, highlightsPerEmail, settings);
-  } else {
-    const nextCyclehighlights = await getHighlights(
-      userEmail,
-      new Date(),
-      highlightsQualityFilter,
-      highlights,
-    );
-    const shortCount = highlightsPerEmail - highlights.length;
-    const randomRestHighlights = getRandomHighlights(nextCyclehighlights, shortCount, settings);
-    selectedHighlights = [...highlights, ...randomRestHighlights];
+  if (highlights.length > 0) {
+    if (highlights.length >= highlightsPerEmail) {
+      selectedHighlights = getRandomHighlights(highlights, highlightsPerEmail, settings);
+    } else {
+      const nextCyclehighlights = await getHighlights(
+        userEmail,
+        new Date(),
+        highlightsQualityFilter,
+        highlights,
+      );
+      const shortCount = highlightsPerEmail - highlights.length;
+      const randomRestHighlights = getRandomHighlights(nextCyclehighlights, shortCount, settings);
+      selectedHighlights = [...highlights, ...randomRestHighlights];
 
-    isNewCycleStartDateNeeded = true;
+      isNewCycleStartDateNeeded = true;
+    }
   }
 
-  // 6. GENERATE EMAIL
-  const email = getEmail(selectedHighlights, userEmail, greeting);
+  // 6. GET BONUS HIGHLIGHTS
+  const bonusHighlights = undefined;
+  // if (settings.bonusHighlightEnabled) {
+  //   bonusHighlights = await getBonusHighlights(userEmail, settings.bonusHighlightsPerEmail);
+  // }
 
-  // 7. SGMAIL SETTINGS
+  // 7. GENERATE EMAIL
+  const email = getEmail(selectedHighlights, userEmail, greeting, bonusHighlights);
+
+  // 8. SGMAIL SETTINGS
   sgMail.setApiKey(process.env.SENDGRID_API_KEY || "");
   const msg = {
     to: userEmail,
@@ -67,7 +78,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse): Promise<void>
     html: email,
   };
 
-  // 8. SEND EMAIL
+  // 9. SEND EMAIL
   sgMail.send(msg).then(
     async () => {
       await updateLastSentOn(selectedHighlights);

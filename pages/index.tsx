@@ -2,7 +2,6 @@ import { ReactElement, useEffect, useState } from "react";
 
 import { withSSRContext } from "aws-amplify";
 import type { GetServerSideProps } from "next";
-// import { useRouter } from "next/router";
 
 import Application from "components/Application";
 import { UserContextProvider } from "context";
@@ -21,9 +20,6 @@ type CognitoAttributes = {
 const App = ({ user }: Props): null | ReactElement => {
   // STATE
   const [isMounted, setIsMounted] = useState(false);
-
-  // next router
-  // const router = useRouter();
 
   // hooks
   useEffect(() => {
