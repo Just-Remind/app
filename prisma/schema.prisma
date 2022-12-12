@@ -36,6 +36,9 @@ model Book {
   user       String
   enabled    Boolean     @default(true)
   highlights Highlight[]
+  isbn       String?
+  asin       String?
+  tags       Tag[]
 
   @@unique([user, title])
 }
@@ -52,4 +55,12 @@ model Highlight {
   book         Book      @relation(fields: [bookId], references: [id], onDelete: Cascade)
 
   @@unique([bookId, content])
+}
+
+model Tag {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  name      String   @unique
+  books     Book[]
 }
