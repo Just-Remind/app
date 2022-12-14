@@ -5,6 +5,7 @@ import axios from "axios";
 import { Button, Cards, Modal } from "components/ui";
 import { UserContext } from "context";
 import { Card } from "types";
+import { MESSAGES } from "utils/constants";
 import { useToast, useModalContent } from "utils/hooks";
 
 import ImportMyClippingsModal from "./SyncDropdown/ImportMyClippingsModal";
@@ -34,6 +35,8 @@ const NoBooksInstructions = (): JSX.Element => {
 
   const handleConnectWhispersync = (): void => {
     clearToast();
+    const isChrome = !!window.chrome && (!!window.chrome.webstore || !!window.chrome.runtime);
+    if (!isChrome) return setToast({ type: "error", message: MESSAGES.onlyChromeSupport });
 
     const extensionId = process.env.NEXT_PUBLIC_CHROME_EXTENSION_ID;
     if (extensionId) {
@@ -59,7 +62,7 @@ const NoBooksInstructions = (): JSX.Element => {
   const syncBookOptions: Card[] = [
     {
       title: "Kindle",
-      description: "Sync your Kindle higlhights via Amazon",
+      description: "Sync your Kindle higlhights via Amazon (Google Chrome only)",
       btnText: "Import",
       onClick: handleConnectWhispersync,
     },

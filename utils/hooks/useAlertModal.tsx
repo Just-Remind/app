@@ -12,7 +12,7 @@ export type AlertConfig = {
 type UseAlertModalReturn = [
   alert: JSX.Element | null,
   setAlert: (config: AlertConfig) => void,
-  clearAlert: () => void
+  clearAlert: () => void,
 ];
 
 const useAlertModal = (): UseAlertModalReturn => {
@@ -29,9 +29,7 @@ const useAlertModal = (): UseAlertModalReturn => {
     setAlertConfig(null);
   }, []);
 
-  const alertModal = alertConfig && (
-    <AlertModal {...alertConfig} open={open} setOpen={setOpen} />
-  );
+  const alertModal = alertConfig && <AlertModal {...alertConfig} open={open} setOpen={setOpen} />;
 
   return [alertModal, setAlertModal, clearAlertModal];
 };

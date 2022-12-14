@@ -9,3 +9,19 @@ export const PASSWORD_REGEX = /(?=.*[a-z])(?=.*[A-Z])(?=.*(\d|\W)).{8,}/;
 // (?=.*[A-Z]) use positive look ahead to see if at least one upper case letter exists
 // (?=.*(\d|\W)) use positive look ahead to see if at least one digit exists
 // {8,} at least 8 length
+
+export const MESSAGES = {
+  onlyChromeSupport: (
+    <p>
+      To upload your books via Amazon, you need to be on a compuser using{" "}
+      <a
+        href="https://www.google.com/chrome/"
+        target="_blank"
+        rel="noreferrer"
+        className="text-blue-700 hover:text-blue-900"
+      >
+        Google Chrome.
+      </a>
+    </p>
+  ),
+};

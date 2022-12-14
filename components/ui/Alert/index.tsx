@@ -6,7 +6,7 @@ import styles from "./Alert.module.css";
 
 type Props = {
   type?: "success" | "error";
-  message: string;
+  message: string | JSX.Element;
   close: () => void;
 };
 

@@ -17,7 +17,8 @@ const Application = (): JSX.Element => {
     Auth.currentAuthenticatedUser().then((result) => {
       const userEmail = result.attributes.email;
       const extensionId = process.env.NEXT_PUBLIC_CHROME_EXTENSION_ID;
-      if (extensionId) {
+      const isChrome = !!window.chrome && (!!window.chrome.webstore || !!window.chrome.runtime);
+      if (extensionId && isChrome) {
         chrome.runtime.sendMessage(extensionId, { userEmail }, (response) => {
           console.log("response", response);
         });
