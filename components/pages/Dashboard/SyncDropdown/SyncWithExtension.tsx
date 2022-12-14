@@ -20,7 +20,7 @@ const SyncWithExtension = (): JSX.Element => {
     const isChrome = !!window.chrome && (!!window.chrome.webstore || !!window.chrome.runtime);
     if (!isChrome) return setToast({ type: "error", message: MESSAGES.onlyChromeSupport });
 
-    if (extensionId) {
+    if (extensionId && chrome.runtime) {
       chrome.runtime.sendMessage(extensionId, { userEmail: user.email });
     }
   };

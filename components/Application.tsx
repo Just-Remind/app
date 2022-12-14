@@ -18,7 +18,7 @@ const Application = (): JSX.Element => {
       const userEmail = result.attributes.email;
       const extensionId = process.env.NEXT_PUBLIC_CHROME_EXTENSION_ID;
       const isChrome = !!window.chrome && (!!window.chrome.webstore || !!window.chrome.runtime);
-      if (extensionId && isChrome) {
+      if (extensionId && isChrome && chrome.runtime) {
         chrome.runtime.sendMessage(extensionId, { userEmail }, (response) => {
           console.log("response", response);
         });

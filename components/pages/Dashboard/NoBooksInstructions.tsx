@@ -39,7 +39,7 @@ const NoBooksInstructions = (): JSX.Element => {
     if (!isChrome) return setToast({ type: "error", message: MESSAGES.onlyChromeSupport });
 
     const extensionId = process.env.NEXT_PUBLIC_CHROME_EXTENSION_ID;
-    if (extensionId) {
+    if (extensionId && chrome.runtime) {
       chrome.runtime.sendMessage(extensionId, { userEmail: user.email }, (response) => {
         if (response) {
           window.open("https://read.amazon.com/notebook?ref_=kcr_notebook_lib", "_blank");
