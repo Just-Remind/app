@@ -36,26 +36,24 @@ const handler = async (req: NextApiRequest, res: NextApiResponse): Promise<void>
   if (!cycleStartDate) setNewCycleStartDate(userEmail);
 
   const highlights = await getHighlights(userEmail, cycleStartDate, highlightsQualityFilter);
-  console.log("highlights", highlights);
+  console.log("highlights", highlights.length);
 
   let selectedHighlights: Highlight[] = [];
 
-  if (highlights.length > 0) {
-    if (highlights.length >= highlightsPerEmail) {
-      selectedHighlights = getRandomHighlights(highlights, highlightsPerEmail, settings);
-    } else {
-      const nextCyclehighlights = await getHighlights(
-        userEmail,
-        new Date(),
-        highlightsQualityFilter,
-        highlights,
-      );
-      const shortCount = highlightsPerEmail - highlights.length;
-      const randomRestHighlights = getRandomHighlights(nextCyclehighlights, shortCount, settings);
-      selectedHighlights = [...highlights, ...randomRestHighlights];
+  if (highlights.length >= highlightsPerEmail) {
+    selectedHighlights = getRandomHighlights(highlights, highlightsPerEmail, settings);
+  } else {
+    const nextCyclehighlights = await getHighlights(
+      userEmail,
+      new Date(),
+      highlightsQualityFilter,
+      highlights,
+    );
+    const shortCount = highlightsPerEmail - highlights.length;
+    const randomRestHighlights = getRandomHighlights(nextCyclehighlights, shortCount, settings);
+    selectedHighlights = [...highlights, ...randomRestHighlights];
 
-      isNewCycleStartDateNeeded = true;
-    }
+    isNewCycleStartDateNeeded = true;
   }
 
   // 6. GET BONUS HIGHLIGHTS
