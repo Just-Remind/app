@@ -21,6 +21,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse): Promise<void>
   // 2. FETCH USER SETTINGS
   const settings = await getSettings(userEmail);
   if (!settings) return res.status(500).json("No user settings found");
+  console.log("settings", settings);
 
   const cronExpression = settings.cronExpression.split(" ");
   const hour = Number(cronExpression[1]);
@@ -35,6 +36,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse): Promise<void>
   if (!cycleStartDate) setNewCycleStartDate(userEmail);
 
   const highlights = await getHighlights(userEmail, cycleStartDate, highlightsQualityFilter);
+  console.log("highlights", highlights);
 
   let selectedHighlights: Highlight[] = [];
 
@@ -64,6 +66,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse): Promise<void>
 
   // 7. GENERATE EMAIL
   const email = getEmail(selectedHighlights, userEmail, greeting, bonusHighlights);
+  console.log("email");
 
   // 8. SGMAIL SETTINGS
   sgMail.setApiKey(process.env.SENDGRID_API_KEY || "");

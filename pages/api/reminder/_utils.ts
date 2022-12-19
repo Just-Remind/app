@@ -236,7 +236,8 @@ export const saveBooksTagsAndUniqueId = async (userEmail: string): Promise<void>
       .then((result) => {
         if (result.items) return result.items[0];
         else return result;
-      });
+      })
+      .catch((error) => console.log("error", error));
 
     const categories: string[] = googleBookDetails?.volumeInfo?.categories || [];
     const industryIdentifiers: { type: string; identifier: string }[] =
