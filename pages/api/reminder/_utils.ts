@@ -220,7 +220,7 @@ export const saveBooksTagsAndUniqueId = async (userEmail: string): Promise<void>
   });
 
   console.log("books", books.length);
-  if (!books) return;
+  if (!books || books.length === 0) return;
 
   let index = 0;
 
