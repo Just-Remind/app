@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Amplify from "aws-amplify";
 import type { AppProps } from "next/app";
 import { QueryClient, QueryClientProvider } from "react-query";
-// import { ReactQueryDevtools } from "react-query/devtools";
+import { ReactQueryDevtools } from "react-query/devtools";
 
 import { AppWrapper } from "components/layouts";
 import awsconfig from "src/aws-exports";
@@ -39,7 +39,7 @@ const MyApp = ({ Component, pageProps }: AppProps): JSX.Element | null => {
       <AppWrapper>
         <Component {...pageProps} />
       </AppWrapper>
-      {/* <ReactQueryDevtools initialIsOpen={true} /> */}
+      <ReactQueryDevtools />
     </QueryClientProvider>
   );
 };

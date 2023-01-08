@@ -197,10 +197,8 @@ const useEditBonusHighlightEnabled = (): UseMutationResult<void, unknown, EditBo
 };
 
 // ========= EDIT BONUS HIGHLIGHT NUMBER =========
-const editBonusHighlightNumber = (payload: EditBonusHighlightNumber): Promise<void> => {
-  console.log("payload", payload);
-  return axios.post("/api/edit_cron_bonus_highlight_number", payload);
-};
+const editBonusHighlightNumber = (payload: EditBonusHighlightNumber): Promise<void> =>
+  axios.post("/api/edit_cron_bonus_highlight_number", payload);
 
 // eslint-disable-next-line prettier/prettier
 const useEditBonusHighlightNumber = (): UseMutationResult<void, unknown, EditBonusHighlightNumber, unknown> => {

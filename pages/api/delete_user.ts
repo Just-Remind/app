@@ -15,13 +15,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse): Promise<void>
       `https://www.easycron.com/rest/delete?token=${process.env.EASY_CRON_API_KEY}&id=${cronJob.jobId}`,
     );
 
-    // delete all books
-    await prisma.book.deleteMany({
-      where: {
-        user: req.body.email,
-      },
-    });
-
     res.status(200).json("success");
   } catch (error) {
     res.status(500).json(error);

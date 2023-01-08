@@ -161,7 +161,7 @@ export const getBonusHighlights = async (
       },
     },
   });
-  console.log("highlightsCount", highlightsCount);
+
   if (highlightsCount < bonusHighlightNb) return null;
 
   const highlights: Highlight[] = [];
@@ -219,13 +219,11 @@ export const saveBooksTagsAndUniqueId = async (userEmail: string): Promise<void>
     },
   });
 
-  console.log("books", books.length);
   if (!books || books.length === 0) return;
 
   let index = 0;
 
   while (index < books.length) {
-    console.log(index);
     const book = books[index];
     index++;
 

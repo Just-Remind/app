@@ -11,7 +11,7 @@ export default function Document(): JSX.Element {
         <meta name="viewport" content="initial-scale=1, viewport-fit=cover" />
       </head>
       <body>
-        <div id={"globalLoader"}>
+        <div id="globalLoader">
           <div className="loader">
             <div />
             <div />

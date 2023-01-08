@@ -8,7 +8,6 @@ import {
 } from "react-query";
 
 import { User, Book } from "types";
-import { nestedArraysBuilder } from "utils";
 
 type AddBooksPayload = {
   user: User;
@@ -63,8 +62,7 @@ const useDeleteBook = (): UseMutationResult<void, unknown, number, unknown> => {
 
 // ****************** CREATE BOOK ******************
 
-const addBooks = (payload: AddBooksPayload): Promise<void> =>
-  axios.post("/api/add_book", payload);
+const addBooks = (payload: AddBooksPayload): Promise<void> => axios.post("/api/add_book", payload);
 
 // eslint-disable-next-line prettier/prettier
 const useAddBooks = (): UseMutationResult<void, unknown, AddBooksPayload, unknown> => {
@@ -78,8 +76,7 @@ const useAddBooks = (): UseMutationResult<void, unknown, AddBooksPayload, unknow
 
 // ****************** EDIT BOOK ******************
 
-const editBook = (payload: EditBookPayload): Promise<void> =>
-  axios.post("/api/edit_book", payload);
+const editBook = (payload: EditBookPayload): Promise<void> => axios.post("/api/edit_book", payload);
 
 // eslint-disable-next-line prettier/prettier
 const useEditBook = (): UseMutationResult<void, unknown, EditBookPayload, unknown> => {

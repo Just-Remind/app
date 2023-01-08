@@ -9,7 +9,6 @@ const AppWrapper = ({ children }: Props): JSX.Element => (
     <Head>
       <title>Just Remind</title>
       <meta name="description" content="Your kindle highlights served daily" />
-      {/* <link rel="icon" href="/favicon.ico" /> */}
     </Head>
     {children}
   </>

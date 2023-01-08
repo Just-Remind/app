@@ -125,64 +125,6 @@ const Landing = (): JSX.Element => {
           </div>
         </div>
       </div>
-
-      {/* <div
-        style={{ backgroundColor: "#FDF0E4" }}
-        className="relative flex flex-col min-h-screen p-8 space-y-4"
-      >
-        <div className="mb-4 text-center">
-          <h2 style={{ color: "#FA9B55" }} className="mb-2 text-2xl font-bold">
-            Stay inspired every day.
-          </h2>
-          <p>Get a daily email customised to your needs.</p>
-        </div>
-        <div className="rounded-lg shadow-lg max-h-fit">
-          <Image className="rounded-lg" src={emailImage} alt="email with random books highlights" />
-        </div>
-      </div> */}
-
-      {/* Feature section with grid */}
-      {/* <div className="relative min-h-screen py-16 bg-white sm:py-24 lg:py-32">
-        <div className="max-w-md px-4 mx-auto text-center sm:max-w-3xl sm:px-6 lg:max-w-7xl lg:px-8">
-          <h2 style={{ color: "#FA9B55" }} className="text-lg font-semibold text-cyan-600">
-            Be an early bird.
-          </h2>
-          <p
-            style={{ color: "#FA9B55" }}
-            className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl"
-          >
-            Join the beta.
-          </p>
-          <div className="mt-12">
-            <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-              {[
-                {
-                  icon: BeakerIcon,
-                  name: "Kindle Only (for now)",
-                  description:
-                    "Ac tincidunt sapien vehicula erat auctor pellentesque rhoncus. Et magna sit morbi vitae lobortis.",
-                },
-              ].map((feature) => (
-                <div key={feature.name} className="pt-6">
-                  <div className="flow-root px-6 pb-8 rounded-lg shadow-lg bg-gray-50">
-                    <div className="-mt-6">
-                      <div>
-                        <span className="inline-flex items-center justify-center p-3 rounded-md shadow-lg bg-gradient-to-r from-green-300 to-green-400">
-                          <feature.icon className="w-6 h-6 text-white" aria-hidden="true" />
-                        </span>
-                      </div>
-                      <h3 className="mt-8 text-lg font-medium tracking-tight text-gray-900">
-                        {feature.name}
-                      </h3>
-                      <p className="mt-5 text-base text-gray-500">{feature.description}</p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div> */}
     </>
   );
 };
