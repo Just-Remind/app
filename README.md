@@ -1,34 +1,69 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Just Remind
+
+First off, thank you for considering contributing to this project!
+
+Just Remind helps you remember the Kindle books you read by sending you a daily email with your highlights.
 
 ## Getting Started
 
-First, run the development server:
+These instructions will get you a copy of the project up and running on your local machine for development purposes.
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+If any of the below infor
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Prerequisites
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+You will first need to create an account on justremind.app. You will be able to access the application live and locally with the same account.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+### Installing
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+- clone the repo on your machine
+- run `yarn install` to install the dependencies
+- get a local postgresql database (check this [article](https://www.sqlshack.com/setting-up-a-postgresql-database-on-mac/))
+  - if you don't have brew, you can install it with this command `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"` ([brew.sh](https://brew.sh/))
+  - if you do have brew installed already, make sure you have the latest version by running `brew update`
+  - run `brew install postgresql` to install postgresql
+  - start the service by running `brew services start postgresql`
+  - once the service is started, you can run `psql postgres` to access it
+  - create a new role with these commands:
+  ```
+  CREATE ROLE justremind WITH LOGIN PASSWORD ‘password’;
+  ALTER ROLE justremind CREATEDB;
+  ```
+  - quit the current session with `\q` and connect a new one with `psql postgres -U justremind`
+  - create the database `CREATE DATABASE justremind;`
+  - you can see it by running `\l`
+  - create a `.env` file add add `DATABASE_URL="postgresql://justremind:password@localhost:5432/justremind"`
+  - run `npx prisma migrate dev` to apply the migrations
+- run `yarn dev` to start the server
+- visit localhost:3000 to see the application and login
+- import the My Clippings.txt which is located in the project folder (it contains a few highlights to populate your database)
+- and that's it! you now have the basic setup to start contributing! 🥳
+## Built With
 
-## Learn More
+* [Next.js](https://nextjs.org/) - The React web framework
+* [Vercel](https://vercel.com/) - Hosting platform
+* [AWS Cognito](https://aws.amazon.com/cognito/?nc1=h_ls) - Management of user access and identity
+* [Heroku Postgres](https://devcenter.heroku.com/articles/heroku-postgresql) - Production database
+* [Prisma](https://www.prisma.io/) - Node.js and Typescript ORM
+* [Beefree](https://beefree.io/) - Email design editor
+* [Sendgrid](https://sendgrid.com/) - Email delivery service
+* [Easycron](https://www.easycron.com/) - Cron service triggering the sending of emails
 
-To learn more about Next.js, take a look at the following resources:
+## Contributing
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Versioning
 
-## Deploy on Vercel
+We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/Just-Remind/app/tags).
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Authors
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+* [**Loïc Boset**](https://github.com/loicboset) - *Initial work*
+
+See also the list of [contributors](https://github.com/Just-Remind/app/graphs/contributors) who participated in this project.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+
