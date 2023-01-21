@@ -112,6 +112,12 @@ const ImportMyClippingsModal = (props: Props): JSX.Element => {
         }
       });
 
+      if (booksToImport.length === 0) {
+        return setAlert({
+          type: "error",
+          message: "No books were found.",
+        });
+      }
       addBooks({ user, books: booksToImport });
     };
     reader.readAsText(file);
