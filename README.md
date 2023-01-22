@@ -1,6 +1,6 @@
 # Just Remind
 
-First off, thank you for considering contributing to this project!
+First off, thank you for considering contributing to this project! 🙏🥳
 
 Just Remind helps you remember the Kindle books you read by sending you a daily email with your highlights.
 
