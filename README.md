@@ -8,17 +8,17 @@ Just Remind helps you remember the Kindle books you read by sending you a daily 
 
 These instructions will get you a copy of the project up and running on your local machine for development purposes.
 
-If any of the below infor
+If you have troubles with any of the information below, create a question in the [discussions](https://github.com/Just-Remind/app/discussions).
 
 ### Prerequisites
 
-You will first need to create an account on justremind.app. You will be able to access the application live and locally with the same account.
+You will first need to create an account on [Just Remind](https://justremind.app/). You will be able to access the application live and locally with the same account.
 
 ### Installing
 
 - clone the repo on your machine
 - run `yarn install` to install the dependencies
-- get a local postgresql database (check this [article](https://www.sqlshack.com/setting-up-a-postgresql-database-on-mac/))
+- get a local postgresql database (check [this article](https://www.sqlshack.com/setting-up-a-postgresql-database-on-mac/) for all the details or follow the steps below)
   - if you don't have brew, you can install it with this command `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"` ([brew.sh](https://brew.sh/))
   - if you do have brew installed already, make sure you have the latest version by running `brew update`
   - run `brew install postgresql` to install postgresql
@@ -32,10 +32,10 @@ You will first need to create an account on justremind.app. You will be able to 
   - quit the current session with `\q` and connect a new one with `psql postgres -U justremind`
   - create the database `CREATE DATABASE justremind;`
   - you can see it by running `\l`
-  - create a `.env` file add add `DATABASE_URL="postgresql://justremind:password@localhost:5432/justremind"`
+  - create a `.env` file and add `DATABASE_URL="postgresql://justremind:password@localhost:5432/justremind"`
   - run `npx prisma migrate dev` to apply the migrations
 - run `yarn dev` to start the server
-- visit localhost:3000 to see the application and login
+- visit [http://localhost:3000](http://localhost:3000/) and login to the application
 - import the My Clippings.txt which is located in the project folder (it contains a few highlights to populate your database)
 - and that's it! you now have the basic setup to start contributing! 🥳
 ## Built With
