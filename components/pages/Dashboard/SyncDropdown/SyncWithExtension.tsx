@@ -17,7 +17,7 @@ const SyncWithExtension = (): JSX.Element => {
   // METHODS
   const sendInfoToChromeExtension = (): void => {
     const extensionId = process.env.NEXT_PUBLIC_CHROME_EXTENSION_ID;
-    const isChrome = !!window.chrome && (!!window.chrome.webstore || !!window.chrome.runtime);
+    const isChrome = !!window.chrome && !!window.chrome.runtime;
     if (!isChrome) return setToast({ type: "error", message: MESSAGES.onlyChromeSupport });
 
     if (extensionId && chrome.runtime) {

@@ -35,7 +35,7 @@ const NoBooksInstructions = (): JSX.Element => {
 
   const handleConnectWhispersync = (): void => {
     clearToast();
-    const isChrome = !!window.chrome && (!!window.chrome.webstore || !!window.chrome.runtime);
+    const isChrome = !!window.chrome && !!window.chrome.runtime;
     if (!isChrome) return setToast({ type: "error", message: MESSAGES.onlyChromeSupport });
 
     const extensionId = process.env.NEXT_PUBLIC_CHROME_EXTENSION_ID;
