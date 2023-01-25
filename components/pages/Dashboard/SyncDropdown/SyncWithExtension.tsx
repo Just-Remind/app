@@ -17,11 +17,29 @@ const SyncWithExtension = (): JSX.Element => {
   // METHODS
   const sendInfoToChromeExtension = (): void => {
     const extensionId = process.env.NEXT_PUBLIC_CHROME_EXTENSION_ID;
-    const isChrome = !!chrome && !!chrome.runtime;
+    const isChrome = !!chrome;
     if (!isChrome) return setToast({ type: "info", message: MESSAGES.onlyChromeSupport });
 
     if (extensionId && chrome.runtime) {
       chrome.runtime.sendMessage(extensionId, { userEmail: user.email });
+    } else {
+      setToast({
+        type: "info",
+        message: (
+          <span>
+            You first need to add our{" "}
+            <a
+              rel="noreferrer"
+              target="_blank"
+              className="text-blue-500 underline hover:text-blue-700"
+              href="https://chrome.google.com/webstore/detail/just-remind-chrome-extens/iidldfielonfgiabbjjkbigjjclcpefa"
+            >
+              Chrome extension
+            </a>{" "}
+            before importing your books from amazon.
+          </span>
+        ),
+      });
     }
   };
 
