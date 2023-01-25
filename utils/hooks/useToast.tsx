@@ -10,7 +10,7 @@ export type ToastConfig = {
 type UseToastReturn = [
   toast: JSX.Element | null,
   setToast: (config: ToastConfig) => void,
-  clearToast: () => void
+  clearToast: () => void,
 ];
 
 const useToast = (): UseToastReturn => {
@@ -28,9 +28,7 @@ const useToast = (): UseToastReturn => {
     setToastConfig(null);
   }, []);
 
-  const toast = toastConfig && (
-    <Toast {...toastConfig} show={show} setShow={setShow} />
-  );
+  const toast = toastConfig && <Toast {...toastConfig} show={show} setShow={setShow} />;
 
   return [toast, setToast, clearToast];
 };
