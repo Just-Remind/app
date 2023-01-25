@@ -35,7 +35,7 @@ const NoBooksInstructions = (): JSX.Element => {
 
   const handleConnectWhispersync = (): void => {
     clearToast();
-    const isChrome = !!chrome && !!chrome.runtime;
+    const isChrome = !!chrome;
     if (!isChrome) return setToast({ type: "info", message: MESSAGES.onlyChromeSupport });
 
     const extensionId = process.env.NEXT_PUBLIC_CHROME_EXTENSION_ID;
@@ -45,15 +45,28 @@ const NoBooksInstructions = (): JSX.Element => {
           window.open("https://read.amazon.com/notebook?ref_=kcr_notebook_lib", "_blank");
         } else {
           setToast({
-            type: "info",
-            message:
-              "You first need to add our Chrome extension before importing your books from amazon.",
+            type: "error",
+            message: "Reload and try again or send us a message in the Discord channel.",
           });
-          window.open(
-            "https://chrome.google.com/webstore/detail/just-remind-chrome-extens/iidldfielonfgiabbjjkbigjjclcpefa",
-            "_blank",
-          );
         }
+      });
+    } else {
+      setToast({
+        type: "info",
+        message: (
+          <span>
+            You first need to add our{" "}
+            <a
+              rel="noreferrer"
+              target="_blank"
+              className="text-blue-500 underline hover:text-blue-700"
+              href="https://chrome.google.com/webstore/detail/just-remind-chrome-extens/iidldfielonfgiabbjjkbigjjclcpefa"
+            >
+              Chrome extension
+            </a>{" "}
+            before importing your books from amazon.
+          </span>
+        ),
       });
     }
   };
