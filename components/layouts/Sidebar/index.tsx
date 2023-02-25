@@ -2,7 +2,13 @@
 import { Fragment, useState } from "react";
 
 import { Dialog, Transition } from "@headlessui/react";
-import { BookOpenIcon, AdjustmentsIcon, MenuAlt2Icon, XIcon } from "@heroicons/react/outline";
+import {
+  BookOpenIcon,
+  AdjustmentsIcon,
+  MenuAlt2Icon,
+  XIcon,
+  ShieldExclamationIcon,
+} from "@heroicons/react/outline";
 import { Link } from "@tanstack/react-location";
 import { useRouter as useReactLocationRouter } from "@tanstack/react-location";
 import { Auth } from "aws-amplify";
@@ -10,7 +16,7 @@ import Image from "next/image";
 import ExternalLink from "next/link";
 import { useRouter as useNextRouter } from "next/router";
 
-import { Button } from "components/ui";
+import { Button, Restricted } from "components/ui";
 import discordImage from "public/discord.svg";
 import classNames from "utils/classNames";
 
@@ -47,6 +53,12 @@ const Sidebar = ({ children }: Props): JSX.Element => {
       href: "/settings",
       icon: AdjustmentsIcon,
       current: pathname === "/settings",
+    },
+    {
+      name: "Admin",
+      href: "/admin",
+      icon: ShieldExclamationIcon,
+      current: pathname === "/admin",
     },
   ];
 
@@ -104,28 +116,29 @@ const Sidebar = ({ children }: Props): JSX.Element => {
                 <div className="flex-1 h-0 mt-5 overflow-y-auto">
                   <nav className="px-2 space-y-1">
                     {navigation.map((item) => (
-                      <Link
-                        key={item.name}
-                        to={item.href}
-                        onClick={handleCloseSlidebar}
-                        className={classNames(
-                          item.current
-                            ? "bg-gray-100 text-gray-900"
-                            : "text-gray-600 hover:bg-gray-50 hover:text-gray-900",
-                          "group flex items-center px-2 py-2 text-base font-medium rounded-md",
-                        )}
-                      >
-                        <item.icon
+                      <Restricted key={item.name} adminOnly={item.name === "Admin"}>
+                        <Link
+                          to={item.href}
+                          onClick={handleCloseSlidebar}
                           className={classNames(
                             item.current
-                              ? "text-gray-500"
-                              : "text-gray-400 group-hover:text-gray-500",
-                            "mr-4 flex-shrink-0 h-6 w-6",
+                              ? "bg-gray-100 text-gray-900"
+                              : "text-gray-600 hover:bg-gray-50 hover:text-gray-900",
+                            "group flex items-center px-2 py-2 text-base font-medium rounded-md",
                           )}
-                          aria-hidden="true"
-                        />
-                        {item.name}
-                      </Link>
+                        >
+                          <item.icon
+                            className={classNames(
+                              item.current
+                                ? "text-gray-500"
+                                : "text-gray-400 group-hover:text-gray-500",
+                              "mr-4 flex-shrink-0 h-6 w-6",
+                            )}
+                            aria-hidden="true"
+                          />
+                          {item.name}
+                        </Link>
+                      </Restricted>
                     ))}
                   </nav>
                 </div>
@@ -149,25 +162,29 @@ const Sidebar = ({ children }: Props): JSX.Element => {
             <div className="flex flex-col flex-grow mt-5">
               <nav className="flex-1 px-2 pb-4 space-y-1">
                 {navigation.map((item) => (
-                  <Link
-                    key={item.name}
-                    to={item.href}
-                    className={classNames(
-                      item.current
-                        ? "bg-gray-100 text-gray-900"
-                        : "text-gray-600 hover:bg-gray-50 hover:text-gray-900",
-                      "group flex items-center px-2 py-2 text-sm font-medium rounded-md",
-                    )}
-                  >
-                    <item.icon
+                  <Restricted key={item.name} adminOnly={item.name === "Admin"}>
+                    <Link
+                      key={item.name}
+                      to={item.href}
                       className={classNames(
-                        item.current ? "text-gray-500" : "text-gray-400 group-hover:text-gray-500",
-                        "mr-3 flex-shrink-0 h-6 w-6",
+                        item.current
+                          ? "bg-gray-100 text-gray-900"
+                          : "text-gray-600 hover:bg-gray-50 hover:text-gray-900",
+                        "group flex items-center px-2 py-2 text-sm font-medium rounded-md",
                       )}
-                      aria-hidden="true"
-                    />
-                    {item.name}
-                  </Link>
+                    >
+                      <item.icon
+                        className={classNames(
+                          item.current
+                            ? "text-gray-500"
+                            : "text-gray-400 group-hover:text-gray-500",
+                          "mr-3 flex-shrink-0 h-6 w-6",
+                        )}
+                        aria-hidden="true"
+                      />
+                      {item.name}
+                    </Link>
+                  </Restricted>
                 ))}
               </nav>
               <div className="flex items-center mx-2 space-x-2">
@@ -195,7 +212,7 @@ const Sidebar = ({ children }: Props): JSX.Element => {
               <div className="flex items-center ml-4 space-x-4 md:ml-6">
                 <a
                   className="text-sm text-gray-700 hover:text-gray-900"
-                  href="mailto:feedback@justremind.app?subject=Reporting issue"
+                  href="mailto:hello@justremind.app?subject=Reporting issue"
                 >
                   Report issue
                 </a>

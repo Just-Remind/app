@@ -25,3 +25,7 @@ export const MESSAGES = {
     </p>
   ),
 };
+
+export const QUERYKEYS = {
+  STARTERHIGHLIGHT: "starter_highlights",
+};

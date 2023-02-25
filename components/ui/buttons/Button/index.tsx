@@ -7,7 +7,6 @@ import styles from "./Button.module.css";
 
 type Props = {
   children?: React.ReactNode;
-  submit?: boolean;
   size?: "xs" | "sm" | "lg" | "xl" | "xxl" | "wide";
   color?: "red" | "purple" | "yellow" | "white" | "green" | "orange";
   disabled?: boolean;

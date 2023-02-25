@@ -12,6 +12,8 @@ import Spinner from "./loaders/Spinner";
 import AlertModal from "./modals/AlertModal";
 import Modal from "./modals/Modal";
 import Header from "./Navigation/Header";
+import ReactTable from "./ReactTable";
+import Restricted from "./Restricted";
 import Table from "./Table";
 import Toast from "./Toast";
 import Tooltip from "./Tooltip";
@@ -26,6 +28,7 @@ export {
   Spinner,
   DropdownMenu,
   Modal,
+  ReactTable,
   Table,
   Toast,
   Toggle,
@@ -34,4 +37,5 @@ export {
   Divider,
   Cards,
   Tooltip,
+  Restricted,
 };

@@ -32,3 +32,10 @@ export type CronJob = {
   bonusHighlightEnabled: boolean;
   bonusHighlightsPerEmail: number;
 };
+
+export type StarterHighlight = {
+  id: number;
+  title: string;
+  author: string;
+  content: string;
+};

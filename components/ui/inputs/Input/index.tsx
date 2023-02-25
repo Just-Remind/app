@@ -25,7 +25,7 @@ type Props = {
   step?: string;
   rows?: number;
   autoFocus?: boolean;
-  onChange?(event: ChangeEvent<HTMLInputElement>): void;
+  onChange?(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void;
   accept?: string;
 };
 
@@ -41,6 +41,7 @@ const Input = forwardRef<HTMLInputElement, Props>((props, ref) => {
     size = "sm",
     error,
     value,
+    onChange,
     required,
     step,
     rows = 3,
@@ -74,6 +75,7 @@ const Input = forwardRef<HTMLInputElement, Props>((props, ref) => {
             name={name}
             id={name}
             required={required}
+            onChange={onChange}
             value={value}
             rows={rows}
           />

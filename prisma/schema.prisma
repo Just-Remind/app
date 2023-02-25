@@ -9,22 +9,23 @@ datasource db {
 }
 
 model CronJob {
-  id                      Int       @id @default(autoincrement())
-  createdAt               DateTime  @default(now())
-  updatedAt               DateTime  @updatedAt
-  jobId                   Int
-  cronExpression          String    @default("0 8 * * * *")
-  timezone                String
-  enabled                 Boolean   @default(true)
-  user                    String    @unique
-  uniqueBooksOnly         Boolean   @default(false)
-  highlightsPerEmail      Int       @default(5)
-  highlightsQualityFilter Boolean   @default(true)
-  currentCycle            Int       @default(1)
-  cycleMode               Boolean   @default(true)
-  cycleStartDate          DateTime?
-  bonusHighlightEnabled   Boolean   @default(true)
-  bonusHighlightsPerEmail Int       @default(3)
+  id                       Int       @id @default(autoincrement())
+  createdAt                DateTime  @default(now())
+  updatedAt                DateTime  @updatedAt
+  jobId                    Int
+  cronExpression           String    @default("0 8 * * * *")
+  timezone                 String
+  enabled                  Boolean   @default(true)
+  user                     String    @unique
+  uniqueBooksOnly          Boolean   @default(false)
+  highlightsPerEmail       Int       @default(5)
+  highlightsQualityFilter  Boolean   @default(true)
+  currentCycle             Int       @default(1)
+  cycleMode                Boolean   @default(true)
+  cycleStartDate           DateTime?
+  bonusHighlightEnabled    Boolean   @default(true)
+  bonusHighlightsPerEmail  Int       @default(3)
+  lastStarterHighlightSent Int?
 }
 
 model Book {
@@ -63,4 +64,13 @@ model Tag {
   updatedAt DateTime @updatedAt
   name      String   @unique
   books     Book[]
+}
+
+model StarterHighlight {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  title     String
+  author    String
+  content   String   @unique
 }

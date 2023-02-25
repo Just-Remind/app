@@ -1,6 +1,7 @@
 import LanguageDetect from "languagedetect";
 
 import prisma from "lib/prisma";
+import { StarterHighlight } from "types";
 
 export type Highlight = {
   id: number;
@@ -13,6 +14,8 @@ export type Highlight = {
 };
 
 type Settings = {
+  id: number;
+  jobId: number;
   uniqueBooksOnly: boolean;
   highlightsPerEmail: number;
   highlightsQualityFilter: boolean;
@@ -21,6 +24,7 @@ type Settings = {
   cronExpression: string;
   bonusHighlightEnabled: boolean;
   bonusHighlightsPerEmail: number;
+  lastStarterHighlightSent: number | null;
 };
 
 export const getHighlights = async (
@@ -70,6 +74,8 @@ export const getSettings = async (userEmail: string): Promise<Settings | null> =
       user: userEmail,
     },
     select: {
+      id: true,
+      jobId: true,
       uniqueBooksOnly: true,
       highlightsPerEmail: true,
       highlightsQualityFilter: true,
@@ -78,6 +84,7 @@ export const getSettings = async (userEmail: string): Promise<Settings | null> =
       cronExpression: true,
       bonusHighlightEnabled: true,
       bonusHighlightsPerEmail: true,
+      lastStarterHighlightSent: true,
     },
   });
 
@@ -258,4 +265,31 @@ export const saveBooksTagsAndUniqueId = async (userEmail: string): Promise<void>
       });
     }
   }
+};
+
+export const getStarterHighlights = async (lastID?: number): Promise<StarterHighlight[]> =>
+  prisma.starterHighlight.findMany({
+    take: 3,
+    orderBy: {
+      id: "asc",
+    },
+    where: {
+      id: {
+        gt: lastID,
+      },
+    },
+  });
+
+export const updateStarterHighlightLastSentID = async (
+  user: string,
+  lastSentID: number,
+): Promise<void> => {
+  await prisma.cronJob.update({
+    where: {
+      user,
+    },
+    data: {
+      lastStarterHighlightSent: lastSentID,
+    },
+  });
 };
