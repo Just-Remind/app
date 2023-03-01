@@ -2,7 +2,24 @@
 import { Highlight } from "./reminder/_utils";
 import CryptoJS from 'crypto-js'
 
-const buildRemindersHTML = (selectedHighlights: Highlight[], userEmail: string, withDeactivate = true): string => {
+type BuildRemindersHTMLParams = {
+  selectedHighlights: Highlight[];
+  userEmail: string;
+  withDeactivate?: boolean;
+}
+
+type GetEmailParams = {
+  selectedHighlights: Highlight[];
+  userEmail: string;
+  greeting: string;
+  bonusHighlighs?: Highlight[] | null;
+  starterHighlihts?: boolean;
+  firstStarterHighlights?: boolean;
+}
+
+const buildRemindersHTML = (params: BuildRemindersHTMLParams): string => {
+  const { selectedHighlights, userEmail, withDeactivate = true } = params;
+
   const htmlBlocks: string[] = [];
 
   selectedHighlights.forEach((highlight) => {
@@ -65,12 +82,34 @@ const buildRemindersHTML = (selectedHighlights: Highlight[], userEmail: string, 
   return htmlBlocks.join("");
 };
 
-export const getEmail = (selectedHighlights: Highlight[], userEmail: string, greeting: string, bonusHighlighs?: Highlight[] | null): string => {
+const getIntroText = ({ starterHighlihts = false, firstStarterHighlights = false } = {}): string => {
+  const fontZise = starterHighlihts ? '17px' : '19px';
+  let text;
+  if (starterHighlihts && firstStarterHighlights) {
+    text = 'We noticed that you have not yet uploaded your own books on Just Remind, so we hand-picked some highlights for you to enjoy for the next 30 days! But make sure to <a href="https://justremind.app/" target="_blank" style="text-decoration: underline; color: #8a3c90;" rel="noopener">upload your own</a>! 👌'
+  } else if (starterHighlihts && !firstStarterHighlights) {
+    text = 'Here are your hand-picked highlights of the day. You can upload your own books in the <a href="https://justremind.app/" target="_blank" style="text-decoration: underline; color: #8a3c90;" rel="noopener">app</a>!'
+  } else {
+    text = 'Here are your highlights of the day:';
+  }
+
+  return (
+    `<div
+      style="color:#9a6f3d;font-size:${fontZise};font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-weight:400;line-height:120%;text-align:left;direction:ltr;letter-spacing:0px;mso-line-height-alt:22.8px;">
+      <p style="margin: 0;">${text}</p>
+    </div>`
+  )
+}
+
+export const getEmail = (params: GetEmailParams): string => {
+  const { selectedHighlights, userEmail, greeting, starterHighlihts, firstStarterHighlights } = params;
   let remindersHTML = '';
-  if (selectedHighlights.length > 0) remindersHTML = buildRemindersHTML(selectedHighlights, userEmail);
+  if (selectedHighlights.length > 0) remindersHTML = buildRemindersHTML({ selectedHighlights, userEmail, withDeactivate: !starterHighlihts });
 
   let bonusHighlightsHTML = '';
-  if (bonusHighlighs) bonusHighlightsHTML = buildRemindersHTML(bonusHighlighs, userEmail, false);
+  // if (bonusHighlighs) bonusHighlightsHTML = buildRemindersHTML(bonusHighlighs, userEmail, false);
+
+  const introText = getIntroText({ starterHighlihts, firstStarterHighlights });
 
   const email = `<!DOCTYPE html>
 
@@ -230,7 +269,7 @@ export const getEmail = (selectedHighlights: Highlight[], userEmail: string, gre
                             <table border="0" cellpadding="0" cellspacing="0" class="heading_block block-3"
                               role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
                               <tr>
-                                <td class="pad" style="text-align:center;width:100%;">
+                                <td class="pad" style="text-align:center;width:100%; padding-left: 10px">
                                   <h1
                                     style="margin: 0; color: #9a6f3d; direction: ltr; font-family: 'Merriwheater', 'Georgia', serif; font-size: 40px; font-weight: 700; letter-spacing: normal; line-height: 120%; text-align: left; margin-top: 0; margin-bottom: 0;">
                                     ${greeting} 👋</h1>
@@ -263,11 +302,8 @@ export const getEmail = (selectedHighlights: Highlight[], userEmail: string, gre
                               role="presentation"
                               style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;" width="100%">
                               <tr>
-                                <td class="pad">
-                                  <div
-                                    style="color:#9a6f3d;font-size:19px;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-weight:400;line-height:120%;text-align:left;direction:ltr;letter-spacing:0px;mso-line-height-alt:22.8px;">
-                                    <p style="margin: 0;">Here are your highlights of the day:</p>
-                                  </div>
+                                <td class="pad" style="padding-left: 10px">
+                                  ${introText}
                                 </td>
                               </tr>
                             </table>
@@ -302,62 +338,37 @@ export const getEmail = (selectedHighlights: Highlight[], userEmail: string, gre
               </tbody>
             </table>`}
 
-            ${bonusHighlightsHTML && `<table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-2" role="presentation"
-            style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
-              <tbody>
-                <tr>
-                  <td>
-                    <table align="center" border="0" cellpadding="0" cellspacing="0" class="row-content stack"
-                      role="presentation"
-                      style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; color: #000000; width: 700px;" width="700">
-                      <tbody>
-                        <tr>
-                          <td class="column column-1"
-                            style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: top; padding-top: 5px; padding-bottom: 20px; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;"
-                            width="100%">
-                            <table border="0" cellpadding="0" cellspacing="0" class="paragraph_block block-1"
-                              role="presentation"
-                              style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;" width="100%">
-                              <tr>
-                                <td class="pad">
-                                  <div
-                                    style="color:#9a6f3d;font-size:19px;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-weight:400;line-height:120%;text-align:left;direction:ltr;letter-spacing:0px;mso-line-height-alt:22.8px;">
-                                    <p style="margin: 0;">The community highlights:</p>
-                                  </div>
-                                </td>
-                              </tr>
-                            </table>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-            <table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-3" role="presentation"
-              style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
-              <tbody>
-                <tr>
-                  <td>
-                    <table align="center" border="0" cellpadding="0" cellspacing="0" class="row-content stack"
-                      role="presentation"
-                      style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; color: #000000; width: 700px;" width="700">
-                      <tbody>
-                        <tr>
-                          <td class="column column-1"
-                            style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: top; padding-top: 5px; padding-bottom: 5px; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;"
-                            width="100%">
-                            ${bonusHighlightsHTML}
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </td>
-                </tr>
-              </tbody>
-            </table>`}
-
+            ${starterHighlihts && `
+              <table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-3" role="presentation"
+                style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; margin-top: 10px;" width="100%";>
+                <tbody>
+                  <tr>
+                    <td>
+                      <table align="center" border="0" cellpadding="0" cellspacing="0" class="row-content stack"
+                        role="presentation"
+                        style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; color: #000000; width: 700px;" width="700">
+                        <tbody>
+                          <tr>
+                            <td class="column column-1"
+                              style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: top; padding-top: 5px; padding-bottom: 5px; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;"
+                              width="100%">
+                              <div style="
+                                padding-left: 10px;
+                                font-size: 12px;
+                                color: #9a6f3d;
+                                font-family:Arial, Helvetica Neue, Helvetica, sans-serif
+                              ">
+                                If you don't want to receive these emails, login to the <a href="https://justremind.app/" target="_blank" style="text-decoration: underline; color: #8a3c90;" rel="noopener">app</a> and deactivate your account.
+                              </div>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            `}
 
             <table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-4" role="presentation"
               style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; padding-top: 20px;" width="100%">

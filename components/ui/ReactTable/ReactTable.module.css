@@ -1,0 +1,25 @@
+.cell {
+  @apply px-6 py-2.5 text-sm text-gray-500 whitespace-nowrap;
+}
+
+.cell_header {
+  @apply sticky top-0 z-10 border-b border-gray-300 tracking-wider text-left text-xs font-medium text-gray-600 uppercase select-none whitespace-nowrap
+}
+
+.show-scrollbar::-webkit-scrollbar {
+  -webkit-appearance: none;
+}
+
+.show-scrollbar::-webkit-scrollbar:vertical {
+  width: 0px;
+}
+
+.show-scrollbar::-webkit-scrollbar:horizontal {
+  height: 8px;
+}
+
+.show-scrollbar::-webkit-scrollbar-thumb {
+  border-radius: 8px;
+  border: 2px solid white;
+  background-color: rgb(229, 231, 235);
+}
