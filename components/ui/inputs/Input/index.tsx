@@ -107,6 +107,7 @@ const Input = forwardRef<HTMLInputElement, Props>((props, ref) => {
             value={value}
             step={step}
             autoFocus={autoFocus}
+            onChange={onChange}
           />
         </div>
       )}

@@ -29,17 +29,18 @@ model CronJob {
 }
 
 model Book {
-  id         Int         @id @default(autoincrement())
-  createdAt  DateTime    @default(now())
-  updatedAt  DateTime    @updatedAt
-  title      String
-  author     String?
-  user       String
-  enabled    Boolean     @default(true)
-  highlights Highlight[]
-  isbn       String?
-  asin       String?
-  tags       Tag[]
+  id           Int         @id @default(autoincrement())
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  title        String
+  author       String?
+  user         String
+  enabled      Boolean     @default(true)
+  highlights   Highlight[]
+  isbn         String?
+  asin         String?
+  tags         Tag[]
+  importedFrom String?
 
   @@unique([user, title])
 }

@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 
 import { Input, Button } from "components/ui";
 import { useEditHighlight } from "services/highlights";
@@ -20,7 +20,7 @@ const EditHighlightForm = (props: Props): JSX.Element => {
   const { highlight, handleCloseModal } = props;
 
   // RHF
-  const { register, handleSubmit } = useForm<EditHighlightFormType>({
+  const { register, handleSubmit, control } = useForm<EditHighlightFormType>({
     defaultValues: {
       content: highlight.content,
     },
@@ -43,13 +43,20 @@ const EditHighlightForm = (props: Props): JSX.Element => {
     <div>
       <p className="mb-4 text-xl font-medium">Edit this highlight</p>
       <form onSubmit={handleSubmit(handleEditHighlight)} className="space-y-4">
-        <Input
-          {...register("content")}
-          required
-          label="Content"
-          type="textarea"
-          rows={5}
-          value={highlight.content}
+        <Controller
+          control={control}
+          name="content"
+          render={({ field: { onChange, value } }): JSX.Element => (
+            <Input
+              {...register("content")}
+              required
+              label="Highlight"
+              type="textarea"
+              rows={5}
+              onChange={onChange}
+              value={value}
+            />
+          )}
         />
         <Button type="submit">Edit</Button>
       </form>
