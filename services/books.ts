@@ -11,6 +11,7 @@ import { User, Book } from "types";
 
 type AddBooksPayload = {
   user: User;
+  importedFrom: string;
   books: {
     title: string;
     author?: string;

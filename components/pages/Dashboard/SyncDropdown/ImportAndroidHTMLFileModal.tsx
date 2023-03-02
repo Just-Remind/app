@@ -97,7 +97,7 @@ const ImportAndroidHTMLFileModal = (props: Props): JSX.Element => {
         }
       });
 
-      addBooks({ user, books: booksToImport });
+      addBooks({ user, books: booksToImport, importedFrom: "android-html" });
     };
     reader.readAsText(file);
   };

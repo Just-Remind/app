@@ -18,6 +18,7 @@ type Body = {
     email: string;
   };
   books: ImportedBookType[];
+  importedFrom?: string;
 };
 
 const handler = async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
@@ -87,6 +88,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse): Promise<void>
           asin: book.asin,
           title: book.title,
           author: book.author,
+          importedFrom: body.importedFrom,
           highlights: {
             createMany: {
               skipDuplicates: true,

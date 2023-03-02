@@ -75,6 +75,7 @@ const ImportMyClippingsModal = (props: Props): JSX.Element => {
   };
 
   const onImportMyClippingsFile = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    console.log("onImportMyClippingsFile");
     clearAlert();
 
     const booksToImport: BookToImport[] = [];
@@ -118,7 +119,7 @@ const ImportMyClippingsModal = (props: Props): JSX.Element => {
           message: "No books were found.",
         });
       }
-      addBooks({ user, books: booksToImport });
+      addBooks({ user, books: booksToImport, importedFrom: "clippings" });
     };
     reader.readAsText(file);
   };
