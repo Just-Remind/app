@@ -9,12 +9,11 @@ import {
   Highlight,
   saveBooksTagsAndUniqueId,
   updateStarterHighlightLastSentID,
-} from "./_utils";
-import {
   getHighlights,
   getRandomHighlights,
   updateLastSentOn,
   setNewCycleStartDate,
+  getBooksCount,
 } from "./_utils";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
@@ -48,13 +47,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse): Promise<void>
 
   if (!cycleStartDate) setNewCycleStartDate(userEmail);
 
+  const booksNumber = await getBooksCount(userEmail);
   const highlights = await getHighlights(userEmail, cycleStartDate, highlightsQualityFilter);
   let starterHighlihts = false;
   let firstStarterHighlights = false;
   let selectedHighlights: Highlight[] = [];
 
   // STARTER HIGHLIGHTS
-  if (highlights.length === 0) {
+  if (booksNumber === 0) {
     const starterHighlights = await getStarterHighlights(lastStarterHighlightSent || undefined);
     if (starterHighlights.length === 0) {
       try {

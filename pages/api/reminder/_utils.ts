@@ -293,3 +293,13 @@ export const updateStarterHighlightLastSentID = async (
     },
   });
 };
+
+export const getBooksCount = async (user: string): Promise<number> => {
+  const count = await prisma.book.count({
+    where: {
+      user,
+    },
+  });
+
+  return count;
+};
