@@ -9,15 +9,13 @@ type ModalConfiguration = {
 type ReturnUseModal = [
   modal: React.ReactNode | null,
   setModal: (configuration: ModalConfiguration) => void,
-  toggleModal: () => void
+  toggleModal: () => void,
 ];
 
 const useModal = (): ReturnUseModal => {
   // STATE
   const [open, setOpen] = useState(false);
-  const [modalChildren, setModalChildren] = useState<React.ReactNode | null>(
-    null
-  );
+  const [modalChildren, setModalChildren] = useState<React.ReactNode | null>(null);
 
   // METHODS
   const toggleModal = (): void => setOpen((prevState) => !prevState);

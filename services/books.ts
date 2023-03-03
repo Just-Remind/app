@@ -9,6 +9,16 @@ import {
 
 import { User, Book } from "types";
 
+type AddBookPayload = {
+  user: User;
+  importedFrom: string;
+  book: {
+    title: string;
+    author?: string;
+    highlights: string[];
+  };
+};
+
 type AddBooksPayload = {
   user: User;
   importedFrom: string;
@@ -62,17 +72,29 @@ const useDeleteBook = (): UseMutationResult<void, unknown, number, unknown> => {
 };
 
 // ****************** CREATE BOOK ******************
-
-const addBooks = (payload: AddBooksPayload): Promise<void> => axios.post("/api/add_book", payload);
+const addBook = (payload: AddBookPayload): Promise<void> => axios.post("/api/add_book", payload);
 
 // eslint-disable-next-line prettier/prettier
 const useAddBooks = (): UseMutationResult<void, unknown, AddBooksPayload, unknown> => {
   const queryClient = useQueryClient();
-  return useMutation((payload: AddBooksPayload) => addBooks(payload), {
-    onSuccess: () => {
-      queryClient.invalidateQueries("books");
+  return useMutation(
+    async (payload: AddBooksPayload) => {
+      let nbOfRequests = 0;
+      while (nbOfRequests < payload.books.length) {
+        await addBook({
+          book: payload.books[nbOfRequests],
+          user: payload.user,
+          importedFrom: payload.importedFrom,
+        });
+        nbOfRequests++;
+      }
     },
-  });
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("books");
+      },
+    },
+  );
 };
 
 // ****************** EDIT BOOK ******************
@@ -112,7 +134,7 @@ const getBookCount = async (email: string): Promise<void> => {
 };
 
 const useBookCount = (email: string): UseQueryResult<number, Error> =>
-  useQuery("book_book", () => getBookCount(email));
+  useQuery("book_count", () => getBookCount(email));
 
 export {
   useGetBooks,

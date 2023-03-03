@@ -1,3 +1,4 @@
+import { useAddBooks } from "./books";
 import {
   useGetStarterHighlights,
   useCreateStarterHighlight,
@@ -10,4 +11,5 @@ export {
   useCreateStarterHighlight,
   useEditStarterHighlight,
   useDeleteStarterHighlight,
+  useAddBooks,
 };
