@@ -338,7 +338,7 @@ export const getEmail = (params: GetEmailParams): string => {
               </tbody>
             </table>`}
 
-            ${starterHighlihts && `
+            ${starterHighlihts ? `
               <table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-3" role="presentation"
                 style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; margin-top: 10px;" width="100%";>
                 <tbody>
@@ -368,7 +368,7 @@ export const getEmail = (params: GetEmailParams): string => {
                   </tr>
                 </tbody>
               </table>
-            `}
+            ` : ''}
 
             <table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-4" role="presentation"
               style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; padding-top: 20px;" width="100%">
