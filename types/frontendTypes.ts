@@ -5,3 +5,9 @@ export type Card = {
   onClick?: () => void;
   href?: string;
 };
+
+export type BookToImport = {
+  title: string;
+  author?: string;
+  highlights: string[];
+};

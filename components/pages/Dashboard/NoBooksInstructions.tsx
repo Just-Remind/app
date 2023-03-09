@@ -8,7 +8,7 @@ import { Card } from "types";
 import { MESSAGES } from "utils/constants";
 import { useToast, useModalContent } from "utils/hooks";
 
-import ImportMyClippingsModal from "./SyncDropdown/ImportMyClippingsModal";
+import ImportMyClippingsModal from "./SyncDropdown/parts/ImportMyClippingsModal";
 
 const NoBooksInstructions = (): JSX.Element => {
   // CONTEXT
@@ -91,7 +91,7 @@ const NoBooksInstructions = (): JSX.Element => {
     <>
       {toast}
 
-      <Modal open={isOpen} setOpen={setIsOpen}>
+      <Modal open={isOpen} setOpen={setIsOpen} title="Import your My Clippings.txt file">
         <ImportMyClippingsModal setIsOpen={setIsOpen} setToast={setToast} clearToast={clearToast} />
       </Modal>
 

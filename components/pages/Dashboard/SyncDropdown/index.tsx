@@ -4,11 +4,11 @@ import { Dropdown, Modal } from "components/ui";
 import { useToast } from "utils/hooks";
 import useModalContent from "utils/hooks/useModalContent";
 
-import ImportAndroidHTMLFileModal from "./ImportAndroidHTMLFileModal";
-import ImportMyClippingsModal from "./ImportMyClippingsModal";
-import SyncWithAndroidApp from "./SyncWithAndroidApp";
-import SyncWithExtension from "./SyncWithExtension";
-import SyncWithMyClippings from "./SyncWithMyClippings";
+import ImportAndroidHTMLFileModal from "./parts/ImportAndroidHTMLFileModal";
+import ImportMyClippingsModal from "./parts/ImportMyClippingsModal";
+import SyncWithAndroidApp from "./parts/SyncWithAndroidApp";
+import SyncWithExtension from "./parts/SyncWithExtension";
+import SyncWithMyClippings from "./parts/SyncWithMyClippings";
 
 const SyncButton = (): JSX.Element => {
   // STATE
@@ -24,11 +24,26 @@ const SyncButton = (): JSX.Element => {
     toggle();
   };
 
+  const getModalTitle = (type: string): string | undefined => {
+    let title;
+    switch (type) {
+      case "Clippings Modal":
+        title = "Import your My Clippings.txt file";
+        break;
+
+      case "Android App Modal":
+        title = "Import the HTML file from your Kindle Android app";
+        break;
+    }
+
+    return title;
+  };
+
   return (
     <>
       {toast}
 
-      <Modal open={isOpen} setOpen={setIsOpen}>
+      <Modal open={isOpen} setOpen={setIsOpen} title={getModalTitle(openedModal)}>
         {openedModal === "Clippings Modal" && (
           <ImportMyClippingsModal
             setIsOpen={setIsOpen}

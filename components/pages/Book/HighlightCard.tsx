@@ -62,7 +62,7 @@ const HighlightCard = (props: Props): JSX.Element => {
       {alertModal}
       {toast}
 
-      <Modal open={open} setOpen={setOpen}>
+      <Modal open={open} setOpen={setOpen} title="Edit this highlight">
         <EditHighlightForm highlight={highlight} handleCloseModal={handleCloseModal} />
       </Modal>
       <li className="px-6 pt-6 pb-2 border rounded shadow border-gray-50">
