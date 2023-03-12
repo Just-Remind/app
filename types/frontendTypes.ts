@@ -11,3 +11,9 @@ export type BookToImport = {
   author?: string;
   highlights: string[];
 };
+
+export type UploadedBook = {
+  title: string;
+  index: number;
+  total: number;
+};

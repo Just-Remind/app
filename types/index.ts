@@ -1,5 +1,5 @@
 import { User, Highlight, Book, CronJob, StarterHighlight } from "./apiTypes";
-import { Card, BookToImport } from "./frontendTypes";
+import { Card, BookToImport, UploadedBook } from "./frontendTypes";
 import { EditStarterHighlightPayload, CreateStarterHighlightPayload } from "./payloads";
 
 export type {
@@ -12,6 +12,7 @@ export type {
   // FRONTEND TYPES
   BookToImport,
   Card,
+  UploadedBook,
   // PAYLOAD TYPES
   CreateStarterHighlightPayload,
   EditStarterHighlightPayload,

@@ -43,7 +43,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse): Promise<void>
     categories.push(...googleBookDetails.volumeInfo.categories);
   }
 
-  await prisma.book.upsert({
+  const addedBook = await prisma.book.upsert({
     where: {
       user_title: {
         user: body.user.email,
@@ -89,7 +89,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse): Promise<void>
     },
   });
 
-  return res.status(200).json("SUCCESS");
+  return res.status(200).json(addedBook.title);
 };
 
 export default handler;
