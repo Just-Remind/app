@@ -7,7 +7,7 @@ import {
   useQueryClient,
 } from "react-query";
 
-import { User, Book } from "types";
+import { User, Book, UploadedBook } from "types";
 
 type AddBookPayload = {
   user: User;
@@ -27,6 +27,7 @@ type AddBooksPayload = {
     author?: string;
     highlights: string[];
   }[];
+  handleSetUploadedBook?: (value: UploadedBook) => void;
 };
 
 type EditBookPayload = {
@@ -72,7 +73,10 @@ const useDeleteBook = (): UseMutationResult<void, unknown, number, unknown> => {
 };
 
 // ****************** CREATE BOOK ******************
-const addBook = (payload: AddBookPayload): Promise<void> => axios.post("/api/add_book", payload);
+const addBook = async (payload: AddBookPayload): Promise<string> => {
+  const response = await axios.post("/api/add_book", payload);
+  return response.data;
+};
 
 // eslint-disable-next-line prettier/prettier
 const useAddBooks = (): UseMutationResult<void, unknown, AddBooksPayload, unknown> => {
@@ -81,11 +85,18 @@ const useAddBooks = (): UseMutationResult<void, unknown, AddBooksPayload, unknow
     async (payload: AddBooksPayload) => {
       let nbOfRequests = 0;
       while (nbOfRequests < payload.books.length) {
-        await addBook({
+        const uploadedBook = await addBook({
           book: payload.books[nbOfRequests],
           user: payload.user,
           importedFrom: payload.importedFrom,
         });
+        if (payload.handleSetUploadedBook) {
+          payload.handleSetUploadedBook({
+            title: uploadedBook,
+            index: nbOfRequests + 1,
+            total: payload.books.length,
+          });
+        }
         nbOfRequests++;
       }
     },

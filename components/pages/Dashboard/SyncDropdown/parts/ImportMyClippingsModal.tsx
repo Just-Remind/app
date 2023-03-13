@@ -1,12 +1,12 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import { Input, Spinner } from "components/ui";
 import { UserContext } from "context";
 import { useAddBooks } from "services";
+import { UploadedBook } from "types";
 import { useAlert, ToastConfig } from "utils/hooks";
 
 import getBooksToImport from "../logic/getBooksToImport";
-import useLoadedBookIndicator from "../logic/useLoadedBookIndicator";
 
 type Props = {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -18,6 +18,9 @@ const ImportMyClippingsModal = (props: Props): JSX.Element => {
   // PROPS
   const { setIsOpen, setToast, clearToast } = props;
 
+  // STATE
+  const [uploadedBook, setUploadedBook] = useState<UploadedBook>();
+
   // CONTEXT
   const user = useContext(UserContext);
 
@@ -26,7 +29,6 @@ const ImportMyClippingsModal = (props: Props): JSX.Element => {
 
   // HOOKS
   const [alert, setAlert, clearAlert] = useAlert();
-  const { refs, handleSetImportedBooks } = useLoadedBookIndicator(status);
 
   useEffect(() => {
     clearToast();
@@ -46,11 +48,12 @@ const ImportMyClippingsModal = (props: Props): JSX.Element => {
   }, [status, clearToast, setToast, setAlert, setIsOpen]);
 
   // METHODS
+  const handleSetUploadedBook = (value: UploadedBook): void => setUploadedBook(value);
+
   const onImportMyClippingsFile = async (e: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
     clearAlert();
     const booksToImport = await getBooksToImport(e);
-    handleSetImportedBooks(booksToImport);
-    addBooks({ user, importedFrom: "clippings", books: booksToImport });
+    addBooks({ user, importedFrom: "clippings", books: booksToImport, handleSetUploadedBook });
   };
 
   return (
@@ -62,11 +65,17 @@ const ImportMyClippingsModal = (props: Props): JSX.Element => {
         <div>
           <div className="flex items-center space-x-2">
             <span className="text-sm text-gray-600">
-              Importing books <span ref={refs.loadedBookCounter}></span>
+              Importing books{" "}
+              {uploadedBook && (
+                <span>
+                  ({uploadedBook.index}/{uploadedBook.total})
+                </span>
+              )}
             </span>
+
             <Spinner />
           </div>
-          <p ref={refs.loadedBook} className="text-xs text-gray-500 truncate"></p>
+          {uploadedBook && <p className="text-xs text-gray-500 truncate">{uploadedBook.title}</p>}
         </div>
       )}
     </div>

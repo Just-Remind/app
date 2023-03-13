@@ -1,4 +1,6 @@
 /* eslint-disable max-len */
+import classNames from "classnames";
+
 import styles from "./Spinner.module.css";
 
 type SpinnerProps = {
@@ -9,16 +11,17 @@ type SpinnerProps = {
 
 const Spinner = (props: SpinnerProps): JSX.Element => {
   // PROPS
-  const { theme = "dark", size = "sm" } = props;
+  const { theme = "dark", size = "sm", className } = props;
 
   return (
     <svg
       role="status"
-      className={`
-        ${styles[`spinner--${size}`]}
-        ${styles[`spinner--${theme}`]}
-        animate-spin fill-grey-400 ml-2
-      `}
+      className={classNames(
+        styles[`spinner--${size}`],
+        styles[`spinner--${theme}`],
+        "animate-spin fill-grey-400 ml-2",
+        className,
+      )}
       viewBox="0 0 100 101"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
